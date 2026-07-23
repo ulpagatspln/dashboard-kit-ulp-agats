@@ -16,19 +16,20 @@ import { collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc } from 'fireb
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
 
 export default function App() {
-  const [currentUser, setCurrentUser] = useState(null);
-  const [loginUsername, setLoginUsername] = useState('');
-  const [loginError, setLoginError] = useState('');
+  const [currentUser, setCurrentUser] = useState<any[]>([]);
+  const [loginUsername, setLoginUsername] = useState<any[]>([]);
+  const [loginError, setLoginError] = useState<any[]>([]);
 
   // STATE MEMBACA FIREBASE
-  const [pltsAssets, setPltsAssets] = useState([]);
-  const [pltdAssets, setPltdAssets] = useState([]);
-  const [mesinPltd, setMesinPltd] = useState([]);
-  const [tangkiPltd, setTangkiPltd] = useState([]);
-  const [pltsLogs, setPltsLogs] = useState([]);
-  const [pltdLogs, setPltdLogs] = useState([]);
-  const [mesinLogs, setMesinLogs] = useState([]);
-  const [produksiLogs, setProduksiLogs] = useState([]);
+  // STATE MEMBACA FIREBASE
+  const [pltsAssets, setPltsAssets] = useState<any[]>([]);
+  const [pltdAssets, setPltdAssets] = useState<any[]>([]);
+  const [mesinPltd, setMesinPltd] = useState<any[]>([]);
+  const [tangkiPltd, setTangkiPltd] = useState<any[]>([]);
+  const [pltsLogs, setPltsLogs] = useState<any[]>([]);
+  const [pltdLogs, setPltdLogs] = useState<any[]>([]);
+  const [mesinLogs, setMesinLogs] = useState<any[]>([]);
+  const [produksiLogs, setProduksiLogs] = useState<any[]>([]);
 
   // SISTEM RADAR REAL-TIME FIREBASE
   useEffect(() => {
