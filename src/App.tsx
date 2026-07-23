@@ -391,7 +391,7 @@ export default function App() {
       return {
         nama_plts: plts.nama_plts,
         kapasitas_kwp: plts.kapasitas_kwp,
-        status: plts.Status,
+        status: plts.Status || plts.status || '', // <-- Sabuk Pengaman: Jika kosong, jadikan teks kosong
         beban_terbaru: latestLog ? latestLog.beban_puncak : 0,
         waktu_terbaru: latestLog ? `${latestLog.tanggal} ${latestLog.jam}` : '-'
       };
@@ -400,7 +400,8 @@ export default function App() {
     if (dashboardSortConfig.key) {
       data.sort((a, b) => {
         if (dashboardSortConfig.key === 'Status') {
-          const getRank = (s) => (s || '').toUpperCase() === 'OPERASI' ? 1 : (s || '').toUpperCase() === 'OPERASI TERBATAS' ? 2 : (s || '').toUpperCase() === 'STAND BY' ? 3 : (s || '').toUpperCase() === 'GANGGUAN' ? 4 : 5;
+          // <-- Sabuk Pengaman: Dibungkus String() agar toUpperCase tidak crash
+          const getRank = (s) => String(s || '').toUpperCase() === 'OPERASI' ? 1 : String(s || '').toUpperCase() === 'OPERASI TERBATAS' ? 2 : String(s || '').toUpperCase() === 'STAND BY' ? 3 : String(s || '').toUpperCase() === 'GANGGUAN' ? 4 : 5;
           return dashboardSortConfig.direction === 'asc' ? getRank(a.status) - getRank(b.status) : getRank(b.status) - getRank(a.status);
         } else {
           const valA = a[dashboardSortConfig.key] || ''; const valB = b[dashboardSortConfig.key] || '';
@@ -413,7 +414,7 @@ export default function App() {
         }
       });
     } else {
-      data.sort((a, b) => (a.status || '').toUpperCase() === 'OPERASI' ? -1 : 1);
+      data.sort((a, b) => String(a.status || '').toUpperCase() === 'OPERASI' ? -1 : 1);
     }
     return data;
   }, [pltsAssets, pltsLogs, dashboardSortConfig]);
@@ -432,7 +433,7 @@ export default function App() {
 
       return {
         nama_pltd: pltd.nama_pltd,
-        status: pltd.Status, // <-- BARIS BARU DITAMBAHKAN
+        status: pltd.Status || pltd.status || '', // <-- Sabuk Pengaman
         daya_terpasang: totalDayaTerpasang,
         daya_mampu: totalDayaMampu,
         beban_terbaru: latestLog ? latestLog.beban_aktif : 0,
@@ -443,9 +444,8 @@ export default function App() {
 
     if (dashboardPltdSortConfig.key) {
       data.sort((a, b) => {
-        // --- TAMBAHAN LOGIKA SORTING STATUS ---
         if (dashboardPltdSortConfig.key === 'Status') {
-          const getRank = (s) => (s || '').toUpperCase() === 'OPERASI' ? 1 : (s || '').toUpperCase() === 'OPERASI TERBATAS' ? 2 : (s || '').toUpperCase() === 'STAND BY' ? 3 : (s || '').toUpperCase() === 'GANGGUAN' ? 4 : 5;
+          const getRank = (s) => String(s || '').toUpperCase() === 'OPERASI' ? 1 : String(s || '').toUpperCase() === 'OPERASI TERBATAS' ? 2 : String(s || '').toUpperCase() === 'STAND BY' ? 3 : String(s || '').toUpperCase() === 'GANGGUAN' ? 4 : 5;
           return dashboardPltdSortConfig.direction === 'asc' ? getRank(a.status) - getRank(b.status) : getRank(b.status) - getRank(a.status);
         } else {
           const valA = a[dashboardPltdSortConfig.key] || ''; const valB = b[dashboardPltdSortConfig.key] || '';
