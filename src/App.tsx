@@ -1505,8 +1505,13 @@ export default function App() {
                               <td className="p-4"><div className="font-bold text-indigo-700">{Array.isArray(log.petugas) && log.petugas.length > 0 ? log.petugas.map(p => String(p).split(' - ')[0]).join(', ') : '-'}</div></td>
                               <td className="p-4 font-medium">{log.mesin_data.length} Unit Mesin Terdata</td>
                               <td className="p-4 text-center flex justify-center gap-1">
-                                <button onClick={() => setViewingMesinLogDetail(log)} className="p-1.5 bg-indigo-50 text-indigo-600 rounded hover:bg-indigo-100"><Search className="w-4 h-4" /></button>
-                                <button onClick={() => setDeletingMesinLog(log)} className="p-1.5 bg-rose-50 text-rose-600 rounded hover:bg-rose-100 opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 className="w-4 h-4" /></button>
+                                {/* Mengganti tombol Search menjadi tombol Edit */}
+                                <button onClick={() => setEditingMesinLog(log)} className="p-1.5 bg-blue-50 text-blue-600 rounded hover:bg-blue-100 opacity-0 group-hover:opacity-100 transition-opacity" title="Edit Log">
+                                  <Edit className="w-4 h-4" />
+                                </button>
+                                <button onClick={() => setDeletingMesinLog(log)} className="p-1.5 bg-rose-50 text-rose-600 rounded hover:bg-rose-100 opacity-0 group-hover:opacity-100 transition-opacity" title="Hapus Log">
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
                               </td>
                             </tr>
                           ))}
@@ -1890,6 +1895,82 @@ export default function App() {
                       })}
                     </tbody>
                   </table>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* MODAL EDIT LOG STATUS MESIN */}
+          {editingMesinLog && (
+            <div className="fixed inset-0 bg-slate-900/50 z-[70] flex items-center justify-center p-4">
+              <div className="bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col animate-in fade-in zoom-in duration-200">
+                <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50 rounded-t-2xl">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-indigo-100 text-indigo-600 rounded-lg"><Server className="w-5 h-5" /></div>
+                    <div>
+                      <h3 className="text-lg font-bold text-slate-800">Edit Log Status Mesin</h3>
+                      <p className="text-xs text-slate-500 font-medium">Ubah data riwayat pencatatan</p>
+                    </div>
+                  </div>
+                  <button onClick={() => setEditingMesinLog(null)} className="text-slate-400 hover:text-rose-500 transition-colors"><X className="w-5 h-5" /></button>
+                </div>
+
+                <div className="p-6 overflow-y-auto">
+                  <div className="flex flex-wrap gap-4 mb-6">
+                    <div>
+                      <label className="block text-xs font-bold text-slate-600 mb-1">Tanggal</label>
+                      <input type="date" className="w-40 text-sm px-3 py-2 border border-slate-300 rounded-lg" value={editingMesinLog.tanggal || ''} onChange={e => setEditingMesinLog({ ...editingMesinLog, tanggal: e.target.value })} />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-600 mb-1">Jam (Jadwal)</label>
+                      <select className="w-32 text-sm px-3 py-2 border border-slate-300 rounded-lg" value={editingMesinLog.jam || ''} onChange={e => setEditingMesinLog({ ...editingMesinLog, jam: e.target.value })}>
+                        <option value="10:00">10:00 WIT</option>
+                        <option value="19:00">19:00 WIT</option>
+                      </select>
+                    </div>
+                    <div className="flex-1 min-w-[200px]">
+                      <label className="block text-xs font-bold text-slate-600 mb-2">Petugas Piket</label>
+                      <div className="flex flex-wrap gap-2">
+                        {getOperatorsForSite(selectedPltdForMesinLog, true).length === 0 ? <span className="text-xs text-rose-500 italic">Belum ada data operator.</span> :
+                          getOperatorsForSite(selectedPltdForMesinLog, true).map(op => (
+                            <label key={op} className="flex items-center gap-2 bg-slate-50 border border-slate-200 px-2 py-1 rounded cursor-pointer hover:bg-indigo-50">
+                              <input type="checkbox" checked={(editingMesinLog.petugas || []).includes(op)} onChange={() => handleTogglePetugas(op, editingMesinLog, setEditingMesinLog)} className="rounded text-indigo-600 focus:ring-indigo-500" />
+                              <span className="text-[11px] font-bold text-slate-700">{String(op).split(' - ')[0]}</span>
+                            </label>
+                          ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="border border-slate-200 rounded-xl overflow-x-auto bg-white shadow-sm">
+                    <table className="w-full text-left min-w-[700px]">
+                      <thead className="bg-slate-50 text-xs font-bold text-slate-600 uppercase border-b">
+                        <tr><th className="p-3 w-48">ID Mesin</th><th className="p-3 text-right">D. Terpasang</th><th className="p-3">Daya Mampu (kW)</th><th className="p-3">Beban Supply (kW)</th><th className="p-3">Status Operasi</th></tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100">
+                        {editingMesinLog.mesin_data.map(m => (
+                          <tr key={m._id} className="hover:bg-slate-50">
+                            <td className="p-3"><div className="font-bold text-sm text-slate-700">{m.id_mesin}</div><div className="text-[10px] text-slate-400">{m.merk_type}</div></td>
+                            <td className="p-3 text-right text-sm font-semibold text-slate-500">{m.daya_terpasang}</td>
+                            <td className="p-3"><input type="number" className="w-full px-2 py-1.5 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-indigo-500" value={m.daya_mampu} onChange={e => handleUpdateMesinLogData(m._id, 'daya_mampu', e.target.value)} /></td>
+                            <td className="p-3"><input type="number" className="w-full px-2 py-1.5 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-indigo-500" value={m.beban_supply} onChange={e => handleUpdateMesinLogData(m._id, 'beban_supply', e.target.value)} /></td>
+                            <td className="p-3">
+                              <select className="w-full px-2 py-1.5 border border-slate-300 rounded text-xs font-bold focus:ring-2 focus:ring-indigo-500" value={m.status_operasi} onChange={e => handleUpdateMesinLogData(m._id, 'status_operasi', e.target.value)}>
+                                <option value="OPERASI">OPERASI</option><option value="STAND BY">STAND BY</option><option value="GANGGUAN">GANGGUAN</option>
+                              </select>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div className="p-6 bg-slate-50 rounded-b-2xl border-t border-slate-100 flex justify-end gap-3">
+                  <button onClick={() => setEditingMesinLog(null)} className="px-5 py-2.5 text-slate-500 font-bold hover:bg-slate-200 rounded-lg text-sm transition-colors">Batal</button>
+                  <button onClick={handleSaveEditMesinLog} className="px-6 py-2.5 bg-indigo-600 text-white rounded-lg text-sm font-bold shadow-md hover:bg-indigo-700 flex items-center gap-2 transition-colors">
+                    <Save className="w-4 h-4" /> Simpan Perubahan
+                  </button>
                 </div>
               </div>
             </div>
