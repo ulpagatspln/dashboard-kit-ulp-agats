@@ -16,9 +16,9 @@ import { collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc } from 'fireb
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];
 
 export default function App() {
-  const [currentUser, setCurrentUser] = useState<any[]>([]);
-  const [loginUsername, setLoginUsername] = useState<any[]>([]);
-  const [loginError, setLoginError] = useState<any[]>([]);
+  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [loginUsername, setLoginUsername] = useState('');
+  const [loginError, setLoginError] = useState('');
 
   // STATE MEMBACA FIREBASE
   // STATE MEMBACA FIREBASE
@@ -857,7 +857,7 @@ export default function App() {
     return ops;
   };
 
-  if (!currentUser) {
+  if (!currentUser || !currentUser.role) {
     return (
       <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-center p-4 font-sans">
         <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border border-slate-100 animate-in zoom-in duration-300">
@@ -958,8 +958,10 @@ export default function App() {
           </h2>
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <div className="text-sm font-bold text-slate-800">{currentUser.name}</div>
-              <div className="text-[10px] font-medium text-slate-500 uppercase tracking-wider">{currentUser.role === 'admin' ? 'Administrator' : 'Operator ' + currentUser.role.toUpperCase()}</div>
+              <div className="text-sm font-bold text-slate-800">{currentUser?.name || 'Guest'}</div>
+              <div className="text-[10px] font-medium text-slate-500 uppercase tracking-wider">
+                {currentUser?.role === 'admin' ? 'Administrator' : 'Operator ' + String(currentUser?.role || '').toUpperCase()}
+              </div>
             </div>
             <button onClick={handleLogout} className="p-2 bg-rose-50 text-rose-600 rounded-lg hover:bg-rose-100 transition-colors" title="Logout Keluar">
               <X className="w-5 h-5" />
