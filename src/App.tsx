@@ -21,7 +21,6 @@ export default function App() {
   const [loginError, setLoginError] = useState('');
 
   // STATE MEMBACA FIREBASE
-  // STATE MEMBACA FIREBASE
   const [pltsAssets, setPltsAssets] = useState<any[]>([]);
   const [pltdAssets, setPltdAssets] = useState<any[]>([]);
   const [mesinPltd, setMesinPltd] = useState<any[]>([]);
@@ -72,75 +71,75 @@ export default function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [editingAsset, setEditingAsset] = useState(null);
   const [deletingAsset, setDeletingAsset] = useState(null);
-  const [editFormData, setEditFormData] = useState({});
+  const [editFormData, setEditFormData] = useState<any>({});
   const [isAddingAsset, setIsAddingAsset] = useState(false);
-  const [addFormData, setAddFormData] = useState({});
+  const [addFormData, setAddFormData] = useState<any>({});
   const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
   const [dashboardSortConfig, setDashboardSortConfig] = useState({ key: 'Status', direction: 'asc' });
   const [dashboardPltdSortConfig, setDashboardPltdSortConfig] = useState({ key: 'nama_pltd', direction: 'asc' });
 
-  const [viewingMesin, setViewingMesin] = useState(null);
-  const [viewingPltsSpec, setViewingPltsSpec] = useState(null);
+  const [viewingMesin, setViewingMesin] = useState<any>(null);
+  const [viewingPltsSpec, setViewingPltsSpec] = useState<any>(null);
   const mapRef = useRef(null);
-  const mapInstance = useRef(null);
+  const mapInstance = useRef<any>(null);
   const [isEditingSpec, setIsEditingSpec] = useState(false);
-  const [specFormData, setSpecFormData] = useState({});
+  const [specFormData, setSpecFormData] = useState<any>({});
 
   const [isAddingMesin, setIsAddingMesin] = useState(false);
-  const [mesinAddFormData, setMesinAddFormData] = useState({});
-  const [editingMesinId, setEditingMesinId] = useState(null);
-  const [mesinEditFormData, setMesinEditFormData] = useState({});
-  const [deletingMesin, setDeletingMesin] = useState(null);
+  const [mesinAddFormData, setMesinAddFormData] = useState<any>({});
+  const [editingMesinId, setEditingMesinId] = useState<any>(null);
+  const [mesinEditFormData, setMesinEditFormData] = useState<any>({});
+  const [deletingMesin, setDeletingMesin] = useState<any>(null);
 
-  const [viewingTangki, setViewingTangki] = useState(null);
+  const [viewingTangki, setViewingTangki] = useState<any>(null);
   const [isAddingTangki, setIsAddingTangki] = useState(false);
-  const [tangkiAddFormData, setTangkiAddFormData] = useState({});
-  const [editingTangkiId, setEditingTangkiId] = useState(null);
-  const [tangkiEditFormData, setTangkiEditFormData] = useState({});
-  const [deletingTangki, setDeletingTangki] = useState(null);
+  const [tangkiAddFormData, setTangkiAddFormData] = useState<any>({});
+  const [editingTangkiId, setEditingTangkiId] = useState<any>(null);
+  const [tangkiEditFormData, setTangkiEditFormData] = useState<any>({});
+  const [deletingTangki, setDeletingTangki] = useState<any>(null);
 
   const todayStr = new Date().toISOString().split('T')[0];
 
   const [selectedPltsForLog, setSelectedPltsForLog] = useState('');
   const [isAddingLog, setIsAddingLog] = useState(false);
-  const [editingLogId, setEditingLogId] = useState(null);
-  const [deletingLogId, setDeletingLogId] = useState(null);
+  const [editingLogId, setEditingLogId] = useState<any>(null);
+  const [deletingLogId, setDeletingLogId] = useState<any>(null);
   const [logFilterMode, setLogFilterMode] = useState('daily');
   const [logFilterDate, setLogFilterDate] = useState(todayStr);
   const [logFilterMonth, setLogFilterMonth] = useState(new Date().toISOString().substring(0, 7));
-  const [logFormData, setLogFormData] = useState({ tanggal: todayStr, jam: '12:00', beban_puncak: '', status: 'Operasi', petugas: [], keterangan: '' });
+  const [logFormData, setLogFormData] = useState<any>({ tanggal: todayStr, jam: '12:00', beban_puncak: '', status: 'Operasi', petugas: [], keterangan: '' });
 
   const [selectedPltdForLog, setSelectedPltdForLog] = useState('');
   const [isAddingLogPltd, setIsAddingLogPltd] = useState(false);
-  const [editingLogPltdId, setEditingLogPltdId] = useState(null);
-  const [deletingLogPltdId, setDeletingLogPltdId] = useState(null);
+  const [editingLogPltdId, setEditingLogPltdId] = useState<any>(null);
+  const [deletingLogPltdId, setDeletingLogPltdId] = useState<any>(null);
   const [logFilterModePltd, setLogFilterModePltd] = useState('daily');
   const [logFilterDatePltd, setLogFilterDatePltd] = useState(todayStr);
   const [logFilterMonthPltd, setLogFilterMonthPltd] = useState(new Date().toISOString().substring(0, 7));
-  const [logPltdFormData, setLogPltdFormData] = useState({ tanggal: todayStr, jam: '12:00', petugas: [], beban_aktif: '', beban_reaktif: '', arus_r: '', arus_s: '', arus_t: '', tegangan_rs: '', tegangan_st: '', tegangan_tr: '', frekuensi: '50.0' });
+  const [logPltdFormData, setLogPltdFormData] = useState<any>({ tanggal: todayStr, jam: '12:00', petugas: [], beban_aktif: '', beban_reaktif: '', arus_r: '', arus_s: '', arus_t: '', tegangan_rs: '', tegangan_st: '', tegangan_tr: '', frekuensi: '50.0' });
 
   const [selectedPltdForMesinLog, setSelectedPltdForMesinLog] = useState('');
   const [isAddingMesinLog, setIsAddingMesinLog] = useState(false);
   const [mesinLogFilterMode, setMesinLogFilterMode] = useState('daily');
   const [mesinLogFilterDate, setMesinLogFilterDate] = useState(todayStr);
   const [mesinLogFilterMonth, setMesinLogFilterMonth] = useState(new Date().toISOString().substring(0, 7));
-  const [mesinLogFormData, setMesinLogFormData] = useState({ tanggal: todayStr, jam: '10:00', petugas: [], mesin_data: [] });
+  const [mesinLogFormData, setMesinLogFormData] = useState<any>({ tanggal: todayStr, jam: '10:00', petugas: [], mesin_data: [] });
   const [viewingMesinLogDetail, setViewingMesinLogDetail] = useState(null);
-  const [editingMesinLog, setEditingMesinLog] = useState(null);
-  const [deletingMesinLog, setDeletingMesinLog] = useState(null);
+  const [editingMesinLog, setEditingMesinLog] = useState<any>(null);
+  const [deletingMesinLog, setDeletingMesinLog] = useState<any>(null);
 
   const [selectedPltdForProduksi, setSelectedPltdForProduksi] = useState('');
   const [produksiLogFilterMode, setProduksiLogFilterMode] = useState('monthly');
   const [produksiLogFilterMonth, setProduksiLogFilterMonth] = useState(new Date().toISOString().substring(0, 7));
-  const [produksiFormData, setProduksiFormData] = useState({ tanggal: todayStr, petugas: [], stand_kwh_kemarin: '', stand_kwh_hari_ini: '', stand_bbm_kemarin: '', stand_bbm_hari_ini: '' });
+  const [produksiFormData, setProduksiFormData] = useState<any>({ tanggal: todayStr, petugas: [], stand_kwh_kemarin: '', stand_kwh_hari_ini: '', stand_bbm_kemarin: '', stand_bbm_hari_ini: '' });
 
   const [selectedPltdForBBM, setSelectedPltdForBBM] = useState('');
   const [isAddingBBM, setIsAddingBBM] = useState(false);
-  const [bbmFormData, setBbmFormData] = useState({ tanggal: todayStr, jam: '10:00', jenis_input: 'Penerimaan', referensi: '', petugas: [], tangki_data: [] });
+  const [bbmFormData, setBbmFormData] = useState<any>({ tanggal: todayStr, jam: '10:00', jenis_input: 'Penerimaan', referensi: '', petugas: [], tangki_data: [] });
 
   const [absensiDate, setAbsensiDate] = useState(todayStr);
   const [absensiDatePltd, setAbsensiDatePltd] = useState(todayStr);
-  const [notification, setNotification] = useState(null);
+  const [notification, setNotification] = useState<any>(null);
 
   const currentAssets = activeTab === 'assets_pltd' ? pltdAssets : pltsAssets;
   const currentHeaders = currentAssets.length > 0 ? Object.keys(currentAssets[0]).filter(k => k !== '_id') : [];
@@ -211,7 +210,7 @@ export default function App() {
   // PENCEGAH INFINITE LOOP
   useEffect(() => {
     if (previousProduksiLog) {
-      setProduksiFormData(prev => {
+      setProduksiFormData((prev: any) => {
         if (prev.stand_kwh_kemarin === previousProduksiLog.stand_kwh_hari_ini &&
           prev.stand_bbm_kemarin === previousProduksiLog.stand_bbm_hari_ini) {
           return prev;
@@ -221,7 +220,7 @@ export default function App() {
     }
   }, [previousProduksiLog]);
 
-  const handleLogin = (e) => {
+  const handleLogin = (e: any) => {
     e.preventDefault();
     const uname = loginUsername.trim().toLowerCase();
 
@@ -273,10 +272,11 @@ export default function App() {
   useEffect(() => {
     let isMounted = true;
     const initMap = () => {
-      if (!mapRef.current || !window.L || activeTab !== 'dashboard') return;
+      const windowL = window as any;
+      if (!mapRef.current || !windowL.L || activeTab !== 'dashboard') return;
       if (mapInstance.current) { mapInstance.current.remove(); }
 
-      const L = window.L;
+      const L = windowL.L;
       const map = L.map(mapRef.current).setView([-5.533, 138.455], 7);
       mapInstance.current = map;
 
@@ -327,7 +327,8 @@ export default function App() {
     };
 
     if (activeTab === 'dashboard') {
-      if (!window.L) {
+      const windowL = window as any;
+      if (!windowL.L) {
         if (!document.getElementById('leaflet-css')) {
           const link = document.createElement('link'); link.id = 'leaflet-css'; link.rel = 'stylesheet'; link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'; document.head.appendChild(link);
         }
@@ -343,7 +344,7 @@ export default function App() {
   const statsPLTS = useMemo(() => {
     if (!pltsAssets || pltsAssets.length === 0) return { total: 0, active: 0, limited: 0, issue: 0, standby: 0, ongoing: 0, types: {} };
     let active = 0, limited = 0, issue = 0, standby = 0, ongoing = 0;
-    const types = {};
+    const types: any = {};
 
     pltsAssets.forEach(asset => {
       const statusKey = Object.keys(asset).find(k => k.toLowerCase() === 'status') || '';
@@ -373,7 +374,7 @@ export default function App() {
     let result = currentAssets.filter(asset => Object.values(asset).some(val => val != null && String(val).toLowerCase().includes(searchTerm.toLowerCase())));
     if (sortConfig.key) {
       result.sort((a, b) => {
-        const valA = a[sortConfig.key] || ''; const valB = b[sortConfig.key] || '';
+        const valA = a[sortConfig.key as keyof typeof a] || ''; const valB = b[sortConfig.key as keyof typeof b] || '';
         const numA = Number(valA); const numB = Number(valB);
         if (valA !== '' && !isNaN(numA) && valB !== '' && !isNaN(numB)) return sortConfig.direction === 'asc' ? numA - numB : numB - numA;
         const strA = String(valA).toLowerCase(); const strB = String(valB).toLowerCase();
@@ -395,17 +396,16 @@ export default function App() {
       return {
         nama_plts: plts.nama_plts,
         kapasitas_kwp: plts.kapasitas_kwp,
-        status: plts.Status || plts.status || '', // <-- Sabuk Pengaman: Jika kosong, jadikan teks kosong
+        status: plts.Status || plts.status || '',
         beban_terbaru: latestLog ? latestLog.beban_puncak : 0,
         waktu_terbaru: latestLog ? `${latestLog.tanggal} ${latestLog.jam}` : '-'
       };
     });
 
     if (dashboardSortConfig.key) {
-      data.sort((a, b) => {
+      data.sort((a: any, b: any) => {
         if (dashboardSortConfig.key === 'Status') {
-          // <-- Sabuk Pengaman: Dibungkus String() agar toUpperCase tidak crash
-          const getRank = (s) => String(s || '').toUpperCase() === 'OPERASI' ? 1 : String(s || '').toUpperCase() === 'OPERASI TERBATAS' ? 2 : String(s || '').toUpperCase() === 'STAND BY' ? 3 : String(s || '').toUpperCase() === 'GANGGUAN' ? 4 : 5;
+          const getRank = (s: any) => String(s || '').toUpperCase() === 'OPERASI' ? 1 : String(s || '').toUpperCase() === 'OPERASI TERBATAS' ? 2 : String(s || '').toUpperCase() === 'STAND BY' ? 3 : String(s || '').toUpperCase() === 'GANGGUAN' ? 4 : 5;
           return dashboardSortConfig.direction === 'asc' ? getRank(a.status) - getRank(b.status) : getRank(b.status) - getRank(a.status);
         } else {
           const valA = a[dashboardSortConfig.key] || ''; const valB = b[dashboardSortConfig.key] || '';
@@ -437,7 +437,7 @@ export default function App() {
 
       return {
         nama_pltd: pltd.nama_pltd,
-        status: pltd.Status || pltd.status || '', // <-- Sabuk Pengaman
+        status: pltd.Status || pltd.status || '',
         daya_terpasang: totalDayaTerpasang,
         daya_mampu: totalDayaMampu,
         beban_terbaru: latestLog ? latestLog.beban_aktif : 0,
@@ -447,9 +447,9 @@ export default function App() {
     });
 
     if (dashboardPltdSortConfig.key) {
-      data.sort((a, b) => {
+      data.sort((a: any, b: any) => {
         if (dashboardPltdSortConfig.key === 'Status') {
-          const getRank = (s) => String(s || '').toUpperCase() === 'OPERASI' ? 1 : String(s || '').toUpperCase() === 'OPERASI TERBATAS' ? 2 : String(s || '').toUpperCase() === 'STAND BY' ? 3 : String(s || '').toUpperCase() === 'GANGGUAN' ? 4 : 5;
+          const getRank = (s: any) => String(s || '').toUpperCase() === 'OPERASI' ? 1 : String(s || '').toUpperCase() === 'OPERASI TERBATAS' ? 2 : String(s || '').toUpperCase() === 'STAND BY' ? 3 : String(s || '').toUpperCase() === 'GANGGUAN' ? 4 : 5;
           return dashboardPltdSortConfig.direction === 'asc' ? getRank(a.status) - getRank(b.status) : getRank(b.status) - getRank(a.status);
         } else {
           const valA = a[dashboardPltdSortConfig.key] || ''; const valB = b[dashboardPltdSortConfig.key] || '';
@@ -468,11 +468,11 @@ export default function App() {
   }, [pltdAssets, pltdLogs, mesinPltd, tangkiPltd, dashboardPltdSortConfig]);
 
   const absensiData = useMemo(() => {
-    const result = [];
+    const result: any[] = [];
     const logsOnDate = pltsLogs.filter(log => log.tanggal === absensiDate);
 
     pltsAssets.forEach(plts => {
-      const rawOperators = [];
+      const rawOperators: any[] = [];
       for (let i = 1; i <= 10; i++) {
         if (plts[`operator_${i}_-_nip`]) rawOperators.push(plts[`operator_${i}_-_nip`]);
       }
@@ -483,7 +483,7 @@ export default function App() {
 
       let presentSet = new Set();
       siteLogs.forEach(log => {
-        if (Array.isArray(log.petugas)) log.petugas.forEach(p => presentSet.add(p));
+        if (Array.isArray(log.petugas)) log.petugas.forEach((p: any) => presentSet.add(p));
       });
 
       const operatorsData = rawOperators.map(op => ({ nama: op, hadir: presentSet.has(op) }));
@@ -493,11 +493,11 @@ export default function App() {
   }, [pltsAssets, pltsLogs, absensiDate]);
 
   const absensiDataPltd = useMemo(() => {
-    const result = [];
+    const result: any[] = [];
     const logsOnDate = pltdLogs.filter(log => log.tanggal === absensiDatePltd);
 
     pltdAssets.forEach(pltd => {
-      const rawOperators = [];
+      const rawOperators: any[] = [];
       for (let i = 1; i <= 15; i++) {
         if (pltd[`operator_${i}_-_nip`]) rawOperators.push(pltd[`operator_${i}_-_nip`]);
       }
@@ -508,7 +508,7 @@ export default function App() {
 
       let presentSet = new Set();
       siteLogs.forEach(log => {
-        if (Array.isArray(log.petugas)) log.petugas.forEach(p => presentSet.add(p));
+        if (Array.isArray(log.petugas)) log.petugas.forEach((p: any) => presentSet.add(p));
       });
 
       const operatorsData = rawOperators.map(op => ({ nama: op, hadir: presentSet.has(op) }));
@@ -517,24 +517,25 @@ export default function App() {
     return result.sort((a, b) => (a.sudah_lapor === b.sudah_lapor ? 0 : a.sudah_lapor ? -1 : 1));
   }, [pltdAssets, pltdLogs, absensiDatePltd]);
 
-  const handleSort = (key) => {
+  const handleSort = (key: any) => {
     let direction = 'asc';
     if (sortConfig.key === key && sortConfig.direction === 'asc') direction = 'desc';
     setSortConfig({ key, direction });
   };
-  const handleDashboardSort = (key) => {
+  const handleDashboardSort = (key: any) => {
     let direction = 'asc';
     if (dashboardSortConfig.key === key && dashboardSortConfig.direction === 'asc') direction = 'desc';
     setDashboardSortConfig({ key, direction });
   };
-  const handleDashboardPltdSort = (key) => {
+  const handleDashboardPltdSort = (key: any) => {
     let direction = 'asc';
     if (dashboardPltdSortConfig.key === key && dashboardPltdSortConfig.direction === 'asc') direction = 'desc';
     setDashboardPltdSortConfig({ key, direction });
   };
 
   const handleExportPDF = () => {
-    if (!window.jspdf) {
+    const windowJsPdf = window as any;
+    if (!windowJsPdf.jspdf) {
       const script1 = document.createElement('script'); script1.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
       script1.onload = () => {
         const script2 = document.createElement('script'); script2.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js';
@@ -545,8 +546,9 @@ export default function App() {
   };
 
   const generatePDF = () => {
+    const windowJsPdf = window as any;
     try {
-      const { jsPDF } = window.jspdf; const doc = new jsPDF();
+      const { jsPDF } = windowJsPdf.jspdf; const doc = new jsPDF();
       doc.setFontSize(16); doc.text("Ringkasan Operasional PLTS", 14, 15);
       doc.setFontSize(10); doc.text(`Tanggal Cetak: ${new Date().toLocaleString()}`, 14, 22);
       doc.autoTable({ html: '#plts-summary-table', startY: 28, theme: 'grid', headStyles: { fillColor: [14, 165, 233] }, styles: { fontSize: 8 } });
@@ -573,7 +575,8 @@ export default function App() {
   };
 
   const handleExportPDFPltd = () => {
-    if (!window.jspdf) {
+    const windowJsPdf = window as any;
+    if (!windowJsPdf.jspdf) {
       const script1 = document.createElement('script'); script1.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
       script1.onload = () => {
         const script2 = document.createElement('script'); script2.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js';
@@ -584,8 +587,9 @@ export default function App() {
   };
 
   const generatePDFPltd = () => {
+    const windowJsPdf = window as any;
     try {
-      const { jsPDF } = window.jspdf; const doc = new jsPDF();
+      const { jsPDF } = windowJsPdf.jspdf; const doc = new jsPDF();
       doc.setFontSize(16); doc.text("Ringkasan Operasional PLTD", 14, 15);
       doc.setFontSize(10); doc.text(`Tanggal Cetak: ${new Date().toLocaleString()}`, 14, 22);
       doc.autoTable({ html: '#pltd-summary-table', startY: 28, theme: 'grid', headStyles: { fillColor: [147, 51, 234] }, styles: { fontSize: 8 } });
@@ -609,10 +613,10 @@ export default function App() {
 
     absensiData.forEach(site => {
       if (site.sudah_lapor) {
-        const hadir = site.operators.filter(o => o.hadir).map(o => String(o.nama).split(' - ')[0]).join(', ');
+        const hadir = site.operators.filter((o: any) => o.hadir).map((o: any) => String(o.nama).split(' - ')[0]).join(', ');
         laporText += `▪️ ${site.nama_plts}: ${hadir || '(Tidak ada yg dicentang)'}\n`;
       } else {
-        const alpa = site.operators.map(o => String(o.nama).split(' - ')[0]).join(', ');
+        const alpa = site.operators.map((o: any) => String(o.nama).split(' - ')[0]).join(', ');
         blmLaporText += `▪️ ${site.nama_plts}: ${alpa}\n`;
       }
     });
@@ -628,10 +632,10 @@ export default function App() {
 
     absensiDataPltd.forEach(site => {
       if (site.sudah_lapor) {
-        const hadir = site.operators.filter(o => o.hadir).map(o => String(o.nama).split(' - ')[0]).join(', ');
+        const hadir = site.operators.filter((o: any) => o.hadir).map((o: any) => String(o.nama).split(' - ')[0]).join(', ');
         laporText += `▪️ ${site.nama_pltd}: ${hadir || '(Tidak ada yg dicentang)'}\n`;
       } else {
-        const alpa = site.operators.map(o => String(o.nama).split(' - ')[0]).join(', ');
+        const alpa = site.operators.map((o: any) => String(o.nama).split(' - ')[0]).join(', ');
         blmLaporText += `▪️ ${site.nama_pltd}: ${alpa}\n`;
       }
     });
@@ -641,30 +645,30 @@ export default function App() {
     document.body.removeChild(textArea);
   };
 
-  const handleEditClick = (asset) => { setEditingAsset(asset); setEditFormData({ ...asset }); };
+  const handleEditClick = (asset: any) => { setEditingAsset(asset); setEditFormData({ ...asset }); };
 
   const handleSaveEdit = async () => {
     try {
       setNotification('Memperbarui data...');
       const collectionName = activeTab === 'assets_pltd' ? 'assets_pltd' : 'assets_plts';
       const { _id, ...dataToUpdate } = editFormData;
-      await updateDoc(doc(db, collectionName, editingAsset._id), dataToUpdate);
+      await updateDoc(doc(db, collectionName, (editingAsset as any)._id), dataToUpdate);
       setEditingAsset(null); setNotification('Data berhasil diperbarui!');
     } catch (error) { setNotification('Gagal memperbarui data!'); }
   };
 
-  const handleDeleteClick = (asset) => { setDeletingAsset(asset); };
+  const handleDeleteClick = (asset: any) => { setDeletingAsset(asset); };
   const confirmDelete = async () => {
     try {
       setNotification('Menghapus data...');
       const collectionName = activeTab === 'assets_pltd' ? 'assets_pltd' : 'assets_plts';
-      await deleteDoc(doc(db, collectionName, deletingAsset._id));
+      await deleteDoc(doc(db, collectionName, (deletingAsset as any)._id));
       setDeletingAsset(null); setNotification('Data berhasil dihapus!');
     } catch (error) { setNotification('Gagal menghapus data!'); }
   };
 
   const handleAddClick = () => {
-    const initialData = {}; currentHeaders.forEach(h => initialData[h] = '');
+    const initialData: any = {}; currentHeaders.forEach(h => initialData[h] = '');
     setAddFormData(initialData); setIsAddingAsset(true);
   };
 
@@ -731,9 +735,9 @@ export default function App() {
     } catch (error) { setNotification('Gagal hapus tangki!'); }
   };
 
-  const handleTogglePetugas = (nip, formState, setFormState) => {
+  const handleTogglePetugas = (nip: any, formState: any, setFormState: any) => {
     const current = formState.petugas || [];
-    if (current.includes(nip)) setFormState({ ...formState, petugas: current.filter(p => p !== nip) });
+    if (current.includes(nip)) setFormState({ ...formState, petugas: current.filter((p: any) => p !== nip) });
     else setFormState({ ...formState, petugas: [...current, nip] });
   };
 
@@ -780,7 +784,7 @@ export default function App() {
     setIsAddingMesinLog(true);
   };
 
-  const handleMesinLogDataChange = (engineId, field, value) => { setMesinLogFormData(prev => ({ ...prev, mesin_data: prev.mesin_data.map(m => m._id === engineId ? { ...m, [field]: value } : m) })); };
+  const handleMesinLogDataChange = (engineId: any, field: any, value: any) => { setMesinLogFormData((prev: any) => ({ ...prev, mesin_data: prev.mesin_data.map((m: any) => m._id === engineId ? { ...m, [field]: value } : m) })); };
 
   const handleSaveMesinLog = async () => {
     try {
@@ -794,7 +798,7 @@ export default function App() {
     } catch (error) { setNotification('Gagal menyimpan log mesin!'); }
   };
 
-  const handleUpdateMesinLogData = (engineId, field, value) => { setEditingMesinLog(prev => ({ ...prev, mesin_data: prev.mesin_data.map(m => m._id === engineId ? { ...m, [field]: value } : m) })); };
+  const handleUpdateMesinLogData = (engineId: any, field: any, value: any) => { setEditingMesinLog((prev: any) => ({ ...prev, mesin_data: prev.mesin_data.map((m: any) => m._id === engineId ? { ...m, [field]: value } : m) })); };
 
   const handleSaveEditMesinLog = async () => {
     try { const { _id, ...dataToUpdate } = editingMesinLog; await updateDoc(doc(db, 'log_mesin', _id), dataToUpdate); setEditingMesinLog(null); setNotification('Log Status Mesin berhasil diperbarui!'); } catch (e) { }
@@ -857,7 +861,7 @@ export default function App() {
     setIsAddingBBM(true);
   };
 
-  const handleBbmDataChange = (tankId, value) => { setBbmFormData(prev => ({ ...prev, tangki_data: prev.tangki_data.map(t => t._id === tankId ? { ...t, input_volume: value } : t) })); };
+  const handleBbmDataChange = (tankId: any, value: any) => { setBbmFormData((prev: any) => ({ ...prev, tangki_data: prev.tangki_data.map((t: any) => t._id === tankId ? { ...t, input_volume: value } : t) })); };
 
   const [editingBbmLog, setEditingBbmLog] = useState<any>(null);
   const [deletingBbmLogId, setDeletingBbmLogId] = useState<any>(null);
@@ -916,7 +920,7 @@ export default function App() {
   };
 
   // ANTI-CRASH GET OPERATORS
-  const getOperatorsForSite = (siteId, isPltd = false) => {
+  const getOperatorsForSite = (siteId: any, isPltd = false) => {
     const assets = isPltd ? pltdAssets : pltsAssets;
     const asset = assets.find(a => a.site_id === siteId);
     if (!asset) return [];
@@ -1344,15 +1348,15 @@ export default function App() {
                           {currentPltsLogs.map(log => (
                             <tr key={log._id} className="hover:bg-slate-50 text-sm group">
                               <td className="p-4"><div className="font-bold text-slate-800">{log.jam}</div><div className="text-[10px] text-slate-500">{log.tanggal}</div>
-                                <div className="text-[10px] text-sky-600 font-bold mt-1 max-w-[150px] truncate" title={Array.isArray(log.petugas) ? log.petugas.join(', ') : ''}>👷 {Array.isArray(log.petugas) && log.petugas.length > 0 ? log.petugas.map(p => String(p).split(' - ')[0]).join(', ') : '-'}</div>
+                                <div className="text-[10px] text-sky-600 font-bold mt-1 max-w-[150px] truncate" title={Array.isArray(log.petugas) ? log.petugas.join(', ') : ''}>👷 {Array.isArray(log.petugas) && log.petugas.length > 0 ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-'}</div>
                               </td>
                               <td className="p-4 text-right font-bold text-sky-600 text-base">{log.beban_puncak}</td>
                               <td className="p-4"><div className="font-bold text-slate-700">{log.status}</div><div className="text-xs text-slate-500 italic max-w-xs truncate" title={log.keterangan}>{log.keterangan || '-'}</div></td>
                               <td className="p-4 text-center">
                                 <div className="flex justify-center gap-1">
-                                  <button onClick={() => { let text = `*LAPORAN PLTS*\nTanggal: ${log.tanggal}\nJam: ${log.jam}\nBeban: ${log.beban_puncak} kW\nStatus: ${log.status}\nKet: ${log.keterangan || '-'}\nPetugas: ${Array.isArray(log.petugas) ? log.petugas.map(p => String(p).split(' - ')[0]).join(', ') : '-'}`; const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); setNotification('Salin WAG berhasil!'); }} className="p-1.5 bg-sky-50 text-sky-600 rounded hover:bg-sky-100"><Copy className="w-4 h-4" /></button>
-                                  <button onClick={() => { setEditingLogId(log._id); setLogFormData(log); setIsAddingLog(true); }} className="p-1.5 bg-blue-50 text-blue-600 rounded hover:bg-blue-100 opacity-0 group-hover:opacity-100 transition-opacity"><Edit className="w-4 h-4" /></button>
-                                  <button onClick={() => setDeletingLogId(log._id)} className="p-1.5 bg-rose-50 text-rose-600 rounded hover:bg-rose-100 opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 className="w-4 h-4" /></button>
+                                  <button onClick={() => { let text = `*LAPORAN PLTS*\nTanggal: ${log.tanggal}\nJam: ${log.jam}\nBeban: ${log.beban_puncak} kW\nStatus: ${log.status}\nKet: ${log.keterangan || '-'}\nPetugas: ${Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-'}`; const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); setNotification('Salin WAG berhasil!'); }} className="p-1.5 bg-sky-50 text-sky-600 rounded hover:bg-sky-100" title="Salin ke WAG"><Copy className="w-4 h-4" /></button>
+                                  <button onClick={() => { setEditingLogId(log._id); setLogFormData(log); setIsAddingLog(true); }} className="p-1.5 bg-blue-50 text-blue-600 rounded hover:bg-blue-100" title="Edit Log"><Edit className="w-4 h-4" /></button>
+                                  <button onClick={() => setDeletingLogId(log._id)} className="p-1.5 bg-rose-50 text-rose-600 rounded hover:bg-rose-100" title="Hapus Log"><Trash2 className="w-4 h-4" /></button>
                                 </div>
                               </td>
                             </tr>
@@ -1463,14 +1467,14 @@ export default function App() {
                         <tbody className="divide-y divide-slate-100 text-sm">
                           {currentPltdLogs.map(log => (
                             <tr key={log._id} className="hover:bg-slate-50 group">
-                              <td className="p-4"><div className="font-bold">{log.jam}</div><div className="text-[10px] text-slate-500">{log.tanggal}</div><div className="text-[10px] text-purple-600 font-bold mt-1" title={Array.isArray(log.petugas) ? log.petugas.join(', ') : ''}>👷 {Array.isArray(log.petugas) && log.petugas.length > 0 ? log.petugas.map(p => String(p).split(' - ')[0]).join(', ') : '-'}</div></td>
+                              <td className="p-4"><div className="font-bold">{log.jam}</div><div className="text-[10px] text-slate-500">{log.tanggal}</div><div className="text-[10px] text-purple-600 font-bold mt-1" title={Array.isArray(log.petugas) ? log.petugas.join(', ') : ''}>👷 {Array.isArray(log.petugas) && log.petugas.length > 0 ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-'}</div></td>
                               <td className="p-4 text-right font-bold text-purple-600 text-base">{log.beban_aktif}</td><td className="p-4 text-right">{log.beban_reaktif}</td>
                               <td className="p-4 text-center font-mono text-xs">{log.arus_r}/{log.arus_s}/{log.arus_t}</td><td className="p-4 text-center font-mono text-xs">{log.tegangan_rs}/{log.tegangan_st}/{log.tegangan_tr}</td><td className="p-4 text-center font-bold text-emerald-600">{log.frekuensi}</td>
                               <td className="p-4 text-center">
                                 <div className="flex justify-center gap-1">
-                                  <button onClick={() => { let text = `*LAPORAN PLTD*\nTanggal: ${log.tanggal} ${log.jam}\nAktif: ${log.beban_aktif} kW\nReaktif: ${log.beban_reaktif}\nPetugas: ${Array.isArray(log.petugas) ? log.petugas.map(p => String(p).split(' - ')[0]).join(', ') : '-'}`; const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); setNotification('Salin WAG berhasil!'); }} className="p-1.5 bg-purple-50 text-purple-600 rounded hover:bg-purple-100"><Copy className="w-4 h-4" /></button>
-                                  <button onClick={() => { setEditingLogPltdId(log._id); setLogPltdFormData(log); setIsAddingLogPltd(true); }} className="p-1.5 bg-blue-50 text-blue-600 rounded hover:bg-blue-100 opacity-0 group-hover:opacity-100 transition-opacity"><Edit className="w-4 h-4" /></button>
-                                  <button onClick={() => setDeletingLogPltdId(log._id)} className="p-1.5 bg-rose-50 text-rose-600 rounded hover:bg-rose-100 opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 className="w-4 h-4" /></button>
+                                  <button onClick={() => { let text = `*LAPORAN PLTD*\nTanggal: ${log.tanggal} ${log.jam}\nAktif: ${log.beban_aktif} kW\nReaktif: ${log.beban_reaktif}\nPetugas: ${Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-'}`; const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); setNotification('Salin WAG berhasil!'); }} className="p-1.5 bg-purple-50 text-purple-600 rounded hover:bg-purple-100" title="Salin ke WAG"><Copy className="w-4 h-4" /></button>
+                                  <button onClick={() => { setEditingLogPltdId(log._id); setLogPltdFormData(log); setIsAddingLogPltd(true); }} className="p-1.5 bg-blue-50 text-blue-600 rounded hover:bg-blue-100" title="Edit Log"><Edit className="w-4 h-4" /></button>
+                                  <button onClick={() => setDeletingLogPltdId(log._id)} className="p-1.5 bg-rose-50 text-rose-600 rounded hover:bg-rose-100" title="Hapus Log"><Trash2 className="w-4 h-4" /></button>
                                 </div>
                               </td>
                             </tr>
@@ -1551,7 +1555,7 @@ export default function App() {
                           <div className="border border-slate-200 rounded-xl overflow-x-auto bg-white">
                             <table className="w-full text-left min-w-[700px]"><thead className="bg-slate-50 text-xs font-bold text-slate-600 uppercase border-b"><tr><th className="p-3 w-48">ID Mesin</th><th className="p-3 text-right">D. Terpasang</th><th className="p-3">Daya Mampu (kW)</th><th className="p-3">Beban Supply (kW)</th><th className="p-3">Status Operasi</th></tr></thead>
                               <tbody className="divide-y divide-slate-100">
-                                {mesinLogFormData.mesin_data.length === 0 ? (<tr><td colSpan="5" className="p-4 text-center text-rose-500 text-sm">Tidak ada mesin di Master Data.</td></tr>) : mesinLogFormData.mesin_data.map(m => (
+                                {mesinLogFormData.mesin_data.length === 0 ? (<tr><td colSpan={5} className="p-4 text-center text-rose-500 text-sm">Tidak ada mesin di Master Data.</td></tr>) : mesinLogFormData.mesin_data.map((m: any) => (
                                   <tr key={m._id} className="hover:bg-slate-50">
                                     <td className="p-3"><div className="font-bold text-sm">{m.id_mesin}</div><div className="text-[10px] text-slate-400">{m.merk_type}</div></td>
                                     <td className="p-3 text-right text-sm font-semibold">{m.daya_terpasang}</td>
@@ -1570,18 +1574,18 @@ export default function App() {
                     <div className="border border-slate-200 rounded-xl overflow-hidden">
                       <table className="w-full text-left"><thead className="bg-slate-50 text-xs font-bold text-slate-600 uppercase border-b"><tr><th className="p-4 w-24 text-center">Waktu</th><th className="p-4">Petugas Piket</th><th className="p-4">Jumlah Mesin</th><th className="p-4 text-center w-24">Aksi</th></tr></thead>
                         <tbody className="divide-y divide-slate-100 text-sm">
-                          {currentMesinLogs.map(log => (
+                          {currentMesinLogs.map((log: any) => (
                             <tr key={log._id} className="hover:bg-slate-50 group">
                               <td className="p-4 text-center"><div className="font-bold text-lg">{log.jam}</div><div className="text-[10px] text-slate-500">{log.tanggal}</div></td>
-                              <td className="p-4"><div className="font-bold text-indigo-700">{Array.isArray(log.petugas) && log.petugas.length > 0 ? log.petugas.map(p => String(p).split(' - ')[0]).join(', ') : '-'}</div></td>
+                              <td className="p-4"><div className="font-bold text-indigo-700">{Array.isArray(log.petugas) && log.petugas.length > 0 ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-'}</div></td>
                               <td className="p-4 font-medium">{log.mesin_data.length} Unit Mesin Terdata</td>
                               <td className="p-4 text-center flex justify-center gap-1">
                                 {/* TOMBOL COPY WAG */}
                                 <button onClick={() => {
                                   const pltdName = pltdAssets.find(p => p.site_id === log.site_id)?.nama_pltd || log.site_id;
-                                  let text = `*LAPORAN STATUS MESIN PLTD*\nLokasi: ${pltdName}\nTanggal: ${log.tanggal}\nJam: ${log.jam}\nPetugas: ${Array.isArray(log.petugas) && log.petugas.length > 0 ? log.petugas.map(p => String(p).split(' - ')[0]).join(', ') : '-'}\n\n*Rincian Mesin:*\n`;
+                                  let text = `*LAPORAN STATUS MESIN PLTD*\nLokasi: ${pltdName}\nTanggal: ${log.tanggal}\nJam: ${log.jam}\nPetugas: ${Array.isArray(log.petugas) && log.petugas.length > 0 ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-'}\n\n*Rincian Mesin:*\n`;
 
-                                  log.mesin_data.forEach((m, idx) => {
+                                  log.mesin_data.forEach((m: any, idx: number) => {
                                     text += `${idx + 1}. ${m.id_mesin} (${m.merk_type}): Mampu ${m.daya_mampu}kW | Supply ${m.beban_supply}kW | *${m.status_operasi}*\n`;
                                   });
 
@@ -1592,17 +1596,17 @@ export default function App() {
                                   document.execCommand('copy');
                                   document.body.removeChild(ta);
                                   setNotification('Format WAG Status Mesin disalin!');
-                                }} className="p-1.5 bg-emerald-50 text-emerald-600 rounded hover:bg-emerald-100 opacity-0 group-hover:opacity-100 transition-opacity" title="Salin ke WAG">
+                                }} className="p-1.5 bg-emerald-50 text-emerald-600 rounded hover:bg-emerald-100" title="Salin ke WAG">
                                   <Copy className="w-4 h-4" />
                                 </button>
 
                                 {/* TOMBOL EDIT */}
-                                <button onClick={() => setEditingMesinLog(log)} className="p-1.5 bg-blue-50 text-blue-600 rounded hover:bg-blue-100 opacity-0 group-hover:opacity-100 transition-opacity" title="Edit Log">
+                                <button onClick={() => setEditingMesinLog(log)} className="p-1.5 bg-blue-50 text-blue-600 rounded hover:bg-blue-100" title="Edit Log">
                                   <Edit className="w-4 h-4" />
                                 </button>
 
                                 {/* TOMBOL HAPUS */}
-                                <button onClick={() => setDeletingMesinLog(log)} className="p-1.5 bg-rose-50 text-rose-600 rounded hover:bg-rose-100 opacity-0 group-hover:opacity-100 transition-opacity" title="Hapus Log">
+                                <button onClick={() => setDeletingMesinLog(log)} className="p-1.5 bg-rose-50 text-rose-600 rounded hover:bg-rose-100" title="Hapus Log">
                                   <Trash2 className="w-4 h-4" />
                                 </button>
                               </td>
@@ -1690,15 +1694,15 @@ export default function App() {
                       <table className="w-full text-left min-w-[700px]">
                         <thead className="bg-slate-50 text-xs font-bold text-slate-500 uppercase border-b"><tr><th className="p-4">Tanggal & Petugas</th><th className="p-4 text-center">Produksi (kWh)</th><th className="p-4 text-center">BBM (L)</th><th className="p-4 text-center">SFC</th><th className="p-4 text-center">Aksi</th></tr></thead>
                         <tbody className="divide-y divide-slate-100">
-                          {currentProduksiLogs.map(log => (
+                          {currentProduksiLogs.map((log: any) => (
                             <tr key={log._id} className="hover:bg-slate-50 group">
-                              <td className="p-4"><div className="font-bold text-slate-800">{log.tanggal}</div><div className="text-[10px] text-orange-600 font-bold mt-1">👷 {Array.isArray(log.petugas) && log.petugas.length > 0 ? log.petugas.map(p => String(p).split(' - ')[0]).join(', ') : '-'}</div></td>
+                              <td className="p-4"><div className="font-bold text-slate-800">{log.tanggal}</div><div className="text-[10px] text-orange-600 font-bold mt-1">👷 {Array.isArray(log.petugas) && log.petugas.length > 0 ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-'}</div></td>
                               <td className="p-4 text-center"><div className="font-bold text-sky-600 text-base">{Number(log.kwh_produksi).toLocaleString('id-ID')}</div><div className="text-[10px] text-slate-400">{log.stand_kwh_kemarin} → {log.stand_kwh_hari_ini}</div></td>
                               <td className="p-4 text-center"><div className="font-bold text-rose-600 text-base">{Number(log.pemakaian_bbm).toLocaleString('id-ID')}</div><div className="text-[10px] text-slate-400">{log.stand_bbm_kemarin} → {log.stand_bbm_hari_ini}</div></td>
                               <td className="p-4 text-center"><span className="bg-emerald-100 text-emerald-700 font-bold px-3 py-1 rounded-md">{log.sfc}</span></td>
                               <td className="p-4 text-center">
                                 <div className="flex justify-center gap-1">
-                                  <button onClick={() => { let text = `*PRODUKSI & BBM*\nTanggal: ${log.tanggal}\nProduksi: ${Number(log.kwh_produksi).toLocaleString('id-ID')} kWh\nBBM: ${Number(log.pemakaian_bbm).toLocaleString('id-ID')} L\nSFC: ${log.sfc}\nPetugas: ${Array.isArray(log.petugas) ? log.petugas.map(p => String(p).split(' - ')[0]).join(', ') : '-'}`; const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); setNotification('Salin WAG berhasil!'); }} className="p-1.5 bg-emerald-50 text-emerald-600 rounded hover:bg-emerald-100" title="Salin ke WAG">
+                                  <button onClick={() => { let text = `*PRODUKSI & BBM*\nTanggal: ${log.tanggal}\nProduksi: ${Number(log.kwh_produksi).toLocaleString('id-ID')} kWh\nBBM: ${Number(log.pemakaian_bbm).toLocaleString('id-ID')} L\nSFC: ${log.sfc}\nPetugas: ${Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-'}`; const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); setNotification('Salin WAG berhasil!'); }} className="p-1.5 bg-emerald-50 text-emerald-600 rounded hover:bg-emerald-100" title="Salin ke WAG">
                                     <Copy className="w-4 h-4" />
                                   </button>
                                   <button onClick={() => { setEditingProduksiId(log._id); setEditProduksiFormData(log); }} className="p-1.5 bg-blue-50 text-blue-600 rounded hover:bg-blue-100" title="Edit Log">
@@ -1760,7 +1764,11 @@ export default function App() {
                 ) : (
                   <div className="space-y-6">
                     <div className="bg-teal-50/50 p-6 rounded-xl border border-teal-100">
-                      <div className="flex justify-between items-center mb-6"><h4 className="font-bold text-teal-800 flex items-center gap-2"><Plus className="w-5 h-5" /> Form Input Massal Tangki</h4>{!isAddingBBM && <button onClick={handleOpenInputBBM} className="px-4 py-2 bg-white border border-teal-200 text-teal-700 font-bold rounded-lg text-sm shadow-sm hover:bg-teal-50">Buka Formulir</button>}</div>
+                      <div className="flex justify-between items-center mb-6">
+                        <h4 className="font-bold text-teal-800 flex items-center gap-2"><Plus className="w-5 h-5" /> Form Input Massal Tangki</h4>
+                        {!isAddingBBM && <button onClick={handleOpenInputBBM} className="px-4 py-2 bg-white border border-teal-200 text-teal-700 font-bold rounded-lg text-sm shadow-sm hover:bg-teal-50">Buka Formulir</button>}
+                      </div>
+
                       {isAddingBBM && (
                         <div className="bg-white p-5 rounded-xl border border-teal-200 shadow-sm">
                           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 pb-6 border-b border-slate-100">
@@ -1781,538 +1789,541 @@ export default function App() {
                           </div>
                           <div className="overflow-x-auto"><table className="w-full text-left border-collapse"><thead className="bg-slate-50 text-xs font-bold text-slate-600 uppercase border-b border-t"><tr><th className="p-3">ID Tangki</th><th className="p-3 text-right">Kapasitas (L)</th><th className="p-3 text-right">Volume Terkini (L)</th><th className="p-3 bg-teal-50 w-48">{bbmFormData.jenis_input === 'Penerimaan' ? 'Jml Tambah (L)' : 'Vol Aktual (L)'}</th></tr></thead>
                             <tbody className="divide-y divide-slate-100">
-                              {bbmFormData.tangki_data.length === 0 ? <tr><td colSpan="4" className="p-4 text-center text-rose-500 text-sm">Tidak ada tangki terdata di PLTD ini.</td></tr> : bbmFormData.tangki_data.map(t => (
+                              {bbmFormData.tangki_data.length === 0 ? <tr><td colSpan={4} className="p-4 text-center text-rose-500 text-sm">Tidak ada tangki terdata di PLTD ini.</td></tr> : bbmFormData.tangki_data.map((t: any) => (
                                 <tr key={t._id} className="hover:bg-slate-50 text-sm"><td className="p-3 font-bold text-slate-700">{t.id_tangki}</td><td className="p-3 text-right text-slate-500">{Number(t.kapasitas_liter).toLocaleString('id-ID')}</td><td className="p-3 text-right font-bold text-slate-700">{Number(t.volume_terkini).toLocaleString('id-ID')}</td><td className="p-3 bg-teal-50/30"><input type="number" className="w-full px-2 py-1.5 border border-teal-200 rounded text-right font-bold focus:ring-2 focus:ring-teal-500" value={t.input_volume} onChange={e => handleBbmDataChange(t._id, e.target.value)} placeholder="0" /></td></tr>
                               ))}
                             </tbody>
                           </table></div>
-                          <div className="flex justify-end mt-4 pt-4 border-t border-slate-100 gap-3"><button onClick={() => setIsAddingBBM(false)} className="px-5 py-2.5 text-slate-500 font-bold hover:bg-slate-100 rounded-lg text-sm">Batal</button><button onClick={handleSaveBBM} className="px-6 py-2.5 bg-teal-600 text-white text-sm font-bold rounded-lg hover:bg-teal-700 shadow-md flex items-center gap-2"><Save className="w-4 h-4" /> Simpan & Update Semua Tangki</button></div>
+                          <div className="flex justify-end mt-4 pt-4 border-t border-slate-100 gap-3">
+                            <button onClick={() => setIsAddingBBM(false)} className="px-5 py-2.5 text-slate-500 font-bold hover:bg-slate-100 rounded-lg text-sm">Batal</button>
+                            <button onClick={handleSaveBBM} className="px-6 py-2.5 bg-teal-600 text-white text-sm font-bold rounded-lg hover:bg-teal-700 shadow-md flex items-center gap-2"><Save className="w-4 h-4" /> Simpan & Update Semua Tangki</button>
+                          </div>
                         </div>
-                    {/* --- KODE TABEL LOG BBM DISISIPKAN DI SINI --- */}
-                      <div className="border border-slate-200 rounded-xl overflow-x-auto bg-white mt-6 shadow-sm">
-                        <table className="w-full text-left min-w-[800px]">
-                          <thead className="bg-slate-50 text-xs font-bold text-slate-500 uppercase border-b">
-                            <tr><th className="p-4">Waktu & Petugas</th><th className="p-4">Jenis Input & Ref</th><th className="p-4">Rincian Tangki (Volume)</th><th className="p-4 text-center">Aksi</th></tr>
-                          </thead>
-                          <tbody className="divide-y divide-slate-100">
-                            {currentBbmLogs.map((log: any) => (
-                              <tr key={log._id} className="hover:bg-slate-50 group text-sm">
-                                <td className="p-4"><div className="font-bold text-slate-800">{log.tanggal}</div><div className="text-[10px] text-slate-500 font-bold">{log.jam} WIT</div><div className="text-[10px] text-teal-600 font-bold mt-1">👷 {Array.isArray(log.petugas) && log.petugas.length > 0 ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-'}</div></td>
-                                <td className="p-4"><span className={`px-2 py-1 rounded text-[10px] font-bold ${log.jenis_input === 'Penerimaan' ? 'bg-blue-100 text-blue-700' : 'bg-orange-100 text-orange-700'}`}>{log.jenis_input}</span><div className="text-xs text-slate-500 mt-2 font-medium">{log.referensi || '-'}</div></td>
-                                <td className="p-4">
-                                  <ul className="space-y-1 text-xs font-medium text-slate-700">
-                                    {log.tangki_data.map((t: any, i: number) => (
-                                      <li key={i}>• {t.id_tangki}: <span className="font-bold text-teal-600">{log.jenis_input === 'Penerimaan' ? '+' : ''}{Number(t.input_volume).toLocaleString('id-ID')} L</span></li>
-                                    ))}
-                                  </ul>
-                                </td>
-                                <td className="p-4 text-center">
-                                  <div className="flex justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <button onClick={() => { let text = `*LAPORAN STOK BBM TANGKI*\nTanggal: ${log.tanggal} ${log.jam}\nJenis: ${log.jenis_input}\nRef: ${log.referensi || '-'}\nPetugas: ${Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-'}\n\n*Rincian Volume:*\n`; log.tangki_data.forEach((t: any, idx: number) => { text += `${idx + 1}. ${t.id_tangki} = ${log.jenis_input === 'Penerimaan' ? '+' : ''}${Number(t.input_volume).toLocaleString('id-ID')} Liter\n`; }); const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); setNotification('Salin WAG berhasil!'); }} className="p-1.5 bg-emerald-50 text-emerald-600 rounded hover:bg-emerald-100" title="Salin ke WAG"><Copy className="w-4 h-4" /></button>
-                                    <button onClick={() => setEditingBbmLog(log)} className="p-1.5 bg-blue-50 text-blue-600 rounded hover:bg-blue-100" title="Edit Log"><Edit className="w-4 h-4" /></button>
-                                    <button onClick={() => setDeletingBbmLogId(log._id)} className="p-1.5 bg-rose-50 text-rose-600 rounded hover:bg-rose-100" title="Hapus Log"><Trash2 className="w-4 h-4" /></button>
-                                  </div>
-                                </td>
-                              </tr>
-                            ))}
-                            {currentBbmLogs.length === 0 && <tr><td colSpan={4} className="p-8 text-center text-slate-400 italic">Belum ada riwayat input BBM.</td></tr>}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
                       )}
-                  </div>
+                    </div>
+
+                    {/* --- KODE TABEL LOG BBM (DIPINDAH KE LUAR FORMULIR) --- */}
+                    <div className="border border-slate-200 rounded-xl overflow-x-auto bg-white mt-6 shadow-sm">
+                      <table className="w-full text-left min-w-[800px]">
+                        <thead className="bg-slate-50 text-xs font-bold text-slate-500 uppercase border-b">
+                          <tr><th className="p-4">Waktu & Petugas</th><th className="p-4">Jenis Input & Ref</th><th className="p-4">Rincian Tangki (Volume)</th><th className="p-4 text-center">Aksi</th></tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100">
+                          {currentBbmLogs.map((log: any) => (
+                            <tr key={log._id} className="hover:bg-slate-50 group text-sm">
+                              <td className="p-4"><div className="font-bold text-slate-800">{log.tanggal}</div><div className="text-[10px] text-slate-500 font-bold">{log.jam} WIT</div><div className="text-[10px] text-teal-600 font-bold mt-1">👷 {Array.isArray(log.petugas) && log.petugas.length > 0 ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-'}</div></td>
+                              <td className="p-4"><span className={`px-2 py-1 rounded text-[10px] font-bold ${log.jenis_input === 'Penerimaan' ? 'bg-blue-100 text-blue-700' : 'bg-orange-100 text-orange-700'}`}>{log.jenis_input}</span><div className="text-xs text-slate-500 mt-2 font-medium">{log.referensi || '-'}</div></td>
+                              <td className="p-4">
+                                <ul className="space-y-1 text-xs font-medium text-slate-700">
+                                  {log.tangki_data.map((t: any, i: number) => (
+                                    <li key={i}>• {t.id_tangki}: <span className="font-bold text-teal-600">{log.jenis_input === 'Penerimaan' ? '+' : ''}{Number(t.input_volume).toLocaleString('id-ID')} L</span></li>
+                                  ))}
+                                </ul>
+                              </td>
+                              <td className="p-4 text-center">
+                                <div className="flex justify-center gap-1">
+                                  <button onClick={() => { let text = `*LAPORAN STOK BBM TANGKI*\nTanggal: ${log.tanggal} ${log.jam}\nJenis: ${log.jenis_input}\nRef: ${log.referensi || '-'}\nPetugas: ${Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-'}\n\n*Rincian Volume:*\n`; log.tangki_data.forEach((t: any, idx: number) => { text += `${idx + 1}. ${t.id_tangki} = ${log.jenis_input === 'Penerimaan' ? '+' : ''}${Number(t.input_volume).toLocaleString('id-ID')} Liter\n`; }); const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); setNotification('Salin WAG berhasil!'); }} className="p-1.5 bg-emerald-50 text-emerald-600 rounded hover:bg-emerald-100" title="Salin ke WAG"><Copy className="w-4 h-4" /></button>
+                                  <button onClick={() => setEditingBbmLog(log)} className="p-1.5 bg-blue-50 text-blue-600 rounded hover:bg-blue-100" title="Edit Log"><Edit className="w-4 h-4" /></button>
+                                  <button onClick={() => setDeletingBbmLogId(log._id)} className="p-1.5 bg-rose-50 text-rose-600 rounded hover:bg-rose-100" title="Hapus Log"><Trash2 className="w-4 h-4" /></button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                          {currentBbmLogs.length === 0 && <tr><td colSpan={4} className="p-8 text-center text-slate-400 italic">Belum ada riwayat input BBM.</td></tr>}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                 )}
-            </div>
+              </div>
             </div>
           )}
 
-        {activeTab === 'absensi_plts' && (
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col min-h-[600px]">
-            <div className="p-6 border-b border-slate-100 flex flex-col sm:flex-row gap-4 justify-between items-center bg-slate-50 rounded-t-2xl">
-              <div className="flex items-center gap-3"><div className="p-2 bg-pink-100 text-pink-600 rounded-lg"><UserCheck className="w-6 h-6" /></div><div><h3 className="font-bold text-lg text-slate-800">Rekap Absensi Operator PLTS</h3><p className="text-xs text-slate-500">Ter-generate otomatis dari Log Beban</p></div></div>
-              <div className="flex items-center gap-3 bg-white p-2 rounded-xl shadow-sm border border-slate-200"><Calendar className="w-5 h-5 text-slate-400 ml-2" /><input type="date" className="px-2 py-1 text-sm font-bold text-slate-700 outline-none cursor-pointer" value={absensiDate} onChange={e => setAbsensiDate(e.target.value)} /><button onClick={handleCopyAbsensi} className="px-4 py-2 bg-pink-600 text-white rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-pink-700 transition-colors shadow-sm"><Copy className="w-4 h-4" /> Salin Rekap WAG</button></div>
-            </div>
-            <div className="p-0 overflow-x-auto">
-              <table className="w-full text-left border-collapse min-w-[700px]"><thead className="bg-white border-b border-slate-200 text-xs font-bold text-slate-500 uppercase tracking-wider"><tr><th className="p-5 w-16 text-center">No</th><th className="p-5 w-64">Lokasi PLTS</th><th className="p-5 w-40 text-center">Status Lapor</th><th className="p-5">Daftar Operator (Hadir / Tidak)</th></tr></thead>
-                <tbody className="divide-y divide-slate-100 text-sm">
-                  {absensiData.map((row, idx) => (
-                    <tr key={row.site_id} className={`hover:bg-slate-50 transition-colors ${!row.sudah_lapor ? 'bg-rose-50/20' : ''}`}>
-                      <td className="p-5 text-center font-medium text-slate-400">{idx + 1}</td>
-                      <td className="p-5 font-bold text-slate-700">{row.nama_plts}</td>
-                      <td className="p-5 text-center">{row.sudah_lapor ? <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-bold"><Check className="w-3 h-3" /> Sudah Lapor</span> : <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-rose-100 text-rose-700 rounded-full text-xs font-bold"><AlertCircle className="w-3 h-3" /> Belum Lapor</span>}</td>
-                      <td className="p-5">
-                        <div className="flex flex-wrap gap-2">
-                          {row.operators.map((op, i) => (
-                            <div key={i} className={`px-2.5 py-1 rounded text-[11px] font-bold border ${op.hadir ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'bg-slate-50 border-slate-200 text-slate-400'}`}>
-                              {op.hadir && <Check className="w-3 h-3 inline mr-1" />}{String(op.nama).split(' - ')[0]}
-                            </div>
-                          ))}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                  {absensiData.length === 0 && <tr><td colSpan="4" className="p-12 text-center text-slate-400">Tidak ada data untuk tanggal ini.</td></tr>}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'absensi_pltd' && (
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col min-h-[600px]">
-            <div className="p-6 border-b border-slate-100 flex flex-col sm:flex-row gap-4 justify-between items-center bg-slate-50 rounded-t-2xl">
-              <div className="flex items-center gap-3"><div className="p-2 bg-purple-100 text-purple-600 rounded-lg"><UserCheck className="w-6 h-6" /></div><div><h3 className="font-bold text-lg text-slate-800">Rekap Absensi Operator PLTD</h3><p className="text-xs text-slate-500">Ter-generate otomatis dari Log Beban PLTD</p></div></div>
-              <div className="flex items-center gap-3 bg-white p-2 rounded-xl shadow-sm border border-slate-200"><Calendar className="w-5 h-5 text-slate-400 ml-2" /><input type="date" className="px-2 py-1 text-sm font-bold text-slate-700 outline-none cursor-pointer" value={absensiDatePltd} onChange={e => setAbsensiDatePltd(e.target.value)} /><button onClick={handleCopyAbsensiPltd} className="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-purple-700 transition-colors shadow-sm"><Copy className="w-4 h-4" /> Salin Rekap WAG</button></div>
-            </div>
-            <div className="p-0 overflow-x-auto">
-              <table className="w-full text-left border-collapse min-w-[700px]"><thead className="bg-white border-b border-slate-200 text-xs font-bold text-slate-500 uppercase tracking-wider"><tr><th className="p-5 w-16 text-center">No</th><th className="p-5 w-64">Lokasi PLTD</th><th className="p-5 w-40 text-center">Status Lapor</th><th className="p-5">Daftar Operator (Hadir / Tidak)</th></tr></thead>
-                <tbody className="divide-y divide-slate-100 text-sm">
-                  {absensiDataPltd.map((row, idx) => (
-                    <tr key={row.site_id} className={`hover:bg-slate-50 transition-colors ${!row.sudah_lapor ? 'bg-rose-50/20' : ''}`}>
-                      <td className="p-5 text-center font-medium text-slate-400">{idx + 1}</td>
-                      <td className="p-5 font-bold text-slate-700">{row.nama_pltd}</td>
-                      <td className="p-5 text-center">{row.sudah_lapor ? <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-bold"><Check className="w-3 h-3" /> Sudah Lapor</span> : <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-rose-100 text-rose-700 rounded-full text-xs font-bold"><AlertCircle className="w-3 h-3" /> Belum Lapor</span>}</td>
-                      <td className="p-5">
-                        <div className="flex flex-wrap gap-2">
-                          {row.operators.map((op, i) => (
-                            <div key={i} className={`px-2.5 py-1 rounded text-[11px] font-bold border ${op.hadir ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'bg-slate-50 border-slate-200 text-slate-400'}`}>
-                              {op.hadir && <Check className="w-3 h-3 inline mr-1" />}{String(op.nama).split(' - ')[0]}
-                            </div>
-                          ))}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                  {absensiDataPltd.length === 0 && <tr><td colSpan="4" className="p-12 text-center text-slate-400">Tidak ada data untuk tanggal ini.</td></tr>}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-
-        {viewingPltsSpec && (
-          <div className="fixed inset-0 bg-slate-900/50 z-[60] flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in duration-200">
-              <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-yellow-100 text-yellow-600 rounded-lg"><Battery className="w-5 h-5" /></div>
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-800">Spesifikasi Teknis PLTS</h3>
-                    <p className="text-xs text-slate-500 font-medium">{viewingPltsSpec.nama_plts} ({viewingPltsSpec.site_id})</p>
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  {!isEditingSpec ? (
-                    <button onClick={() => setIsEditingSpec(true)} className="px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg font-bold text-xs hover:bg-blue-100 transition-colors">
-                      Edit Spesifikasi
-                    </button>
-                  ) : (
-                    <button onClick={handleSaveSpec} className="px-3 py-1.5 bg-emerald-600 text-white rounded-lg font-bold text-xs flex items-center gap-1 hover:bg-emerald-700 transition-colors">
-                      <Save className="w-3 h-3" /> Simpan
-                    </button>
-                  )}
-                  <button onClick={() => setViewingPltsSpec(null)} className="text-slate-400 hover:text-slate-600 ml-2"><X className="w-5 h-5" /></button>
-                </div>
+          {activeTab === 'absensi_plts' && (
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col min-h-[600px]">
+              <div className="p-6 border-b border-slate-100 flex flex-col sm:flex-row gap-4 justify-between items-center bg-slate-50 rounded-t-2xl">
+                <div className="flex items-center gap-3"><div className="p-2 bg-pink-100 text-pink-600 rounded-lg"><UserCheck className="w-6 h-6" /></div><div><h3 className="font-bold text-lg text-slate-800">Rekap Absensi Operator PLTS</h3><p className="text-xs text-slate-500">Ter-generate otomatis dari Log Beban</p></div></div>
+                <div className="flex items-center gap-3 bg-white p-2 rounded-xl shadow-sm border border-slate-200"><Calendar className="w-5 h-5 text-slate-400 ml-2" /><input type="date" className="px-2 py-1 text-sm font-bold text-slate-700 outline-none cursor-pointer" value={absensiDate} onChange={e => setAbsensiDate(e.target.value)} /><button onClick={handleCopyAbsensi} className="px-4 py-2 bg-pink-600 text-white rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-pink-700 transition-colors shadow-sm"><Copy className="w-4 h-4" /> Salin Rekap WAG</button></div>
               </div>
-              <div className="p-6 overflow-y-auto space-y-4 bg-white">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {['kapasitas_kwp', 'kapasitas_battery_kwh', 'kapasitas_batt_inverter_kw', 'kapasitas_grid_inverter_kw', 'kapasitas_panel_pv', 'jumlah_panel', 'jumlah_battery', 'jumlah_batt_inverter', 'jumlah_grid_inverter'].map(key => (
-                    <div key={key} className="flex flex-col">
-                      <span className="text-xs font-bold text-slate-500 mb-1">{key.replace(/_/g, ' ').toUpperCase()}</span>
-                      {isEditingSpec ? (
-                        <input type="text" className="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-500 outline-none text-sm font-medium" value={specFormData[key] || ''} onChange={e => setSpecFormData({ ...specFormData, [key]: e.target.value })} />
-                      ) : (
-                        <span className="text-sm font-bold bg-slate-50 p-2.5 rounded-lg border border-slate-100 text-slate-700">{viewingPltsSpec[key] || '-'}</span>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {viewingMesin && (
-          <div className="fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col animate-in fade-in zoom-in duration-200">
-              <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50 rounded-t-2xl">
-                <div className="flex items-center gap-3"><div className="p-2 bg-purple-100 text-purple-600 rounded-lg"><Cpu className="w-5 h-5" /></div><div><h3 className="text-lg font-bold text-slate-800">Master Data Mesin</h3><p className="text-xs text-slate-500 font-medium">{viewingMesin.nama_pltd} ({viewingMesin.site_id})</p></div></div>
-                <div className="flex items-center gap-3">
-                  <button onClick={() => setIsAddingMesin(true)} className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-600 text-white rounded-lg text-xs font-bold hover:bg-purple-700 transition-colors"><Plus className="w-3.5 h-3.5" /> Tambah Mesin</button>
-                  <div className="w-px h-6 bg-slate-300 mx-1"></div>
-                  <button onClick={() => setViewingMesin(null)} className="text-slate-400 hover:text-slate-600"><X className="w-5 h-5" /></button>
-                </div>
-              </div>
-              <div className="bg-white border-b border-slate-200 px-6 py-3 flex flex-wrap gap-6 shadow-sm z-20">
-                <div className="flex items-center gap-3"><div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500"><Zap className="w-4 h-4" /></div><div><p className="text-[10px] font-bold text-slate-500 uppercase">Total Daya Terpasang</p><p className="text-sm font-bold text-slate-800">{mesinPltd.filter(m => m.site_id === viewingMesin.site_id).reduce((sum, m) => sum + (Number(m.daya_terpasang) || 0), 0).toLocaleString('id-ID')} kW</p></div></div>
-                <div className="w-px h-8 bg-slate-200"></div>
-                <div className="flex items-center gap-3"><div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600"><Zap className="w-4 h-4" /></div><div><p className="text-[10px] font-bold text-emerald-600 uppercase">Total Daya Mampu</p><p className="text-sm font-bold text-emerald-700">{mesinPltd.filter(m => m.site_id === viewingMesin.site_id).reduce((sum, m) => sum + (Number(m.daya_mampu) || 0), 0).toLocaleString('id-ID')} kW</p></div></div>
-                <div className="w-px h-8 bg-slate-200"></div>
-                <div className="flex items-center gap-3"><div className="w-8 h-8 rounded-full bg-sky-100 flex items-center justify-center text-sky-600"><Activity className="w-4 h-4" /></div><div><p className="text-[10px] font-bold text-sky-600 uppercase">Total Beban Supply</p><p className="text-sm font-bold text-sky-700">{mesinPltd.filter(m => m.site_id === viewingMesin.site_id).reduce((sum, m) => sum + (Number(m.beban_supply) || 0), 0).toLocaleString('id-ID')} kW</p></div></div>
-              </div>
-              <div className="p-0 overflow-x-auto overflow-y-auto flex-1">
-                <table className="w-full text-left border-collapse min-w-[700px]">
-                  <thead className="sticky top-0 bg-white shadow-sm z-10"><tr className="border-b border-slate-200 text-slate-600 text-[11px] font-bold uppercase tracking-wider bg-slate-50"><th className="p-4 w-12 text-center">#</th><th className="p-4 w-24 text-center">Aksi</th><th className="p-4">ID Mesin</th><th className="p-4">Merk / Type</th><th className="p-4">SN</th><th className="p-4 text-right">D. Terpasang</th><th className="p-4 text-right">D. Mampu</th><th className="p-4 text-right">B. Supply</th><th className="p-4">Status</th></tr></thead>
-                  <tbody className="divide-y divide-slate-100 text-sm text-slate-700">
-                    {isAddingMesin && (
-                      <tr className="bg-purple-50/50"><td className="p-3 text-center">-</td><td className="p-3 text-center flex gap-1 justify-center"><button onClick={handleSaveAddMesin} className="p-1 bg-emerald-100 text-emerald-600 rounded"><Check className="w-4 h-4" /></button><button onClick={() => setIsAddingMesin(false)} className="p-1 bg-rose-100 text-rose-600 rounded"><X className="w-4 h-4" /></button></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded" value={mesinAddFormData.id_mesin || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, id_mesin: e.target.value })} /></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded" value={mesinAddFormData.merk_type || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, merk_type: e.target.value })} /></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded" value={mesinAddFormData.sn || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, sn: e.target.value })} /></td><td className="p-2"><input type="number" className="w-full px-2 py-1 border rounded text-right" value={mesinAddFormData.daya_terpasang || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, daya_terpasang: e.target.value })} /></td><td className="p-2"><input type="number" className="w-full px-2 py-1 border rounded text-right" value={mesinAddFormData.daya_mampu || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, daya_mampu: e.target.value })} /></td><td className="p-2"><input type="number" className="w-full px-2 py-1 border rounded text-right" value={mesinAddFormData.beban_supply || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, beban_supply: e.target.value })} /></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded" value={mesinAddFormData.status_operasi || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, status_operasi: e.target.value })} /></td></tr>
-                    )}
-                    {mesinPltd.filter(m => m.site_id === viewingMesin.site_id).map((mesin, idx) => {
-                      if (editingMesinId === mesin._id) {
-                        return <tr key={mesin._id} className="bg-blue-50/40"><td className="p-3 text-center">{idx + 1}</td><td className="p-3 text-center flex gap-1 justify-center"><button onClick={handleSaveEditMesin} className="p-1 bg-emerald-100 text-emerald-600 rounded"><Check className="w-4 h-4" /></button><button onClick={() => setEditingMesinId(null)} className="p-1 bg-rose-100 text-rose-600 rounded"><X className="w-4 h-4" /></button></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded" value={mesinEditFormData.id_mesin || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, id_mesin: e.target.value })} /></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded" value={mesinEditFormData.merk_type || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, merk_type: e.target.value })} /></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded" value={mesinEditFormData.sn || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, sn: e.target.value })} /></td><td className="p-2"><input type="number" className="w-full px-2 py-1 border rounded text-right" value={mesinEditFormData.daya_terpasang || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, daya_terpasang: e.target.value })} /></td><td className="p-2"><input type="number" className="w-full px-2 py-1 border rounded text-right" value={mesinEditFormData.daya_mampu || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, daya_mampu: e.target.value })} /></td><td className="p-2"><input type="number" className="w-full px-2 py-1 border rounded text-right" value={mesinEditFormData.beban_supply || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, beban_supply: e.target.value })} /></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded" value={mesinEditFormData.status_operasi || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, status_operasi: e.target.value })} /></td></tr>
-                      }
-                      return (
-                        <tr key={mesin._id} className="hover:bg-slate-50 group">
-                          <td className="p-4 text-center text-slate-400">{idx + 1}</td>
-                          <td className="p-4 text-center">
-                            <div className="flex justify-center gap-1 opacity-0 group-hover:opacity-100"><button onClick={() => { setEditingMesinId(mesin._id); setMesinEditFormData(mesin); }} className="p-1 bg-blue-50 text-blue-600 rounded"><Edit className="w-4 h-4" /></button><button onClick={() => setDeletingMesin(mesin)} className="p-1 bg-rose-50 text-rose-600 rounded"><Trash2 className="w-4 h-4" /></button></div>
-                          </td>
-                          <td className="p-4 font-semibold">{mesin.id_mesin}</td><td className="p-4">{mesin.merk_type}</td><td className="p-4">{mesin.sn}</td>
-                          <td className="p-4 text-right font-bold">{mesin.daya_terpasang}</td><td className="p-4 text-right font-bold text-emerald-600">{mesin.daya_mampu}</td><td className="p-4 text-right font-bold text-sky-600">{mesin.beban_supply || '0'}</td><td className="p-4 font-bold text-xs">{mesin.status_operasi}</td>
-                        </tr>
-                      )
-                    })}
+              <div className="p-0 overflow-x-auto">
+                <table className="w-full text-left border-collapse min-w-[700px]"><thead className="bg-white border-b border-slate-200 text-xs font-bold text-slate-500 uppercase tracking-wider"><tr><th className="p-5 w-16 text-center">No</th><th className="p-5 w-64">Lokasi PLTS</th><th className="p-5 w-40 text-center">Status Lapor</th><th className="p-5">Daftar Operator (Hadir / Tidak)</th></tr></thead>
+                  <tbody className="divide-y divide-slate-100 text-sm">
+                    {absensiData.map((row, idx) => (
+                      <tr key={row.site_id} className={`hover:bg-slate-50 transition-colors ${!row.sudah_lapor ? 'bg-rose-50/20' : ''}`}>
+                        <td className="p-5 text-center font-medium text-slate-400">{idx + 1}</td>
+                        <td className="p-5 font-bold text-slate-700">{row.nama_plts}</td>
+                        <td className="p-5 text-center">{row.sudah_lapor ? <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-bold"><Check className="w-3 h-3" /> Sudah Lapor</span> : <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-rose-100 text-rose-700 rounded-full text-xs font-bold"><AlertCircle className="w-3 h-3" /> Belum Lapor</span>}</td>
+                        <td className="p-5">
+                          <div className="flex flex-wrap gap-2">
+                            {row.operators.map((op: any, i: number) => (
+                              <div key={i} className={`px-2.5 py-1 rounded text-[11px] font-bold border ${op.hadir ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'bg-slate-50 border-slate-200 text-slate-400'}`}>
+                                {op.hadir && <Check className="w-3 h-3 inline mr-1" />}{String(op.nama).split(' - ')[0]}
+                              </div>
+                            ))}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                    {absensiData.length === 0 && <tr><td colSpan={4} className="p-12 text-center text-slate-400">Tidak ada data untuk tanggal ini.</td></tr>}
                   </tbody>
                 </table>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {viewingTangki && (
-          <div className="fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col animate-in fade-in zoom-in duration-200">
-              <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50 rounded-t-2xl">
-                <div className="flex items-center gap-3"><div className="p-2 bg-teal-100 text-teal-600 rounded-lg"><Database className="w-5 h-5" /></div><div><h3 className="text-lg font-bold text-slate-800">Data Kapasitas Tangki</h3><p className="text-xs text-slate-500 font-medium">{viewingTangki.nama_pltd}</p></div></div>
-                <div className="flex gap-2">
-                  <button onClick={() => setIsAddingTangki(true)} className="flex items-center gap-1.5 px-3 py-1.5 bg-teal-600 text-white rounded-lg text-xs font-bold hover:bg-teal-700 transition-colors"><Plus className="w-3.5 h-3.5" /> Tambah Tangki</button>
-                  <button onClick={() => setViewingTangki(null)} className="text-slate-400 hover:text-slate-600 ml-2"><X className="w-5 h-5" /></button>
+          {activeTab === 'absensi_pltd' && (
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col min-h-[600px]">
+              <div className="p-6 border-b border-slate-100 flex flex-col sm:flex-row gap-4 justify-between items-center bg-slate-50 rounded-t-2xl">
+                <div className="flex items-center gap-3"><div className="p-2 bg-purple-100 text-purple-600 rounded-lg"><UserCheck className="w-6 h-6" /></div><div><h3 className="font-bold text-lg text-slate-800">Rekap Absensi Operator PLTD</h3><p className="text-xs text-slate-500">Ter-generate otomatis dari Log Beban PLTD</p></div></div>
+                <div className="flex items-center gap-3 bg-white p-2 rounded-xl shadow-sm border border-slate-200"><Calendar className="w-5 h-5 text-slate-400 ml-2" /><input type="date" className="px-2 py-1 text-sm font-bold text-slate-700 outline-none cursor-pointer" value={absensiDatePltd} onChange={e => setAbsensiDatePltd(e.target.value)} /><button onClick={handleCopyAbsensiPltd} className="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-purple-700 transition-colors shadow-sm"><Copy className="w-4 h-4" /> Salin Rekap WAG</button></div>
+              </div>
+              <div className="p-0 overflow-x-auto">
+                <table className="w-full text-left border-collapse min-w-[700px]"><thead className="bg-white border-b border-slate-200 text-xs font-bold text-slate-500 uppercase tracking-wider"><tr><th className="p-5 w-16 text-center">No</th><th className="p-5 w-64">Lokasi PLTD</th><th className="p-5 w-40 text-center">Status Lapor</th><th className="p-5">Daftar Operator (Hadir / Tidak)</th></tr></thead>
+                  <tbody className="divide-y divide-slate-100 text-sm">
+                    {absensiDataPltd.map((row, idx) => (
+                      <tr key={row.site_id} className={`hover:bg-slate-50 transition-colors ${!row.sudah_lapor ? 'bg-rose-50/20' : ''}`}>
+                        <td className="p-5 text-center font-medium text-slate-400">{idx + 1}</td>
+                        <td className="p-5 font-bold text-slate-700">{row.nama_pltd}</td>
+                        <td className="p-5 text-center">{row.sudah_lapor ? <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-xs font-bold"><Check className="w-3 h-3" /> Sudah Lapor</span> : <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-rose-100 text-rose-700 rounded-full text-xs font-bold"><AlertCircle className="w-3 h-3" /> Belum Lapor</span>}</td>
+                        <td className="p-5">
+                          <div className="flex flex-wrap gap-2">
+                            {row.operators.map((op: any, i: number) => (
+                              <div key={i} className={`px-2.5 py-1 rounded text-[11px] font-bold border ${op.hadir ? 'bg-emerald-50 border-emerald-200 text-emerald-700' : 'bg-slate-50 border-slate-200 text-slate-400'}`}>
+                                {op.hadir && <Check className="w-3 h-3 inline mr-1" />}{String(op.nama).split(' - ')[0]}
+                              </div>
+                            ))}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                    {absensiDataPltd.length === 0 && <tr><td colSpan={4} className="p-12 text-center text-slate-400">Tidak ada data untuk tanggal ini.</td></tr>}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {viewingPltsSpec && (
+            <div className="fixed inset-0 bg-slate-900/50 z-[60] flex items-center justify-center p-4">
+              <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in duration-200">
+                <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-yellow-100 text-yellow-600 rounded-lg"><Battery className="w-5 h-5" /></div>
+                    <div>
+                      <h3 className="text-lg font-bold text-slate-800">Spesifikasi Teknis PLTS</h3>
+                      <p className="text-xs text-slate-500 font-medium">{viewingPltsSpec.nama_plts} ({viewingPltsSpec.site_id})</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    {!isEditingSpec ? (
+                      <button onClick={() => setIsEditingSpec(true)} className="px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg font-bold text-xs hover:bg-blue-100 transition-colors">
+                        Edit Spesifikasi
+                      </button>
+                    ) : (
+                      <button onClick={handleSaveSpec} className="px-3 py-1.5 bg-emerald-600 text-white rounded-lg font-bold text-xs flex items-center gap-1 hover:bg-emerald-700 transition-colors">
+                        <Save className="w-3 h-3" /> Simpan
+                      </button>
+                    )}
+                    <button onClick={() => setViewingPltsSpec(null)} className="text-slate-400 hover:text-slate-600 ml-2"><X className="w-5 h-5" /></button>
+                  </div>
+                </div>
+                <div className="p-6 overflow-y-auto space-y-4 bg-white">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {['kapasitas_kwp', 'kapasitas_battery_kwh', 'kapasitas_batt_inverter_kw', 'kapasitas_grid_inverter_kw', 'kapasitas_panel_pv', 'jumlah_panel', 'jumlah_battery', 'jumlah_batt_inverter', 'jumlah_grid_inverter'].map(key => (
+                      <div key={key} className="flex flex-col">
+                        <span className="text-xs font-bold text-slate-500 mb-1">{key.replace(/_/g, ' ').toUpperCase()}</span>
+                        {isEditingSpec ? (
+                          <input type="text" className="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-yellow-500 outline-none text-sm font-medium" value={specFormData[key] || ''} onChange={e => setSpecFormData({ ...specFormData, [key]: e.target.value })} />
+                        ) : (
+                          <span className="text-sm font-bold bg-slate-50 p-2.5 rounded-lg border border-slate-100 text-slate-700">{viewingPltsSpec[key] || '-'}</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
-              <div className="bg-white border-b border-slate-200 px-6 py-4 flex gap-8 shadow-sm">
-                <div className="flex items-center gap-3"><div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500"><Database className="w-4 h-4" /></div><div><p className="text-[10px] font-bold text-slate-500 uppercase">Total Kapasitas</p><p className="text-sm font-bold text-slate-800">{tangkiPltd.filter(t => t.site_id === viewingTangki.site_id).reduce((sum, t) => sum + (Number(t.kapasitas_liter) || 0), 0).toLocaleString('id-ID')} L</p></div></div>
-                <div className="w-px h-8 bg-slate-200"></div>
-                <div className="flex items-center gap-3"><div className="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center text-teal-600"><Droplet className="w-4 h-4" /></div><div><p className="text-[10px] font-bold text-teal-600 uppercase">Total Volume Terkini</p><p className="text-sm font-bold text-teal-700">{tangkiPltd.filter(t => t.site_id === viewingTangki.site_id).reduce((sum, t) => sum + (Number(t.volume_terkini) || 0), 0).toLocaleString('id-ID')} L</p></div></div>
-              </div>
-              <div className="p-0 overflow-y-auto">
-                <table className="w-full text-left">
-                  <thead className="bg-white sticky top-0 border-b border-slate-200 text-xs font-bold text-slate-500 uppercase"><tr><th className="p-4 w-24 text-center">Aksi</th><th className="p-4">ID Tangki / Tandon</th><th className="p-4 text-right">Kapasitas Maksimal (Liter)</th><th className="p-4 text-right">Volume Terkini (Liter)</th></tr></thead>
-                  <tbody className="divide-y divide-slate-100">
-                    {isAddingTangki && (
-                      <tr className="bg-teal-50/50">
-                        <td className="p-3 text-center flex justify-center gap-1"><button onClick={handleSaveAddTangki} className="p-1 bg-emerald-100 text-emerald-600 rounded"><Check className="w-4 h-4" /></button><button onClick={() => setIsAddingTangki(false)} className="p-1 bg-rose-100 text-rose-600 rounded"><X className="w-4 h-4" /></button></td>
-                        <td className="p-3"><input type="text" className="w-full px-2 py-1.5 border rounded text-sm" value={tangkiAddFormData.id_tangki || ''} onChange={e => setTangkiAddFormData({ ...tangkiAddFormData, id_tangki: e.target.value })} placeholder="Nama Tangki" /></td>
-                        <td className="p-3"><input type="number" className="w-full px-2 py-1.5 border rounded text-sm text-right" value={tangkiAddFormData.kapasitas_liter || ''} onChange={e => setTangkiAddFormData({ ...tangkiAddFormData, kapasitas_liter: e.target.value })} placeholder="0" /></td>
-                        <td className="p-3 text-right text-sm text-slate-400 italic">0 (Default)</td>
-                      </tr>
-                    )}
-                    {tangkiPltd.filter(t => t.site_id === viewingTangki.site_id).map(t => {
-                      if (editingTangkiId === t._id) {
+            </div>
+          )}
+
+          {viewingMesin && (
+            <div className="fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center p-4">
+              <div className="bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col animate-in fade-in zoom-in duration-200">
+                <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50 rounded-t-2xl">
+                  <div className="flex items-center gap-3"><div className="p-2 bg-purple-100 text-purple-600 rounded-lg"><Cpu className="w-5 h-5" /></div><div><h3 className="text-lg font-bold text-slate-800">Master Data Mesin</h3><p className="text-xs text-slate-500 font-medium">{viewingMesin.nama_pltd} ({viewingMesin.site_id})</p></div></div>
+                  <div className="flex items-center gap-3">
+                    <button onClick={() => setIsAddingMesin(true)} className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-600 text-white rounded-lg text-xs font-bold hover:bg-purple-700 transition-colors"><Plus className="w-3.5 h-3.5" /> Tambah Mesin</button>
+                    <div className="w-px h-6 bg-slate-300 mx-1"></div>
+                    <button onClick={() => setViewingMesin(null)} className="text-slate-400 hover:text-slate-600"><X className="w-5 h-5" /></button>
+                  </div>
+                </div>
+                <div className="bg-white border-b border-slate-200 px-6 py-3 flex flex-wrap gap-6 shadow-sm z-20">
+                  <div className="flex items-center gap-3"><div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500"><Zap className="w-4 h-4" /></div><div><p className="text-[10px] font-bold text-slate-500 uppercase">Total Daya Terpasang</p><p className="text-sm font-bold text-slate-800">{mesinPltd.filter(m => m.site_id === viewingMesin.site_id).reduce((sum, m) => sum + (Number(m.daya_terpasang) || 0), 0).toLocaleString('id-ID')} kW</p></div></div>
+                  <div className="w-px h-8 bg-slate-200"></div>
+                  <div className="flex items-center gap-3"><div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600"><Zap className="w-4 h-4" /></div><div><p className="text-[10px] font-bold text-emerald-600 uppercase">Total Daya Mampu</p><p className="text-sm font-bold text-emerald-700">{mesinPltd.filter(m => m.site_id === viewingMesin.site_id).reduce((sum, m) => sum + (Number(m.daya_mampu) || 0), 0).toLocaleString('id-ID')} kW</p></div></div>
+                  <div className="w-px h-8 bg-slate-200"></div>
+                  <div className="flex items-center gap-3"><div className="w-8 h-8 rounded-full bg-sky-100 flex items-center justify-center text-sky-600"><Activity className="w-4 h-4" /></div><div><p className="text-[10px] font-bold text-sky-600 uppercase">Total Beban Supply</p><p className="text-sm font-bold text-sky-700">{mesinPltd.filter(m => m.site_id === viewingMesin.site_id).reduce((sum, m) => sum + (Number(m.beban_supply) || 0), 0).toLocaleString('id-ID')} kW</p></div></div>
+                </div>
+                <div className="p-0 overflow-x-auto overflow-y-auto flex-1">
+                  <table className="w-full text-left border-collapse min-w-[700px]">
+                    <thead className="sticky top-0 bg-white shadow-sm z-10"><tr className="border-b border-slate-200 text-slate-600 text-[11px] font-bold uppercase tracking-wider bg-slate-50"><th className="p-4 w-12 text-center">#</th><th className="p-4 w-24 text-center">Aksi</th><th className="p-4">ID Mesin</th><th className="p-4">Merk / Type</th><th className="p-4">SN</th><th className="p-4 text-right">D. Terpasang</th><th className="p-4 text-right">D. Mampu</th><th className="p-4 text-right">B. Supply</th><th className="p-4">Status</th></tr></thead>
+                    <tbody className="divide-y divide-slate-100 text-sm text-slate-700">
+                      {isAddingMesin && (
+                        <tr className="bg-purple-50/50"><td className="p-3 text-center">-</td><td className="p-3 text-center flex gap-1 justify-center"><button onClick={handleSaveAddMesin} className="p-1 bg-emerald-100 text-emerald-600 rounded"><Check className="w-4 h-4" /></button><button onClick={() => setIsAddingMesin(false)} className="p-1 bg-rose-100 text-rose-600 rounded"><X className="w-4 h-4" /></button></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded" value={mesinAddFormData.id_mesin || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, id_mesin: e.target.value })} /></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded" value={mesinAddFormData.merk_type || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, merk_type: e.target.value })} /></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded" value={mesinAddFormData.sn || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, sn: e.target.value })} /></td><td className="p-2"><input type="number" className="w-full px-2 py-1 border rounded text-right" value={mesinAddFormData.daya_terpasang || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, daya_terpasang: e.target.value })} /></td><td className="p-2"><input type="number" className="w-full px-2 py-1 border rounded text-right" value={mesinAddFormData.daya_mampu || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, daya_mampu: e.target.value })} /></td><td className="p-2"><input type="number" className="w-full px-2 py-1 border rounded text-right" value={mesinAddFormData.beban_supply || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, beban_supply: e.target.value })} /></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded" value={mesinAddFormData.status_operasi || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, status_operasi: e.target.value })} /></td></tr>
+                      )}
+                      {mesinPltd.filter(m => m.site_id === viewingMesin.site_id).map((mesin, idx) => {
+                        if (editingMesinId === mesin._id) {
+                          return <tr key={mesin._id} className="bg-blue-50/40"><td className="p-3 text-center">{idx + 1}</td><td className="p-3 text-center flex gap-1 justify-center"><button onClick={handleSaveEditMesin} className="p-1 bg-emerald-100 text-emerald-600 rounded"><Check className="w-4 h-4" /></button><button onClick={() => setEditingMesinId(null)} className="p-1 bg-rose-100 text-rose-600 rounded"><X className="w-4 h-4" /></button></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded" value={mesinEditFormData.id_mesin || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, id_mesin: e.target.value })} /></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded" value={mesinEditFormData.merk_type || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, merk_type: e.target.value })} /></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded" value={mesinEditFormData.sn || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, sn: e.target.value })} /></td><td className="p-2"><input type="number" className="w-full px-2 py-1 border rounded text-right" value={mesinEditFormData.daya_terpasang || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, daya_terpasang: e.target.value })} /></td><td className="p-2"><input type="number" className="w-full px-2 py-1 border rounded text-right" value={mesinEditFormData.daya_mampu || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, daya_mampu: e.target.value })} /></td><td className="p-2"><input type="number" className="w-full px-2 py-1 border rounded text-right" value={mesinEditFormData.beban_supply || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, beban_supply: e.target.value })} /></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded" value={mesinEditFormData.status_operasi || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, status_operasi: e.target.value })} /></td></tr>
+                        }
                         return (
-                          <tr key={t._id} className="bg-blue-50/40">
-                            <td className="p-3 text-center flex justify-center gap-1"><button onClick={handleSaveEditTangki} className="p-1 bg-emerald-100 text-emerald-600 rounded"><Check className="w-4 h-4" /></button><button onClick={() => setEditingTangkiId(null)} className="p-1 bg-rose-100 text-rose-600 rounded"><X className="w-4 h-4" /></button></td>
-                            <td className="p-3"><input type="text" className="w-full px-2 py-1.5 border rounded text-sm" value={tangkiEditFormData.id_tangki || ''} onChange={e => setTangkiEditFormData({ ...tangkiEditFormData, id_tangki: e.target.value })} /></td>
-                            <td className="p-3"><input type="number" className="w-full px-2 py-1.5 border rounded text-sm text-right" value={tangkiEditFormData.kapasitas_liter || ''} onChange={e => setTangkiEditFormData({ ...tangkiEditFormData, kapasitas_liter: e.target.value })} /></td>
-                            <td className="p-3"><input type="number" className="w-full px-2 py-1.5 border rounded text-sm text-right font-bold text-teal-600" value={tangkiEditFormData.volume_terkini || ''} onChange={e => setTangkiEditFormData({ ...tangkiEditFormData, volume_terkini: e.target.value })} /></td>
+                          <tr key={mesin._id} className="hover:bg-slate-50 group">
+                            <td className="p-4 text-center text-slate-400">{idx + 1}</td>
+                            <td className="p-4 text-center">
+                              <div className="flex justify-center gap-1 opacity-0 group-hover:opacity-100"><button onClick={() => { setEditingMesinId(mesin._id); setMesinEditFormData(mesin); }} className="p-1 bg-blue-50 text-blue-600 rounded"><Edit className="w-4 h-4" /></button><button onClick={() => setDeletingMesin(mesin)} className="p-1 bg-rose-50 text-rose-600 rounded"><Trash2 className="w-4 h-4" /></button></div>
+                            </td>
+                            <td className="p-4 font-semibold">{mesin.id_mesin}</td><td className="p-4">{mesin.merk_type}</td><td className="p-4">{mesin.sn}</td>
+                            <td className="p-4 text-right font-bold">{mesin.daya_terpasang}</td><td className="p-4 text-right font-bold text-emerald-600">{mesin.daya_mampu}</td><td className="p-4 text-right font-bold text-sky-600">{mesin.beban_supply || '0'}</td><td className="p-4 font-bold text-xs">{mesin.status_operasi}</td>
                           </tr>
                         )
-                      }
-                      return (
-                        <tr key={t._id} className="hover:bg-slate-50 group text-sm">
-                          <td className="p-4 text-center">
-                            <div className="flex justify-center gap-1 opacity-0 group-hover:opacity-100"><button onClick={() => { setEditingTangkiId(t._id); setTangkiEditFormData(t); }} className="p-1.5 bg-blue-50 text-blue-600 rounded hover:bg-blue-100"><Edit className="w-4 h-4" /></button><button onClick={() => setDeletingTangki(t)} className="p-1.5 bg-rose-50 text-rose-600 rounded hover:bg-rose-100"><Trash2 className="w-4 h-4" /></button></div>
-                          </td>
-                          <td className="p-4 font-bold text-slate-700">{t.id_tangki}</td>
-                          <td className="p-4 text-right text-slate-500 font-medium">{Number(t.kapasitas_liter).toLocaleString('id-ID')}</td>
-                          <td className="p-4 text-right font-bold text-teal-600 text-base">{Number(t.volume_terkini || 0).toLocaleString('id-ID')}</td>
-                        </tr>
-                      )
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* MODAL EDIT LOG STATUS MESIN */}
-        {editingMesinLog && (
-          <div className="fixed inset-0 bg-slate-900/50 z-[70] flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col animate-in fade-in zoom-in duration-200">
-              <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50 rounded-t-2xl">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-indigo-100 text-indigo-600 rounded-lg"><Server className="w-5 h-5" /></div>
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-800">Edit Log Status Mesin</h3>
-                    <p className="text-xs text-slate-500 font-medium">Ubah data riwayat pencatatan</p>
-                  </div>
-                </div>
-                <button onClick={() => setEditingMesinLog(null)} className="text-slate-400 hover:text-rose-500 transition-colors"><X className="w-5 h-5" /></button>
-              </div>
-
-              <div className="p-6 overflow-y-auto">
-                <div className="flex flex-wrap gap-4 mb-6">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-600 mb-1">Tanggal</label>
-                    <input type="date" className="w-40 text-sm px-3 py-2 border border-slate-300 rounded-lg" value={editingMesinLog.tanggal || ''} onChange={e => setEditingMesinLog({ ...editingMesinLog, tanggal: e.target.value })} />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-600 mb-1">Jam (Jadwal)</label>
-                    <select className="w-32 text-sm px-3 py-2 border border-slate-300 rounded-lg" value={editingMesinLog.jam || ''} onChange={e => setEditingMesinLog({ ...editingMesinLog, jam: e.target.value })}>
-                      <option value="10:00">10:00 WIT</option>
-                      <option value="19:00">19:00 WIT</option>
-                    </select>
-                  </div>
-                  <div className="flex-1 min-w-[200px]">
-                    <label className="block text-xs font-bold text-slate-600 mb-2">Petugas Piket</label>
-                    <div className="flex flex-wrap gap-2">
-                      {getOperatorsForSite(selectedPltdForMesinLog, true).length === 0 ? <span className="text-xs text-rose-500 italic">Belum ada data operator.</span> :
-                        getOperatorsForSite(selectedPltdForMesinLog, true).map(op => (
-                          <label key={op} className="flex items-center gap-2 bg-slate-50 border border-slate-200 px-2 py-1 rounded cursor-pointer hover:bg-indigo-50">
-                            <input type="checkbox" checked={(editingMesinLog.petugas || []).includes(op)} onChange={() => handleTogglePetugas(op, editingMesinLog, setEditingMesinLog)} className="rounded text-indigo-600 focus:ring-indigo-500" />
-                            <span className="text-[11px] font-bold text-slate-700">{String(op).split(' - ')[0]}</span>
-                          </label>
-                        ))}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="border border-slate-200 rounded-xl overflow-x-auto bg-white shadow-sm">
-                  <table className="w-full text-left min-w-[700px]">
-                    <thead className="bg-slate-50 text-xs font-bold text-slate-600 uppercase border-b">
-                      <tr><th className="p-3 w-48">ID Mesin</th><th className="p-3 text-right">D. Terpasang</th><th className="p-3">Daya Mampu (kW)</th><th className="p-3">Beban Supply (kW)</th><th className="p-3">Status Operasi</th></tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100">
-                      {editingMesinLog.mesin_data.map(m => (
-                        <tr key={m._id} className="hover:bg-slate-50">
-                          <td className="p-3"><div className="font-bold text-sm text-slate-700">{m.id_mesin}</div><div className="text-[10px] text-slate-400">{m.merk_type}</div></td>
-                          <td className="p-3 text-right text-sm font-semibold text-slate-500">{m.daya_terpasang}</td>
-                          <td className="p-3"><input type="number" className="w-full px-2 py-1.5 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-indigo-500" value={m.daya_mampu} onChange={e => handleUpdateMesinLogData(m._id, 'daya_mampu', e.target.value)} /></td>
-                          <td className="p-3"><input type="number" className="w-full px-2 py-1.5 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-indigo-500" value={m.beban_supply} onChange={e => handleUpdateMesinLogData(m._id, 'beban_supply', e.target.value)} /></td>
-                          <td className="p-3">
-                            <select className="w-full px-2 py-1.5 border border-slate-300 rounded text-xs font-bold focus:ring-2 focus:ring-indigo-500" value={m.status_operasi} onChange={e => handleUpdateMesinLogData(m._id, 'status_operasi', e.target.value)}>
-                              <option value="OPERASI">OPERASI</option><option value="STAND BY">STAND BY</option><option value="GANGGUAN">GANGGUAN</option>
-                            </select>
-                          </td>
-                        </tr>
-                      ))}
+                      })}
                     </tbody>
                   </table>
                 </div>
               </div>
+            </div>
+          )}
 
-              <div className="p-6 bg-slate-50 rounded-b-2xl border-t border-slate-100 flex justify-end gap-3">
-                <button onClick={() => setEditingMesinLog(null)} className="px-5 py-2.5 text-slate-500 font-bold hover:bg-slate-200 rounded-lg text-sm transition-colors">Batal</button>
-                <button onClick={handleSaveEditMesinLog} className="px-6 py-2.5 bg-indigo-600 text-white rounded-lg text-sm font-bold shadow-md hover:bg-indigo-700 flex items-center gap-2 transition-colors">
-                  <Save className="w-4 h-4" /> Simpan Perubahan
-                </button>
+          {viewingTangki && (
+            <div className="fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center p-4">
+              <div className="bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col animate-in fade-in zoom-in duration-200">
+                <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50 rounded-t-2xl">
+                  <div className="flex items-center gap-3"><div className="p-2 bg-teal-100 text-teal-600 rounded-lg"><Database className="w-5 h-5" /></div><div><h3 className="text-lg font-bold text-slate-800">Data Kapasitas Tangki</h3><p className="text-xs text-slate-500 font-medium">{viewingTangki.nama_pltd}</p></div></div>
+                  <div className="flex gap-2">
+                    <button onClick={() => setIsAddingTangki(true)} className="flex items-center gap-1.5 px-3 py-1.5 bg-teal-600 text-white rounded-lg text-xs font-bold hover:bg-teal-700 transition-colors"><Plus className="w-3.5 h-3.5" /> Tambah Tangki</button>
+                    <button onClick={() => setViewingTangki(null)} className="text-slate-400 hover:text-slate-600 ml-2"><X className="w-5 h-5" /></button>
+                  </div>
+                </div>
+                <div className="bg-white border-b border-slate-200 px-6 py-4 flex gap-8 shadow-sm">
+                  <div className="flex items-center gap-3"><div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500"><Database className="w-4 h-4" /></div><div><p className="text-[10px] font-bold text-slate-500 uppercase">Total Kapasitas</p><p className="text-sm font-bold text-slate-800">{tangkiPltd.filter(t => t.site_id === viewingTangki.site_id).reduce((sum, t) => sum + (Number(t.kapasitas_liter) || 0), 0).toLocaleString('id-ID')} L</p></div></div>
+                  <div className="w-px h-8 bg-slate-200"></div>
+                  <div className="flex items-center gap-3"><div className="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center text-teal-600"><Droplet className="w-4 h-4" /></div><div><p className="text-[10px] font-bold text-teal-600 uppercase">Total Volume Terkini</p><p className="text-sm font-bold text-teal-700">{tangkiPltd.filter(t => t.site_id === viewingTangki.site_id).reduce((sum, t) => sum + (Number(t.volume_terkini) || 0), 0).toLocaleString('id-ID')} L</p></div></div>
+                </div>
+                <div className="p-0 overflow-y-auto">
+                  <table className="w-full text-left">
+                    <thead className="bg-white sticky top-0 border-b border-slate-200 text-xs font-bold text-slate-500 uppercase"><tr><th className="p-4 w-24 text-center">Aksi</th><th className="p-4">ID Tangki / Tandon</th><th className="p-4 text-right">Kapasitas Maksimal (Liter)</th><th className="p-4 text-right">Volume Terkini (Liter)</th></tr></thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {isAddingTangki && (
+                        <tr className="bg-teal-50/50">
+                          <td className="p-3 text-center flex justify-center gap-1"><button onClick={handleSaveAddTangki} className="p-1 bg-emerald-100 text-emerald-600 rounded"><Check className="w-4 h-4" /></button><button onClick={() => setIsAddingTangki(false)} className="p-1 bg-rose-100 text-rose-600 rounded"><X className="w-4 h-4" /></button></td>
+                          <td className="p-3"><input type="text" className="w-full px-2 py-1.5 border rounded text-sm" value={tangkiAddFormData.id_tangki || ''} onChange={e => setTangkiAddFormData({ ...tangkiAddFormData, id_tangki: e.target.value })} placeholder="Nama Tangki" /></td>
+                          <td className="p-3"><input type="number" className="w-full px-2 py-1.5 border rounded text-sm text-right" value={tangkiAddFormData.kapasitas_liter || ''} onChange={e => setTangkiAddFormData({ ...tangkiAddFormData, kapasitas_liter: e.target.value })} placeholder="0" /></td>
+                          <td className="p-3 text-right text-sm text-slate-400 italic">0 (Default)</td>
+                        </tr>
+                      )}
+                      {tangkiPltd.filter(t => t.site_id === viewingTangki.site_id).map(t => {
+                        if (editingTangkiId === t._id) {
+                          return (
+                            <tr key={t._id} className="bg-blue-50/40">
+                              <td className="p-3 text-center flex justify-center gap-1"><button onClick={handleSaveEditTangki} className="p-1 bg-emerald-100 text-emerald-600 rounded"><Check className="w-4 h-4" /></button><button onClick={() => setEditingTangkiId(null)} className="p-1 bg-rose-100 text-rose-600 rounded"><X className="w-4 h-4" /></button></td>
+                              <td className="p-3"><input type="text" className="w-full px-2 py-1.5 border rounded text-sm" value={tangkiEditFormData.id_tangki || ''} onChange={e => setTangkiEditFormData({ ...tangkiEditFormData, id_tangki: e.target.value })} /></td>
+                              <td className="p-3"><input type="number" className="w-full px-2 py-1.5 border rounded text-sm text-right" value={tangkiEditFormData.kapasitas_liter || ''} onChange={e => setTangkiEditFormData({ ...tangkiEditFormData, kapasitas_liter: e.target.value })} /></td>
+                              <td className="p-3"><input type="number" className="w-full px-2 py-1.5 border rounded text-sm text-right font-bold text-teal-600" value={tangkiEditFormData.volume_terkini || ''} onChange={e => setTangkiEditFormData({ ...tangkiEditFormData, volume_terkini: e.target.value })} /></td>
+                            </tr>
+                          )
+                        }
+                        return (
+                          <tr key={t._id} className="hover:bg-slate-50 group text-sm">
+                            <td className="p-4 text-center">
+                              <div className="flex justify-center gap-1 opacity-0 group-hover:opacity-100"><button onClick={() => { setEditingTangkiId(t._id); setTangkiEditFormData(t); }} className="p-1.5 bg-blue-50 text-blue-600 rounded hover:bg-blue-100"><Edit className="w-4 h-4" /></button><button onClick={() => setDeletingTangki(t)} className="p-1.5 bg-rose-50 text-rose-600 rounded hover:bg-rose-100"><Trash2 className="w-4 h-4" /></button></div>
+                            </td>
+                            <td className="p-4 font-bold text-slate-700">{t.id_tangki}</td>
+                            <td className="p-4 text-right text-slate-500 font-medium">{Number(t.kapasitas_liter).toLocaleString('id-ID')}</td>
+                            <td className="p-4 text-right font-bold text-teal-600 text-base">{Number(t.volume_terkini || 0).toLocaleString('id-ID')}</td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {(isAddingAsset || editingAsset) && (
-          <div className="fixed inset-0 bg-slate-900/50 z-[70] flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col animate-in fade-in zoom-in duration-200">
-              <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50 rounded-t-2xl">
-                <h3 className="text-lg font-bold text-slate-800">{isAddingAsset ? 'Tambah Data Aset' : 'Edit Data Aset'}</h3>
-                <button onClick={() => { setIsAddingAsset(false); setEditingAsset(null); }} className="text-slate-400 hover:text-rose-500 transition-colors"><X className="w-5 h-5" /></button>
-              </div>
-
-              <div className="p-6 overflow-y-auto">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                  {/* BAGIAN YANG DIUBAH: Tambahkan logika sort() menggunakan prioritasKolom */}
-                  {[...currentHeaders].sort((a, b) => {
-                    const indexA = prioritasKolom.indexOf(a);
-                    const indexB = prioritasKolom.indexOf(b);
-                    if (indexA !== -1 && indexB !== -1) return indexA - indexB;
-                    if (indexA !== -1) return -1;
-                    if (indexB !== -1) return 1;
-                    return a.localeCompare(b);
-                  }).map((h, i) => (
-                    <div key={i} className="flex flex-col">
-                      <label className="text-[10px] font-bold block mb-1.5 uppercase tracking-wider text-slate-500">
-                        {h.replace(/_/g, ' ')}
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition-shadow"
-                        value={isAddingAsset ? addFormData[h] || '' : editFormData[h] || ''}
-                        onChange={e => { isAddingAsset ? setAddFormData({ ...addFormData, [h]: e.target.value }) : setEditFormData({ ...editFormData, [h]: e.target.value }) }}
-                      />
+          {/* MODAL EDIT LOG STATUS MESIN */}
+          {editingMesinLog && (
+            <div className="fixed inset-0 bg-slate-900/50 z-[70] flex items-center justify-center p-4">
+              <div className="bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col animate-in fade-in zoom-in duration-200">
+                <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50 rounded-t-2xl">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-indigo-100 text-indigo-600 rounded-lg"><Server className="w-5 h-5" /></div>
+                    <div>
+                      <h3 className="text-lg font-bold text-slate-800">Edit Log Status Mesin</h3>
+                      <p className="text-xs text-slate-500 font-medium">Ubah data riwayat pencatatan</p>
                     </div>
-                  ))}
+                  </div>
+                  <button onClick={() => setEditingMesinLog(null)} className="text-slate-400 hover:text-rose-500 transition-colors"><X className="w-5 h-5" /></button>
                 </div>
-              </div>
 
-              <div className="p-6 bg-slate-50 rounded-b-2xl border-t border-slate-100 flex justify-end gap-3">
-                <button onClick={() => { setIsAddingAsset(false); setEditingAsset(null); }} className="px-5 py-2 text-slate-500 font-bold hover:bg-slate-200 rounded-lg text-sm transition-colors">Batal</button>
-                <button onClick={isAddingAsset ? handleSaveAdd : handleSaveEdit} className="px-6 py-2 bg-blue-600 text-white rounded-lg text-sm font-bold shadow-md hover:bg-blue-700 flex items-center gap-2 transition-colors">
-                  <Save className="w-4 h-4" /> Simpan Data
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+                <div className="p-6 overflow-y-auto">
+                  <div className="flex flex-wrap gap-4 mb-6">
+                    <div>
+                      <label className="block text-xs font-bold text-slate-600 mb-1">Tanggal</label>
+                      <input type="date" className="w-40 text-sm px-3 py-2 border border-slate-300 rounded-lg" value={editingMesinLog.tanggal || ''} onChange={e => setEditingMesinLog({ ...editingMesinLog, tanggal: e.target.value })} />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-600 mb-1">Jam (Jadwal)</label>
+                      <select className="w-32 text-sm px-3 py-2 border border-slate-300 rounded-lg" value={editingMesinLog.jam || ''} onChange={e => setEditingMesinLog({ ...editingMesinLog, jam: e.target.value })}>
+                        <option value="10:00">10:00 WIT</option>
+                        <option value="19:00">19:00 WIT</option>
+                      </select>
+                    </div>
+                    <div className="flex-1 min-w-[200px]">
+                      <label className="block text-xs font-bold text-slate-600 mb-2">Petugas Piket</label>
+                      <div className="flex flex-wrap gap-2">
+                        {getOperatorsForSite(selectedPltdForMesinLog, true).length === 0 ? <span className="text-xs text-rose-500 italic">Belum ada data operator.</span> :
+                          getOperatorsForSite(selectedPltdForMesinLog, true).map(op => (
+                            <label key={op} className="flex items-center gap-2 bg-slate-50 border border-slate-200 px-2 py-1 rounded cursor-pointer hover:bg-indigo-50">
+                              <input type="checkbox" checked={(editingMesinLog.petugas || []).includes(op)} onChange={() => handleTogglePetugas(op, editingMesinLog, setEditingMesinLog)} className="rounded text-indigo-600 focus:ring-indigo-500" />
+                              <span className="text-[11px] font-bold text-slate-700">{String(op).split(' - ')[0]}</span>
+                            </label>
+                          ))}
+                      </div>
+                    </div>
+                  </div>
 
-        {(deletingAsset || deletingLogId || deletingLogPltdId || deletingMesinLog) && (
-          <div className="fixed inset-0 bg-slate-900/50 z-[70] flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl shadow-xl p-6 text-center w-full max-w-sm">
-              <h3 className="font-bold text-lg mb-2">Hapus Data?</h3><p className="text-sm text-slate-500 mb-6">Tindakan ini tidak bisa dibatalkan.</p>
-              <div className="flex justify-center gap-3"><button onClick={() => { setDeletingAsset(null); setDeletingLogId(null); setDeletingLogPltdId(null); setDeletingMesinLog(null); }} className="px-4 py-2 border rounded-lg font-bold">Batal</button><button onClick={deletingAsset ? confirmDelete : (deletingLogId ? confirmDeleteLog : (deletingLogPltdId ? confirmDeleteLogPltd : confirmDeleteMesinLog))} className="px-4 py-2 bg-rose-600 text-white rounded-lg font-bold">Hapus Permanen</button></div>
-            </div>
-          </div>
-        )}
-
-        {/* MODAL EDIT LOG PRODUKSI & BBM */}
-        {editingProduksiId && (
-          <div className="fixed inset-0 bg-slate-900/50 z-[70] flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col animate-in fade-in zoom-in duration-200">
-              <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50 rounded-t-2xl">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-orange-100 text-orange-600 rounded-lg"><Gauge className="w-5 h-5" /></div>
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-800">Edit Log Produksi & BBM</h3>
-                    <p className="text-xs text-slate-500 font-medium">Ubah data stand kWh dan BBM</p>
+                  <div className="border border-slate-200 rounded-xl overflow-x-auto bg-white shadow-sm">
+                    <table className="w-full text-left min-w-[700px]">
+                      <thead className="bg-slate-50 text-xs font-bold text-slate-600 uppercase border-b">
+                        <tr><th className="p-3 w-48">ID Mesin</th><th className="p-3 text-right">D. Terpasang</th><th className="p-3">Daya Mampu (kW)</th><th className="p-3">Beban Supply (kW)</th><th className="p-3">Status Operasi</th></tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100">
+                        {editingMesinLog.mesin_data.map((m: any) => (
+                          <tr key={m._id} className="hover:bg-slate-50">
+                            <td className="p-3"><div className="font-bold text-sm text-slate-700">{m.id_mesin}</div><div className="text-[10px] text-slate-400">{m.merk_type}</div></td>
+                            <td className="p-3 text-right text-sm font-semibold text-slate-500">{m.daya_terpasang}</td>
+                            <td className="p-3"><input type="number" className="w-full px-2 py-1.5 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-indigo-500" value={m.daya_mampu} onChange={e => handleUpdateMesinLogData(m._id, 'daya_mampu', e.target.value)} /></td>
+                            <td className="p-3"><input type="number" className="w-full px-2 py-1.5 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-indigo-500" value={m.beban_supply} onChange={e => handleUpdateMesinLogData(m._id, 'beban_supply', e.target.value)} /></td>
+                            <td className="p-3">
+                              <select className="w-full px-2 py-1.5 border border-slate-300 rounded text-xs font-bold focus:ring-2 focus:ring-indigo-500" value={m.status_operasi} onChange={e => handleUpdateMesinLogData(m._id, 'status_operasi', e.target.value)}>
+                                <option value="OPERASI">OPERASI</option><option value="STAND BY">STAND BY</option><option value="GANGGUAN">GANGGUAN</option>
+                              </select>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
-                <button onClick={() => setEditingProduksiId(null)} className="text-slate-400 hover:text-rose-500"><X className="w-5 h-5" /></button>
-              </div>
 
-              <div className="p-6 overflow-y-auto space-y-6">
-                <div className="grid grid-cols-2 gap-6">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-600 mb-1">Tanggal</label>
-                    <input type="date" className="w-full px-3 py-2 border rounded-lg text-sm" value={editProduksiFormData.tanggal || ''} onChange={e => setEditProduksiFormData({ ...editProduksiFormData, tanggal: e.target.value })} />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-600 mb-1">Petugas</label>
-                    <div className="flex flex-wrap gap-2">
-                      {getOperatorsForSite(selectedPltdForProduksi, true).map(op => (
-                        <label key={op} className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-2 py-1 rounded cursor-pointer hover:bg-orange-50">
-                          <input type="checkbox" checked={(editProduksiFormData.petugas || []).includes(op)} onChange={() => handleTogglePetugas(op, editProduksiFormData, setEditProduksiFormData)} className="rounded text-orange-600 focus:ring-orange-500" />
-                          <span className="text-[10px] font-bold text-slate-700">{String(op).split(' - ')[0]}</span>
+                <div className="p-6 bg-slate-50 rounded-b-2xl border-t border-slate-100 flex justify-end gap-3">
+                  <button onClick={() => setEditingMesinLog(null)} className="px-5 py-2.5 text-slate-500 font-bold hover:bg-slate-200 rounded-lg text-sm transition-colors">Batal</button>
+                  <button onClick={handleSaveEditMesinLog} className="px-6 py-2.5 bg-indigo-600 text-white rounded-lg text-sm font-bold shadow-md hover:bg-indigo-700 flex items-center gap-2 transition-colors">
+                    <Save className="w-4 h-4" /> Simpan Perubahan
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {(isAddingAsset || editingAsset) && (
+            <div className="fixed inset-0 bg-slate-900/50 z-[70] flex items-center justify-center p-4">
+              <div className="bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col animate-in fade-in zoom-in duration-200">
+                <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50 rounded-t-2xl">
+                  <h3 className="text-lg font-bold text-slate-800">{isAddingAsset ? 'Tambah Data Aset' : 'Edit Data Aset'}</h3>
+                  <button onClick={() => { setIsAddingAsset(false); setEditingAsset(null); }} className="text-slate-400 hover:text-rose-500 transition-colors"><X className="w-5 h-5" /></button>
+                </div>
+
+                <div className="p-6 overflow-y-auto">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    {/* BAGIAN YANG DIUBAH: Tambahkan logika sort() menggunakan prioritasKolom */}
+                    {[...currentHeaders].sort((a, b) => {
+                      const indexA = prioritasKolom.indexOf(a);
+                      const indexB = prioritasKolom.indexOf(b);
+                      if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+                      if (indexA !== -1) return -1;
+                      if (indexB !== -1) return 1;
+                      return a.localeCompare(b);
+                    }).map((h, i) => (
+                      <div key={i} className="flex flex-col">
+                        <label className="text-[10px] font-bold block mb-1.5 uppercase tracking-wider text-slate-500">
+                          {h.replace(/_/g, ' ')}
                         </label>
-                      ))}
+                        <input
+                          type="text"
+                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition-shadow"
+                          value={isAddingAsset ? addFormData[h] || '' : editFormData[h] || ''}
+                          onChange={e => { isAddingAsset ? setAddFormData({ ...addFormData, [h]: e.target.value }) : setEditFormData({ ...editFormData, [h]: e.target.value }) }}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="p-6 bg-slate-50 rounded-b-2xl border-t border-slate-100 flex justify-end gap-3">
+                  <button onClick={() => { setIsAddingAsset(false); setEditingAsset(null); }} className="px-5 py-2 text-slate-500 font-bold hover:bg-slate-200 rounded-lg text-sm transition-colors">Batal</button>
+                  <button onClick={isAddingAsset ? handleSaveAdd : handleSaveEdit} className="px-6 py-2 bg-blue-600 text-white rounded-lg text-sm font-bold shadow-md hover:bg-blue-700 flex items-center gap-2 transition-colors">
+                    <Save className="w-4 h-4" /> Simpan Data
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {(deletingAsset || deletingLogId || deletingLogPltdId || deletingMesinLog) && (
+            <div className="fixed inset-0 bg-slate-900/50 z-[70] flex items-center justify-center p-4">
+              <div className="bg-white rounded-2xl shadow-xl p-6 text-center w-full max-w-sm">
+                <h3 className="font-bold text-lg mb-2">Hapus Data?</h3><p className="text-sm text-slate-500 mb-6">Tindakan ini tidak bisa dibatalkan.</p>
+                <div className="flex justify-center gap-3"><button onClick={() => { setDeletingAsset(null); setDeletingLogId(null); setDeletingLogPltdId(null); setDeletingMesinLog(null); }} className="px-4 py-2 border rounded-lg font-bold">Batal</button><button onClick={deletingAsset ? confirmDelete : (deletingLogId ? confirmDeleteLog : (deletingLogPltdId ? confirmDeleteLogPltd : confirmDeleteMesinLog))} className="px-4 py-2 bg-rose-600 text-white rounded-lg font-bold">Hapus Permanen</button></div>
+              </div>
+            </div>
+          )}
+
+          {/* MODAL EDIT LOG PRODUKSI & BBM */}
+          {editingProduksiId && (
+            <div className="fixed inset-0 bg-slate-900/50 z-[70] flex items-center justify-center p-4">
+              <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col animate-in fade-in zoom-in duration-200">
+                <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50 rounded-t-2xl">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-orange-100 text-orange-600 rounded-lg"><Gauge className="w-5 h-5" /></div>
+                    <div>
+                      <h3 className="text-lg font-bold text-slate-800">Edit Log Produksi & BBM</h3>
+                      <p className="text-xs text-slate-500 font-medium">Ubah data stand kWh dan BBM</p>
                     </div>
                   </div>
+                  <button onClick={() => setEditingProduksiId(null)} className="text-slate-400 hover:text-rose-500"><X className="w-5 h-5" /></button>
+                </div>
 
-                  <div className="col-span-2 grid grid-cols-2 gap-4">
-                    <div className="bg-sky-50 p-4 rounded-xl border border-sky-100">
-                      <h5 className="font-bold text-sky-800 mb-3 text-sm">Stand kWh Produksi</h5>
-                      <div className="space-y-3">
-                        <div><label className="text-xs font-medium text-slate-600 block mb-1">Stand Kemarin</label><input type="number" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" value={editProduksiFormData.stand_kwh_kemarin || ''} onChange={e => setEditProduksiFormData({ ...editProduksiFormData, stand_kwh_kemarin: e.target.value })} /></div>
-                        <div><label className="text-xs font-medium text-slate-600 block mb-1">Stand Hari Ini</label><input type="number" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" value={editProduksiFormData.stand_kwh_hari_ini || ''} onChange={e => setEditProduksiFormData({ ...editProduksiFormData, stand_kwh_hari_ini: e.target.value })} /></div>
-                        <div className="pt-2 border-t border-sky-200 flex justify-between"><span className="text-xs font-bold">Total Produksi:</span><span className="font-bold text-sky-700">{kwhProduksiEditCalc} kWh</span></div>
+                <div className="p-6 overflow-y-auto space-y-6">
+                  <div className="grid grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-xs font-bold text-slate-600 mb-1">Tanggal</label>
+                      <input type="date" className="w-full px-3 py-2 border rounded-lg text-sm" value={editProduksiFormData.tanggal || ''} onChange={e => setEditProduksiFormData({ ...editProduksiFormData, tanggal: e.target.value })} />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-600 mb-1">Petugas</label>
+                      <div className="flex flex-wrap gap-2">
+                        {getOperatorsForSite(selectedPltdForProduksi, true).map(op => (
+                          <label key={op} className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-2 py-1 rounded cursor-pointer hover:bg-orange-50">
+                            <input type="checkbox" checked={(editProduksiFormData.petugas || []).includes(op)} onChange={() => handleTogglePetugas(op, editProduksiFormData, setEditProduksiFormData)} className="rounded text-orange-600 focus:ring-orange-500" />
+                            <span className="text-[10px] font-bold text-slate-700">{String(op).split(' - ')[0]}</span>
+                          </label>
+                        ))}
                       </div>
                     </div>
 
-                    <div className="bg-rose-50 p-4 rounded-xl border border-rose-100">
-                      <h5 className="font-bold text-rose-800 mb-3 text-sm">Stand Flow BBM</h5>
-                      <div className="space-y-3">
-                        <div><label className="text-xs font-medium text-slate-600 block mb-1">Stand Kemarin</label><input type="number" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" value={editProduksiFormData.stand_bbm_kemarin || ''} onChange={e => setEditProduksiFormData({ ...editProduksiFormData, stand_bbm_kemarin: e.target.value })} /></div>
-                        <div><label className="text-xs font-medium text-slate-600 block mb-1">Stand Hari Ini</label><input type="number" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" value={editProduksiFormData.stand_bbm_hari_ini || ''} onChange={e => setEditProduksiFormData({ ...editProduksiFormData, stand_bbm_hari_ini: e.target.value })} /></div>
-                        <div className="pt-2 border-t border-rose-200 flex justify-between"><span className="text-xs font-bold">Total Pemakaian:</span><span className="font-bold text-rose-700">{bbmPemakaianEditCalc} L</span></div>
+                    <div className="col-span-2 grid grid-cols-2 gap-4">
+                      <div className="bg-sky-50 p-4 rounded-xl border border-sky-100">
+                        <h5 className="font-bold text-sky-800 mb-3 text-sm">Stand kWh Produksi</h5>
+                        <div className="space-y-3">
+                          <div><label className="text-xs font-medium text-slate-600 block mb-1">Stand Kemarin</label><input type="number" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" value={editProduksiFormData.stand_kwh_kemarin || ''} onChange={e => setEditProduksiFormData({ ...editProduksiFormData, stand_kwh_kemarin: e.target.value })} /></div>
+                          <div><label className="text-xs font-medium text-slate-600 block mb-1">Stand Hari Ini</label><input type="number" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" value={editProduksiFormData.stand_kwh_hari_ini || ''} onChange={e => setEditProduksiFormData({ ...editProduksiFormData, stand_kwh_hari_ini: e.target.value })} /></div>
+                          <div className="pt-2 border-t border-sky-200 flex justify-between"><span className="text-xs font-bold">Total Produksi:</span><span className="font-bold text-sky-700">{kwhProduksiEditCalc} kWh</span></div>
+                        </div>
+                      </div>
+
+                      <div className="bg-rose-50 p-4 rounded-xl border border-rose-100">
+                        <h5 className="font-bold text-rose-800 mb-3 text-sm">Stand Flow BBM</h5>
+                        <div className="space-y-3">
+                          <div><label className="text-xs font-medium text-slate-600 block mb-1">Stand Kemarin</label><input type="number" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" value={editProduksiFormData.stand_bbm_kemarin || ''} onChange={e => setEditProduksiFormData({ ...editProduksiFormData, stand_bbm_kemarin: e.target.value })} /></div>
+                          <div><label className="text-xs font-medium text-slate-600 block mb-1">Stand Hari Ini</label><input type="number" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" value={editProduksiFormData.stand_bbm_hari_ini || ''} onChange={e => setEditProduksiFormData({ ...editProduksiFormData, stand_bbm_hari_ini: e.target.value })} /></div>
+                          <div className="pt-2 border-t border-rose-200 flex justify-between"><span className="text-xs font-bold">Total Pemakaian:</span><span className="font-bold text-rose-700">{bbmPemakaianEditCalc} L</span></div>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="col-span-2 bg-emerald-50 p-3 rounded-lg flex justify-between items-center border border-emerald-100">
-                    <span className="font-bold text-emerald-800">SFC (Liter/kWh):</span>
-                    <span className="text-xl font-black text-emerald-600">{sfcEditCalc}</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-6 bg-slate-50 rounded-b-2xl border-t border-slate-100 flex justify-end gap-3">
-                <button onClick={() => setEditingProduksiId(null)} className="px-5 py-2.5 text-slate-500 font-bold hover:bg-slate-200 rounded-lg text-sm transition-colors">Batal</button>
-                <button onClick={handleSaveEditProduksiLog} className="px-6 py-2.5 bg-orange-600 text-white rounded-lg text-sm font-bold shadow-md hover:bg-orange-700 flex items-center gap-2 transition-colors">
-                  <Save className="w-4 h-4" /> Simpan Perubahan
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* MODAL HAPUS LOG PRODUKSI */}
-        {deletingProduksiId && (
-          <div className="fixed inset-0 bg-slate-900/50 z-[70] flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl shadow-xl p-6 text-center w-full max-w-sm">
-              <h3 className="font-bold text-lg mb-2">Hapus Log Produksi?</h3>
-              <p className="text-sm text-slate-500 mb-6">Tindakan ini tidak bisa dibatalkan dan akan memengaruhi riwayat SFC.</p>
-              <div className="flex justify-center gap-3">
-                <button onClick={() => setDeletingProduksiId(null)} className="px-4 py-2 border rounded-lg font-bold">Batal</button>
-                <button onClick={confirmDeleteProduksiLog} className="px-4 py-2 bg-rose-600 text-white rounded-lg font-bold">Hapus Permanen</button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* MODAL EDIT LOG BBM */}
-        {editingBbmLog && (
-          <div className="fixed inset-0 bg-slate-900/50 z-[70] flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col animate-in fade-in zoom-in duration-200">
-              <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50 rounded-t-2xl">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-teal-100 text-teal-600 rounded-lg"><Droplet className="w-5 h-5" /></div>
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-800">Edit Log BBM</h3>
-                    <p className="text-xs text-slate-500 font-medium">Ubah catatan teks riwayat</p>
-                  </div>
-                </div>
-                <button onClick={() => setEditingBbmLog(null)} className="text-slate-400 hover:text-rose-500"><X className="w-5 h-5" /></button>
-              </div>
-
-              <div className="p-6 overflow-y-auto space-y-4">
-                <div className="grid grid-cols-2 gap-4 mb-4">
-                  <div><label className="block text-xs font-bold text-slate-600 mb-1">Tanggal</label><input type="date" className="w-full px-3 py-2 border rounded-lg text-sm" value={editingBbmLog.tanggal} onChange={e => setEditingBbmLog({ ...editingBbmLog, tanggal: e.target.value })} /></div>
-                  <div><label className="block text-xs font-bold text-slate-600 mb-1">Jam</label><input type="time" className="w-full px-3 py-2 border rounded-lg text-sm" value={editingBbmLog.jam} onChange={e => setEditingBbmLog({ ...editingBbmLog, jam: e.target.value })} /></div>
-                  <div><label className="block text-xs font-bold text-slate-600 mb-1">Jenis Input</label><select className="w-full px-3 py-2 border rounded-lg text-sm bg-slate-50 font-bold" value={editingBbmLog.jenis_input} onChange={e => setEditingBbmLog({ ...editingBbmLog, jenis_input: e.target.value })}><option value="Penerimaan">Penerimaan</option><option value="Stok Opname">Stok Opname</option></select></div>
-                  <div><label className="block text-xs font-bold text-slate-600 mb-1">Referensi</label><input type="text" className="w-full px-3 py-2 border rounded-lg text-sm" value={editingBbmLog.referensi} onChange={e => setEditingBbmLog({ ...editingBbmLog, referensi: e.target.value })} /></div>
-                </div>
-
-                <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                  <h4 className="font-bold text-slate-700 text-sm mb-3">Rincian Volume Tangki</h4>
-                  {editingBbmLog.tangki_data.map((t: any) => (
-                    <div key={t._id} className="flex justify-between items-center bg-white p-2 rounded border border-slate-100 mb-2">
-                      <span className="text-xs font-bold text-slate-600">{t.id_tangki}</span>
-                      <input type="number" className="w-32 px-2 py-1 border rounded text-sm text-right font-bold focus:ring-2 focus:ring-teal-500" value={t.input_volume} onChange={e => handleUpdateBbmEditData(t._id, e.target.value)} />
+                    <div className="col-span-2 bg-emerald-50 p-3 rounded-lg flex justify-between items-center border border-emerald-100">
+                      <span className="font-bold text-emerald-800">SFC (Liter/kWh):</span>
+                      <span className="text-xl font-black text-emerald-600">{sfcEditCalc}</span>
                     </div>
-                  ))}
+                  </div>
                 </div>
-                <p className="text-[10px] text-orange-500 italic mt-2">*Catatan: Mengedit log ini hanya mengubah riwayat tampilan, tidak mengubah volume Master Data Tangki untuk mencegah error kalkulasi ganda.</p>
-              </div>
 
-              <div className="p-6 bg-slate-50 rounded-b-2xl border-t border-slate-100 flex justify-end gap-3">
-                <button onClick={() => setEditingBbmLog(null)} className="px-5 py-2.5 text-slate-500 font-bold hover:bg-slate-200 rounded-lg text-sm transition-colors">Batal</button>
-                <button onClick={handleSaveEditBbmLog} className="px-6 py-2.5 bg-teal-600 text-white rounded-lg text-sm font-bold shadow-md hover:bg-teal-700 flex items-center gap-2"><Save className="w-4 h-4" /> Simpan Perubahan</button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* MODAL HAPUS LOG BBM */}
-        {deletingBbmLogId && (
-          <div className="fixed inset-0 bg-slate-900/50 z-[70] flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl shadow-xl p-6 text-center w-full max-w-sm">
-              <h3 className="font-bold text-lg mb-2">Hapus Riwayat Input?</h3>
-              <p className="text-sm text-slate-500 mb-6">Tindakan ini menghapus catatan laporan secara permanen.</p>
-              <div className="flex justify-center gap-3">
-                <button onClick={() => setDeletingBbmLogId(null)} className="px-4 py-2 border rounded-lg font-bold">Batal</button>
-                <button onClick={confirmDeleteBbmLog} className="px-4 py-2 bg-rose-600 text-white rounded-lg font-bold">Hapus Permanen</button>
+                <div className="p-6 bg-slate-50 rounded-b-2xl border-t border-slate-100 flex justify-end gap-3">
+                  <button onClick={() => setEditingProduksiId(null)} className="px-5 py-2.5 text-slate-500 font-bold hover:bg-slate-200 rounded-lg text-sm transition-colors">Batal</button>
+                  <button onClick={handleSaveEditProduksiLog} className="px-6 py-2.5 bg-orange-600 text-white rounded-lg text-sm font-bold shadow-md hover:bg-orange-700 flex items-center gap-2 transition-colors">
+                    <Save className="w-4 h-4" /> Simpan Perubahan
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {notification && (
-          <div className="fixed bottom-6 right-6 z-[100] bg-emerald-600 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3"><Check className="w-4 h-4" /> <span className="text-sm font-bold">{notification}</span> <button onClick={() => setNotification(null)}><X className="w-4 h-4" /></button></div>
-        )}
+          {/* MODAL HAPUS LOG PRODUKSI */}
+          {deletingProduksiId && (
+            <div className="fixed inset-0 bg-slate-900/50 z-[70] flex items-center justify-center p-4">
+              <div className="bg-white rounded-2xl shadow-xl p-6 text-center w-full max-w-sm">
+                <h3 className="font-bold text-lg mb-2">Hapus Log Produksi?</h3>
+                <p className="text-sm text-slate-500 mb-6">Tindakan ini tidak bisa dibatalkan dan akan memengaruhi riwayat SFC.</p>
+                <div className="flex justify-center gap-3">
+                  <button onClick={() => setDeletingProduksiId(null)} className="px-4 py-2 border rounded-lg font-bold">Batal</button>
+                  <button onClick={confirmDeleteProduksiLog} className="px-4 py-2 bg-rose-600 text-white rounded-lg font-bold">Hapus Permanen</button>
+                </div>
+              </div>
+            </div>
+          )}
 
+          {/* MODAL EDIT LOG BBM */}
+          {editingBbmLog && (
+            <div className="fixed inset-0 bg-slate-900/50 z-[70] flex items-center justify-center p-4">
+              <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col animate-in fade-in zoom-in duration-200">
+                <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50 rounded-t-2xl">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-teal-100 text-teal-600 rounded-lg"><Droplet className="w-5 h-5" /></div>
+                    <div>
+                      <h3 className="text-lg font-bold text-slate-800">Edit Log BBM</h3>
+                      <p className="text-xs text-slate-500 font-medium">Ubah catatan teks riwayat</p>
+                    </div>
+                  </div>
+                  <button onClick={() => setEditingBbmLog(null)} className="text-slate-400 hover:text-rose-500"><X className="w-5 h-5" /></button>
+                </div>
+
+                <div className="p-6 overflow-y-auto space-y-4">
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div><label className="block text-xs font-bold text-slate-600 mb-1">Tanggal</label><input type="date" className="w-full px-3 py-2 border rounded-lg text-sm" value={editingBbmLog.tanggal} onChange={e => setEditingBbmLog({ ...editingBbmLog, tanggal: e.target.value })} /></div>
+                    <div><label className="block text-xs font-bold text-slate-600 mb-1">Jam</label><input type="time" className="w-full px-3 py-2 border rounded-lg text-sm" value={editingBbmLog.jam} onChange={e => setEditingBbmLog({ ...editingBbmLog, jam: e.target.value })} /></div>
+                    <div><label className="block text-xs font-bold text-slate-600 mb-1">Jenis Input</label><select className="w-full px-3 py-2 border rounded-lg text-sm bg-slate-50 font-bold" value={editingBbmLog.jenis_input} onChange={e => setEditingBbmLog({ ...editingBbmLog, jenis_input: e.target.value })}><option value="Penerimaan">Penerimaan</option><option value="Stok Opname">Stok Opname</option></select></div>
+                    <div><label className="block text-xs font-bold text-slate-600 mb-1">Referensi</label><input type="text" className="w-full px-3 py-2 border rounded-lg text-sm" value={editingBbmLog.referensi} onChange={e => setEditingBbmLog({ ...editingBbmLog, referensi: e.target.value })} /></div>
+                  </div>
+
+                  <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <h4 className="font-bold text-slate-700 text-sm mb-3">Rincian Volume Tangki</h4>
+                    {editingBbmLog.tangki_data.map((t: any) => (
+                      <div key={t._id} className="flex justify-between items-center bg-white p-2 rounded border border-slate-100 mb-2">
+                        <span className="text-xs font-bold text-slate-600">{t.id_tangki}</span>
+                        <input type="number" className="w-32 px-2 py-1 border rounded text-sm text-right font-bold focus:ring-2 focus:ring-teal-500" value={t.input_volume} onChange={e => handleUpdateBbmEditData(t._id, e.target.value)} />
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-[10px] text-orange-500 italic mt-2">*Catatan: Mengedit log ini hanya mengubah riwayat tampilan, tidak mengubah volume Master Data Tangki untuk mencegah error kalkulasi ganda.</p>
+                </div>
+
+                <div className="p-6 bg-slate-50 rounded-b-2xl border-t border-slate-100 flex justify-end gap-3">
+                  <button onClick={() => setEditingBbmLog(null)} className="px-5 py-2.5 text-slate-500 font-bold hover:bg-slate-200 rounded-lg text-sm transition-colors">Batal</button>
+                  <button onClick={handleSaveEditBbmLog} className="px-6 py-2.5 bg-teal-600 text-white rounded-lg text-sm font-bold shadow-md hover:bg-teal-700 flex items-center gap-2"><Save className="w-4 h-4" /> Simpan Perubahan</button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* MODAL HAPUS LOG BBM */}
+          {deletingBbmLogId && (
+            <div className="fixed inset-0 bg-slate-900/50 z-[70] flex items-center justify-center p-4">
+              <div className="bg-white rounded-2xl shadow-xl p-6 text-center w-full max-w-sm">
+                <h3 className="font-bold text-lg mb-2">Hapus Riwayat Input?</h3>
+                <p className="text-sm text-slate-500 mb-6">Tindakan ini menghapus catatan laporan secara permanen.</p>
+                <div className="flex justify-center gap-3">
+                  <button onClick={() => setDeletingBbmLogId(null)} className="px-4 py-2 border rounded-lg font-bold">Batal</button>
+                  <button onClick={confirmDeleteBbmLog} className="px-4 py-2 bg-rose-600 text-white rounded-lg font-bold">Hapus Permanen</button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {notification && (
+            <div className="fixed bottom-6 right-6 z-[100] bg-emerald-600 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3"><Check className="w-4 h-4" /> <span className="text-sm font-bold">{notification}</span> <button onClick={() => setNotification(null)}><X className="w-4 h-4" /></button></div>
+          )}
+
+        </div>
+      </main>
     </div>
-      </main >
-    </div >
   );
 }
