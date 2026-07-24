@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import {
-  Activity, Battery, Server, AlertCircle, Download, Search, Check,
+  Menu, Activity, Battery, Server, AlertCircle, Download, Search, Check,
   Clock, Sun, Zap, Edit, Trash2, X, Save, ArrowUp, ArrowDown,
   ArrowUpDown, Plus, FileSpreadsheet, Cpu, ClipboardList, Calendar,
   Copy, Database, Gauge, Droplet, UserCheck, MapPin
@@ -140,6 +140,9 @@ export default function App() {
   const [absensiDate, setAbsensiDate] = useState(todayStr);
   const [absensiDatePltd, setAbsensiDatePltd] = useState(todayStr);
   const [notification, setNotification] = useState<any>(null);
+
+  // STATE MENU HP
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const currentAssets = activeTab === 'assets_pltd' ? pltdAssets : pltsAssets;
   const currentHeaders = currentAssets.length > 0 ? Object.keys(currentAssets[0]).filter(k => k !== '_id') : [];
@@ -976,63 +979,77 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row font-sans print:bg-white">
-      <aside className="w-full md:w-64 bg-slate-900 text-slate-100 flex-shrink-0 flex flex-col print:hidden z-10">
-        <div className="p-5 flex items-center gap-3 border-b border-slate-800">
-          <div className="flex -space-x-2"><Sun className="text-yellow-400 w-7 h-7 relative z-10" /><Zap className="text-purple-400 w-7 h-7 relative" /></div>
-          <div><h1 className="font-bold text-lg tracking-tight leading-tight">PLN ULP Agats</h1><p className="text-[11px] text-slate-400">Monitoring PLTS & PLTD</p></div>
+    <div className="min-h-screen bg-slate-50 flex font-sans print:bg-white overflow-hidden w-full relative">
+      {/* OVERLAY MOBILE BACKGROUND GELAP */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 bg-slate-900/50 z-40 md:hidden backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)}></div>
+      )}
+
+      {/* SIDEBAR (MENU KIRI) */}
+      <aside className={`fixed inset-y-0 left-0 transform ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'} md:relative md:translate-x-0 transition-transform duration-300 ease-in-out w-64 bg-slate-900 text-slate-100 flex-shrink-0 flex flex-col print:hidden z-50 h-full shadow-2xl md:shadow-none`}>
+        <div className="p-5 flex items-center justify-between border-b border-slate-800">
+          <div className="flex items-center gap-3">
+            <div className="flex -space-x-2"><Sun className="text-yellow-400 w-7 h-7 relative z-10" /><Zap className="text-purple-400 w-7 h-7 relative" /></div>
+            <div><h1 className="font-bold text-lg tracking-tight leading-tight">PLN ULP Agats</h1><p className="text-[11px] text-slate-400">Monitoring System</p></div>
+          </div>
+          <button onClick={() => setIsMobileMenuOpen(false)} className="md:hidden p-1 text-slate-400 hover:text-white rounded-md hover:bg-slate-800"><X className="w-5 h-5" /></button>
         </div>
         <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
           {currentUser.role === 'admin' && (
             <>
-              <button onClick={() => { setActiveTab('dashboard'); setSearchTerm(''); }} className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${activeTab === 'dashboard' ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800'}`}><Activity className="w-5 h-5" /><span className="font-medium text-sm">Dashboard Utama</span></button>
+              <button onClick={() => { setActiveTab('dashboard'); setSearchTerm(''); setIsMobileMenuOpen(false); }} className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${activeTab === 'dashboard' ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800'}`}><Activity className="w-5 h-5" /><span className="font-medium text-sm">Dashboard Utama</span></button>
 
               <div className="pt-4 pb-1"><p className="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Manajemen Aset</p></div>
-              <button onClick={() => { setActiveTab('assets_plts'); setSearchTerm(''); }} className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${activeTab === 'assets_plts' ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800'}`}><Sun className="w-5 h-5 text-yellow-400" /><span className="font-medium text-sm">Data Master PLTS</span></button>
-              <button onClick={() => { setActiveTab('assets_pltd'); setSearchTerm(''); }} className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${activeTab === 'assets_pltd' ? 'bg-purple-600 text-white' : 'text-slate-300 hover:bg-slate-800'}`}><Zap className="w-5 h-5 text-purple-400" /><span className="font-medium text-sm">Data Master PLTD</span></button>
+              <button onClick={() => { setActiveTab('assets_plts'); setSearchTerm(''); setIsMobileMenuOpen(false); }} className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${activeTab === 'assets_plts' ? 'bg-blue-600 text-white' : 'text-slate-300 hover:bg-slate-800'}`}><Sun className="w-5 h-5 text-yellow-400" /><span className="font-medium text-sm">Data Master PLTS</span></button>
+              <button onClick={() => { setActiveTab('assets_pltd'); setSearchTerm(''); setIsMobileMenuOpen(false); }} className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${activeTab === 'assets_pltd' ? 'bg-purple-600 text-white' : 'text-slate-300 hover:bg-slate-800'}`}><Zap className="w-5 h-5 text-purple-400" /><span className="font-medium text-sm">Data Master PLTD</span></button>
             </>
           )}
 
           <div className="pt-4 pb-1"><p className="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Operasional Log</p></div>
 
           {(currentUser.role === 'admin' || currentUser.role === 'plts') && (
-            <button onClick={() => { setActiveTab('log_plts'); setSearchTerm(''); }} className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${activeTab === 'log_plts' ? 'bg-sky-600 text-white' : 'text-slate-300 hover:bg-slate-800'}`}><ClipboardList className="w-5 h-5 text-sky-400" /><span className="font-medium text-sm">Log Beban PLTS</span></button>
+            <button onClick={() => { setActiveTab('log_plts'); setSearchTerm(''); setIsMobileMenuOpen(false); }} className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${activeTab === 'log_plts' ? 'bg-sky-600 text-white' : 'text-slate-300 hover:bg-slate-800'}`}><ClipboardList className="w-5 h-5 text-sky-400" /><span className="font-medium text-sm">Log Beban PLTS</span></button>
           )}
 
           {(currentUser.role === 'admin' || currentUser.role === 'pltd') && (
             <>
-              <button onClick={() => { setActiveTab('log_pltd'); setSearchTerm(''); }} className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${activeTab === 'log_pltd' ? 'bg-purple-600 text-white' : 'text-slate-300 hover:bg-slate-800'}`}><ClipboardList className="w-5 h-5 text-purple-400" /><span className="font-medium text-sm">Log Beban PLTD</span></button>
-              <button onClick={() => { setActiveTab('log_mesin'); setSearchTerm(''); }} className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${activeTab === 'log_mesin' ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:bg-slate-800'}`}><Server className="w-5 h-5 text-indigo-400" /><span className="font-medium text-sm">Log Status Mesin</span></button>
-              <button onClick={() => { setActiveTab('log_produksi'); setSearchTerm(''); }} className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${activeTab === 'log_produksi' ? 'bg-orange-600 text-white' : 'text-slate-300 hover:bg-slate-800'}`}><Gauge className="w-5 h-5 text-orange-400" /><span className="font-medium text-sm">Log Produksi & BBM</span></button>
-              <button onClick={() => { setActiveTab('input_bbm'); setSearchTerm(''); }} className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${activeTab === 'input_bbm' ? 'bg-teal-600 text-white' : 'text-slate-300 hover:bg-slate-800'}`}><Droplet className="w-5 h-5 text-teal-400" /><span className="font-medium text-sm">Input Stok BBM</span></button>
+              <button onClick={() => { setActiveTab('log_pltd'); setSearchTerm(''); setIsMobileMenuOpen(false); }} className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${activeTab === 'log_pltd' ? 'bg-purple-600 text-white' : 'text-slate-300 hover:bg-slate-800'}`}><ClipboardList className="w-5 h-5 text-purple-400" /><span className="font-medium text-sm">Log Beban PLTD</span></button>
+              <button onClick={() => { setActiveTab('log_mesin'); setSearchTerm(''); setIsMobileMenuOpen(false); }} className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${activeTab === 'log_mesin' ? 'bg-indigo-600 text-white' : 'text-slate-300 hover:bg-slate-800'}`}><Server className="w-5 h-5 text-indigo-400" /><span className="font-medium text-sm">Log Status Mesin</span></button>
+              <button onClick={() => { setActiveTab('log_produksi'); setSearchTerm(''); setIsMobileMenuOpen(false); }} className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${activeTab === 'log_produksi' ? 'bg-orange-600 text-white' : 'text-slate-300 hover:bg-slate-800'}`}><Gauge className="w-5 h-5 text-orange-400" /><span className="font-medium text-sm">Log Produksi & BBM</span></button>
+              <button onClick={() => { setActiveTab('input_bbm'); setSearchTerm(''); setIsMobileMenuOpen(false); }} className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${activeTab === 'input_bbm' ? 'bg-teal-600 text-white' : 'text-slate-300 hover:bg-slate-800'}`}><Droplet className="w-5 h-5 text-teal-400" /><span className="font-medium text-sm">Input Stok BBM</span></button>
             </>
           )}
 
           {currentUser.role === 'admin' && (
             <>
               <div className="pt-4 pb-1"><p className="px-4 text-[10px] font-bold text-slate-500 uppercase tracking-widest">Absensi</p></div>
-              <button onClick={() => { setActiveTab('absensi_plts'); setSearchTerm(''); }} className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${activeTab === 'absensi_plts' ? 'bg-pink-600 text-white' : 'text-slate-300 hover:bg-slate-800'}`}><UserCheck className="w-5 h-5 text-pink-400" /><span className="font-medium text-sm">Absensi PLTS</span></button>
-              <button onClick={() => { setActiveTab('absensi_pltd'); setSearchTerm(''); }} className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${activeTab === 'absensi_pltd' ? 'bg-purple-600 text-white' : 'text-slate-300 hover:bg-slate-800'}`}><UserCheck className="w-5 h-5 text-purple-400" /><span className="font-medium text-sm">Absensi PLTD</span></button>
+              <button onClick={() => { setActiveTab('absensi_plts'); setSearchTerm(''); setIsMobileMenuOpen(false); }} className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${activeTab === 'absensi_plts' ? 'bg-pink-600 text-white' : 'text-slate-300 hover:bg-slate-800'}`}><UserCheck className="w-5 h-5 text-pink-400" /><span className="font-medium text-sm">Absensi PLTS</span></button>
+              <button onClick={() => { setActiveTab('absensi_pltd'); setSearchTerm(''); setIsMobileMenuOpen(false); }} className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${activeTab === 'absensi_pltd' ? 'bg-purple-600 text-white' : 'text-slate-300 hover:bg-slate-800'}`}><UserCheck className="w-5 h-5 text-purple-400" /><span className="font-medium text-sm">Absensi PLTD</span></button>
             </>
           )}
         </nav>
       </aside>
 
-      <main className="flex-1 flex flex-col h-screen overflow-hidden print:h-auto print:overflow-visible relative">
-        <header className="bg-white border-b border-slate-200 px-6 py-4 flex flex-wrap gap-4 items-center justify-between z-10 print:hidden">
-          <h2 className="text-xl font-bold text-slate-800 flex items-center gap-3">
-            {activeTab === 'dashboard' ? 'Ringkasan Sistem Pembangkit' :
-              (activeTab === 'assets_plts' ? 'Manajemen Master Aset PLTS' :
-                (activeTab === 'log_plts' ? 'Log Pencatatan Beban PLTS' :
-                  (activeTab === 'log_pltd' ? 'Log Pencatatan Beban PLTD' :
-                    (activeTab === 'log_mesin' ? 'Log Status Operasi Mesin' :
-                      (activeTab === 'log_produksi' ? 'Pencatatan Produksi & SFC PLTD' :
-                        (activeTab === 'input_bbm' ? 'Penerimaan & Stok Opname BBM' :
-                          (activeTab === 'absensi_plts' ? 'Rekap Absensi Operator PLTS' :
-                            (activeTab === 'absensi_pltd' ? 'Rekap Absensi Operator PLTD' : 'Manajemen Master Aset PLTD'))))))))}
-          </h2>
-          <div className="flex items-center gap-4">
-            <div className="text-right">
+      <main className="flex-1 flex flex-col h-screen w-full min-w-0 overflow-hidden print:h-auto print:overflow-visible relative">
+        <header className="bg-white border-b border-slate-200 px-4 md:px-6 py-3 md:py-4 flex flex-wrap gap-3 items-center justify-between z-10 print:hidden">
+          <div className="flex items-center gap-3 overflow-hidden">
+            <button onClick={() => setIsMobileMenuOpen(true)} className="md:hidden p-1.5 -ml-1 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors shrink-0">
+              <Menu className="w-6 h-6" />
+            </button>
+            <h2 className="text-sm md:text-xl font-bold text-slate-800 flex items-center gap-2 truncate">
+              {activeTab === 'dashboard' ? 'Ringkasan Sistem Pembangkit' :
+                (activeTab === 'assets_plts' ? 'Manajemen Master Aset PLTS' :
+                  (activeTab === 'log_plts' ? 'Log Pencatatan Beban PLTS' :
+                    (activeTab === 'log_pltd' ? 'Log Pencatatan Beban PLTD' :
+                      (activeTab === 'log_mesin' ? 'Log Status Operasi Mesin' :
+                        (activeTab === 'log_produksi' ? 'Pencatatan Produksi & SFC PLTD' :
+                          (activeTab === 'input_bbm' ? 'Penerimaan & Stok Opname BBM' :
+                            (activeTab === 'absensi_plts' ? 'Rekap Absensi Operator PLTS' :
+                              (activeTab === 'absensi_pltd' ? 'Rekap Absensi Operator PLTD' : 'Manajemen Master Aset PLTD'))))))))}
+            </h2>
+          </div>
+          <div className="flex items-center gap-2 md:gap-4 shrink-0">
+            <div className="text-right hidden sm:block">
               <div className="text-sm font-bold text-slate-800">{currentUser?.name || 'Guest'}</div>
               <div className="text-[10px] font-medium text-slate-500 uppercase tracking-wider">
                 {currentUser?.role === 'admin' ? 'Administrator' : 'Operator ' + String(currentUser?.role || '').toUpperCase()}
@@ -1044,7 +1061,7 @@ export default function App() {
           </div>
         </header>
 
-        <div className="flex-1 overflow-auto p-6 print:p-0 print:overflow-visible">
+        <div className="flex-1 overflow-x-hidden overflow-y-auto p-4 md:p-6 print:p-0 print:overflow-visible">
 
           {activeTab === 'dashboard' && (
             <div className="space-y-6">
@@ -1104,18 +1121,18 @@ export default function App() {
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="font-bold text-lg text-slate-800">Ringkasan Operasional PLTS</h3>
                   <div className="flex gap-2 print:hidden">
-                    <button onClick={handleExportPDF} className="px-4 py-2 bg-rose-50 text-rose-600 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-rose-100"><Download className="w-4 h-4" /> Export PDF</button>
-                    <button onClick={handleExportWAGSummary} className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-emerald-100"><Copy className="w-4 h-4" /> Export WAG</button>
+                    <button onClick={handleExportPDF} className="px-4 py-2 bg-rose-50 text-rose-600 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-rose-100"><Download className="w-4 h-4" /> <span className="hidden sm:inline">Export PDF</span></button>
+                    <button onClick={handleExportWAGSummary} className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-emerald-100"><Copy className="w-4 h-4" /> <span className="hidden sm:inline">Export WAG</span></button>
                   </div>
                 </div>
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto w-full">
                   <table id="plts-summary-table" className="w-full text-left">
                     <thead className="bg-slate-50 border-b text-xs font-bold text-slate-500 uppercase">
                       <tr>
-                        <th className="p-4 cursor-pointer hover:bg-slate-200" onClick={() => handleDashboardSort('nama_plts')}>Nama PLTS {dashboardSortConfig.key === 'nama_plts' && (dashboardSortConfig.direction === 'asc' ? <ArrowUp className="inline w-3 h-3" /> : <ArrowDown className="inline w-3 h-3" />)}</th>
-                        <th className="p-4 cursor-pointer hover:bg-slate-200 text-center" onClick={() => handleDashboardSort('Status')}>Status {dashboardSortConfig.key === 'Status' && (dashboardSortConfig.direction === 'asc' ? <ArrowUp className="inline w-3 h-3" /> : <ArrowDown className="inline w-3 h-3" />)}</th>
-                        <th className="p-4 cursor-pointer hover:bg-slate-200 text-right" onClick={() => handleDashboardSort('kapasitas_kwp')}>Kapasitas (kWp) {dashboardSortConfig.key === 'kapasitas_kwp' && (dashboardSortConfig.direction === 'asc' ? <ArrowUp className="inline w-3 h-3" /> : <ArrowDown className="inline w-3 h-3" />)}</th>
-                        <th className="p-4 cursor-pointer hover:bg-slate-200 text-right" onClick={() => handleDashboardSort('beban_terbaru')}>Beban Terbaru (kW) {dashboardSortConfig.key === 'beban_terbaru' && (dashboardSortConfig.direction === 'asc' ? <ArrowUp className="inline w-3 h-3" /> : <ArrowDown className="inline w-3 h-3" />)}</th>
+                        <th className="p-4 cursor-pointer hover:bg-slate-200 whitespace-nowrap" onClick={() => handleDashboardSort('nama_plts')}>Nama PLTS {dashboardSortConfig.key === 'nama_plts' && (dashboardSortConfig.direction === 'asc' ? <ArrowUp className="inline w-3 h-3" /> : <ArrowDown className="inline w-3 h-3" />)}</th>
+                        <th className="p-4 cursor-pointer hover:bg-slate-200 text-center whitespace-nowrap" onClick={() => handleDashboardSort('Status')}>Status {dashboardSortConfig.key === 'Status' && (dashboardSortConfig.direction === 'asc' ? <ArrowUp className="inline w-3 h-3" /> : <ArrowDown className="inline w-3 h-3" />)}</th>
+                        <th className="p-4 cursor-pointer hover:bg-slate-200 text-right whitespace-nowrap" onClick={() => handleDashboardSort('kapasitas_kwp')}>Kapasitas (kWp) {dashboardSortConfig.key === 'kapasitas_kwp' && (dashboardSortConfig.direction === 'asc' ? <ArrowUp className="inline w-3 h-3" /> : <ArrowDown className="inline w-3 h-3" />)}</th>
+                        <th className="p-4 cursor-pointer hover:bg-slate-200 text-right whitespace-nowrap" onClick={() => handleDashboardSort('beban_terbaru')}>Beban Terbaru (kW) {dashboardSortConfig.key === 'beban_terbaru' && (dashboardSortConfig.direction === 'asc' ? <ArrowUp className="inline w-3 h-3" /> : <ArrowDown className="inline w-3 h-3" />)}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-sm">
@@ -1130,10 +1147,10 @@ export default function App() {
 
                         return (
                           <tr key={i} className="hover:bg-slate-50">
-                            <td className="p-4 font-bold text-slate-700">{plts.nama_plts}</td>
-                            <td className="p-4 text-center"><span className={`px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wider ${badgeClass}`}>{plts.status}</span></td>
-                            <td className="p-4 text-right font-medium">{plts.kapasitas_kwp}</td>
-                            <td className="p-4 text-right font-bold text-sky-600">{plts.beban_terbaru} <div className="text-[10px] font-normal text-slate-400">{plts.waktu_terbaru !== '-' ? plts.waktu_terbaru : ''}</div></td>
+                            <td className="p-4 font-bold text-slate-700 whitespace-nowrap">{plts.nama_plts}</td>
+                            <td className="p-4 text-center whitespace-nowrap"><span className={`px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wider ${badgeClass}`}>{plts.status}</span></td>
+                            <td className="p-4 text-right font-medium whitespace-nowrap">{plts.kapasitas_kwp}</td>
+                            <td className="p-4 text-right font-bold text-sky-600 whitespace-nowrap">{plts.beban_terbaru} <div className="text-[10px] font-normal text-slate-400">{plts.waktu_terbaru !== '-' ? plts.waktu_terbaru : ''}</div></td>
                           </tr>
                         );
                       })}
@@ -1147,28 +1164,26 @@ export default function App() {
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="font-bold text-lg text-slate-800">Ringkasan Operasional PLTD</h3>
                   <div className="flex gap-2 print:hidden">
-                    <button onClick={handleExportPDFPltd} className="px-4 py-2 bg-purple-50 text-purple-600 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-purple-100"><Download className="w-4 h-4" /> Export PDF</button>
-                    <button onClick={handleExportWAGSummaryPltd} className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-emerald-100"><Copy className="w-4 h-4" /> Export WAG</button>
+                    <button onClick={handleExportPDFPltd} className="px-4 py-2 bg-purple-50 text-purple-600 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-purple-100"><Download className="w-4 h-4" /> <span className="hidden sm:inline">Export PDF</span></button>
+                    <button onClick={handleExportWAGSummaryPltd} className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-emerald-100"><Copy className="w-4 h-4" /> <span className="hidden sm:inline">Export WAG</span></button>
                   </div>
                 </div>
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto w-full">
                   <table id="pltd-summary-table" className="w-full text-left">
                     <thead className="bg-slate-50 border-b text-xs font-bold text-slate-500 uppercase">
                       <tr>
-                        <th className="p-4 cursor-pointer hover:bg-slate-200" onClick={() => handleDashboardPltdSort('nama_pltd')}>Nama PLTD {dashboardPltdSortConfig.key === 'nama_pltd' && (dashboardPltdSortConfig.direction === 'asc' ? <ArrowUp className="inline w-3 h-3" /> : <ArrowDown className="inline w-3 h-3" />)}</th>
+                        <th className="p-4 cursor-pointer hover:bg-slate-200 whitespace-nowrap" onClick={() => handleDashboardPltdSort('nama_pltd')}>Nama PLTD {dashboardPltdSortConfig.key === 'nama_pltd' && (dashboardPltdSortConfig.direction === 'asc' ? <ArrowUp className="inline w-3 h-3" /> : <ArrowDown className="inline w-3 h-3" />)}</th>
 
-                        {/* BARIS BARU: HEADER STATUS */}
-                        <th className="p-4 cursor-pointer hover:bg-slate-200 text-center" onClick={() => handleDashboardPltdSort('Status')}>Status {dashboardPltdSortConfig.key === 'Status' && (dashboardPltdSortConfig.direction === 'asc' ? <ArrowUp className="inline w-3 h-3" /> : <ArrowDown className="inline w-3 h-3" />)}</th>
+                        <th className="p-4 cursor-pointer hover:bg-slate-200 text-center whitespace-nowrap" onClick={() => handleDashboardPltdSort('Status')}>Status {dashboardPltdSortConfig.key === 'Status' && (dashboardPltdSortConfig.direction === 'asc' ? <ArrowUp className="inline w-3 h-3" /> : <ArrowDown className="inline w-3 h-3" />)}</th>
 
-                        <th className="p-4 cursor-pointer hover:bg-slate-200 text-right" onClick={() => handleDashboardPltdSort('daya_terpasang')}>Daya Terpasang (kW) {dashboardPltdSortConfig.key === 'daya_terpasang' && (dashboardPltdSortConfig.direction === 'asc' ? <ArrowUp className="inline w-3 h-3" /> : <ArrowDown className="inline w-3 h-3" />)}</th>
-                        <th className="p-4 cursor-pointer hover:bg-slate-200 text-right" onClick={() => handleDashboardPltdSort('daya_mampu')}>Daya Mampu (kW) {dashboardPltdSortConfig.key === 'daya_mampu' && (dashboardPltdSortConfig.direction === 'asc' ? <ArrowUp className="inline w-3 h-3" /> : <ArrowDown className="inline w-3 h-3" />)}</th>
-                        <th className="p-4 cursor-pointer hover:bg-slate-200 text-right" onClick={() => handleDashboardPltdSort('beban_terbaru')}>Beban Terbaru (kW) {dashboardPltdSortConfig.key === 'beban_terbaru' && (dashboardPltdSortConfig.direction === 'asc' ? <ArrowUp className="inline w-3 h-3" /> : <ArrowDown className="inline w-3 h-3" />)}</th>
-                        <th className="p-4 cursor-pointer hover:bg-slate-200 text-right" onClick={() => handleDashboardPltdSort('stok_bbm')}>Stok BBM Tersedia (L) {dashboardPltdSortConfig.key === 'stok_bbm' && (dashboardPltdSortConfig.direction === 'asc' ? <ArrowUp className="inline w-3 h-3" /> : <ArrowDown className="inline w-3 h-3" />)}</th>
+                        <th className="p-4 cursor-pointer hover:bg-slate-200 text-right whitespace-nowrap" onClick={() => handleDashboardPltdSort('daya_terpasang')}>Daya Terpasang (kW) {dashboardPltdSortConfig.key === 'daya_terpasang' && (dashboardPltdSortConfig.direction === 'asc' ? <ArrowUp className="inline w-3 h-3" /> : <ArrowDown className="inline w-3 h-3" />)}</th>
+                        <th className="p-4 cursor-pointer hover:bg-slate-200 text-right whitespace-nowrap" onClick={() => handleDashboardPltdSort('daya_mampu')}>Daya Mampu (kW) {dashboardPltdSortConfig.key === 'daya_mampu' && (dashboardPltdSortConfig.direction === 'asc' ? <ArrowUp className="inline w-3 h-3" /> : <ArrowDown className="inline w-3 h-3" />)}</th>
+                        <th className="p-4 cursor-pointer hover:bg-slate-200 text-right whitespace-nowrap" onClick={() => handleDashboardPltdSort('beban_terbaru')}>Beban Terbaru (kW) {dashboardPltdSortConfig.key === 'beban_terbaru' && (dashboardPltdSortConfig.direction === 'asc' ? <ArrowUp className="inline w-3 h-3" /> : <ArrowDown className="inline w-3 h-3" />)}</th>
+                        <th className="p-4 cursor-pointer hover:bg-slate-200 text-right whitespace-nowrap" onClick={() => handleDashboardPltdSort('stok_bbm')}>Stok BBM Tersedia (L) {dashboardPltdSortConfig.key === 'stok_bbm' && (dashboardPltdSortConfig.direction === 'asc' ? <ArrowUp className="inline w-3 h-3" /> : <ArrowDown className="inline w-3 h-3" />)}</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-sm">
                       {dashboardSummaryPLTDData.map((pltd, i) => {
-                        // --- BARIS BARU: Logika Warna Badge Status ---
                         const valUpper = pltd.status ? String(pltd.status).toUpperCase() : '';
                         let badgeClass = "bg-slate-100 text-slate-700";
                         if (valUpper === 'OPERASI') badgeClass = "bg-emerald-100 text-emerald-700 border border-emerald-200";
@@ -1179,15 +1194,14 @@ export default function App() {
 
                         return (
                           <tr key={i} className="hover:bg-slate-50">
-                            <td className="p-4 font-bold text-slate-700">{pltd.nama_pltd}</td>
+                            <td className="p-4 font-bold text-slate-700 whitespace-nowrap">{pltd.nama_pltd}</td>
 
-                            {/* BARIS BARU: TAMPILAN BADGE STATUS */}
-                            <td className="p-4 text-center"><span className={`px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wider ${badgeClass}`}>{pltd.status || '-'}</span></td>
+                            <td className="p-4 text-center whitespace-nowrap"><span className={`px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wider ${badgeClass}`}>{pltd.status || '-'}</span></td>
 
-                            <td className="p-4 text-right font-medium">{pltd.daya_terpasang}</td>
-                            <td className="p-4 text-right font-bold text-emerald-600">{pltd.daya_mampu}</td>
-                            <td className="p-4 text-right font-bold text-purple-600">{pltd.beban_terbaru} <div className="text-[10px] font-normal text-slate-400">{pltd.waktu_terbaru !== '-' ? pltd.waktu_terbaru : ''}</div></td>
-                            <td className="p-4 text-right font-bold text-teal-600">{Number(pltd.stok_bbm).toLocaleString('id-ID')}</td>
+                            <td className="p-4 text-right font-medium whitespace-nowrap">{pltd.daya_terpasang}</td>
+                            <td className="p-4 text-right font-bold text-emerald-600 whitespace-nowrap">{pltd.daya_mampu}</td>
+                            <td className="p-4 text-right font-bold text-purple-600 whitespace-nowrap">{pltd.beban_terbaru} <div className="text-[10px] font-normal text-slate-400">{pltd.waktu_terbaru !== '-' ? pltd.waktu_terbaru : ''}</div></td>
+                            <td className="p-4 text-right font-bold text-teal-600 whitespace-nowrap">{Number(pltd.stok_bbm).toLocaleString('id-ID')}</td>
                           </tr>
                         );
                       })}
@@ -1200,32 +1214,28 @@ export default function App() {
 
           {(activeTab === 'assets_plts' || activeTab === 'assets_pltd') && (
             <div className="bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col h-full min-h-[500px]">
-              <div className="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="p-4 md:p-6 border-b border-slate-100 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
                   {activeTab === 'assets_plts' ? <div className="p-2 bg-blue-50 text-blue-600 rounded-lg"><Sun className="w-5 h-5" /></div> : <div className="p-2 bg-purple-50 text-purple-600 rounded-lg"><Zap className="w-5 h-5" /></div>}
                   <h3 className="font-bold text-lg text-slate-800">Inventaris {activeTab === 'assets_plts' ? 'PLTS' : 'PLTD'}</h3>
                 </div>
 
-                {/* --- BAGIAN YANG DIUBAH: Penambahan div flex untuk merapikan tombol & search --- */}
-                <div className="flex flex-wrap items-center gap-3">
-                  {/* TOMBOL TAMBAH DATA */}
+                <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
                   <button
                     onClick={handleAddClick}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-blue-700 transition-colors shadow-sm"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-blue-700 transition-colors shadow-sm flex-1 lg:flex-none"
                   >
-                    <Plus className="w-4 h-4" /> Tambah Data
+                    <Plus className="w-4 h-4" /> Tambah
                   </button>
 
-                  <div className="relative">
+                  <div className="relative flex-1 lg:flex-none min-w-[200px]">
                     <Search className="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                    <input type="text" placeholder="Cari aset..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-64" />
+                    <input type="text" placeholder="Cari aset..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" />
                   </div>
                 </div>
-                {/* --- AKHIR BAGIAN YANG DIUBAH --- */}
-
               </div>
-              <div className="flex-1 overflow-x-auto">
-                <table className="w-full text-left border-collapse">
+              <div className="flex-1 overflow-x-auto w-full">
+                <table className="w-full text-left border-collapse min-w-[800px]">
                   <thead>
                     <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 text-sm font-semibold uppercase tracking-wider">
                       <th className="p-4 w-12 text-center">#</th><th className="p-4 w-24 text-center">Aksi</th>
@@ -1285,34 +1295,34 @@ export default function App() {
 
           {activeTab === 'log_plts' && (
             <div className="bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col min-h-[600px]">
-              <div className="p-6 border-b border-slate-100 flex flex-col sm:flex-row gap-4 justify-between items-center">
-                <div className="flex items-center gap-3">
+              <div className="p-4 md:p-6 border-b border-slate-100 flex flex-col sm:flex-row gap-4 justify-between items-center w-full">
+                <div className="flex items-center gap-3 w-full sm:w-auto">
                   <div className="p-2 bg-sky-50 text-sky-600 rounded-lg"><ClipboardList className="w-5 h-5" /></div>
-                  <h3 className="font-bold text-lg text-slate-800">Log Beban PLTS</h3>
+                  <h3 className="font-bold text-lg text-slate-800 truncate">Log Beban PLTS</h3>
                 </div>
                 {currentUser.role === 'admin' ? (
-                  <select className="px-4 py-2 border border-slate-300 rounded-lg text-sm bg-slate-50 font-medium text-slate-800" value={selectedPltsForLog} onChange={(e) => { setSelectedPltsForLog(e.target.value); setLogFormData({ ...logFormData, petugas: [] }); }}>
+                  <select className="w-full sm:w-auto px-4 py-2 border border-slate-300 rounded-lg text-sm bg-slate-50 font-medium text-slate-800" value={selectedPltsForLog} onChange={(e) => { setSelectedPltsForLog(e.target.value); setLogFormData({ ...logFormData, petugas: [] }); }}>
                     <option value="" disabled>-- Pilih PLTS --</option>
-                    {pltsAssets.map(p => <option key={p.site_id} value={p.site_id}>{p.nama_plts} ({p.site_id})</option>)}
+                    {pltsAssets.map(p => <option key={p.site_id} value={p.site_id}>{p.nama_plts}</option>)}
                   </select>
                 ) : (
-                  <div className="px-4 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-bold text-slate-700">
+                  <div className="w-full sm:w-auto px-4 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-bold text-slate-700 text-center">
                     {currentUser.name}
                   </div>
                 )}
               </div>
-              <div className="p-6">
+              <div className="p-4 md:p-6 w-full">
                 {!selectedPltsForLog ? (
                   <div className="text-center py-12 text-slate-400">Pilih PLTS terlebih dahulu.</div>
                 ) : (
                   <div className="space-y-6">
-                    <div className="bg-sky-50/50 p-5 rounded-xl border border-sky-100">
+                    <div className="bg-sky-50/50 p-4 md:p-5 rounded-xl border border-sky-100 w-full">
                       <div className="flex items-center justify-between mb-4">
                         <h4 className="font-bold text-sky-800 flex items-center gap-2"><Plus className="w-4 h-4" /> Catat Log Baru</h4>
                         <button onClick={() => { setIsAddingLog(!isAddingLog); setEditingLogId(null); }} className="text-xs font-bold text-sky-600 bg-white px-3 py-1.5 rounded-md border border-sky-200">{isAddingLog ? 'Tutup' : 'Buka Formulir'}</button>
                       </div>
                       {isAddingLog && (
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4 bg-white p-4 rounded-lg border border-sky-100">
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4 bg-white p-4 rounded-lg border border-sky-100 w-full">
                           <div><label className="block text-xs font-bold text-slate-600 mb-1">Tanggal</label><input type="date" className="w-full text-sm px-3 py-2 border rounded-lg" value={logFormData.tanggal} onChange={e => setLogFormData({ ...logFormData, tanggal: e.target.value })} /></div>
                           <div><label className="block text-xs font-bold text-slate-600 mb-1">Jam</label><input type="time" className="w-full text-sm px-3 py-2 border rounded-lg" value={logFormData.jam} onChange={e => setLogFormData({ ...logFormData, jam: e.target.value })} /></div>
                           <div><label className="block text-xs font-bold text-slate-600 mb-1">Beban Puncak (kW)</label><input type="number" step="0.1" className="w-full text-sm px-3 py-2 border rounded-lg" value={logFormData.beban_puncak} onChange={e => setLogFormData({ ...logFormData, beban_puncak: e.target.value })} /></div>
@@ -1338,12 +1348,12 @@ export default function App() {
                                 ))}
                             </div>
                           </div>
-                          <div className="md:col-span-4 flex justify-end mt-2"><button onClick={handleSaveLog} disabled={!logFormData.beban_puncak} className="px-5 py-2.5 bg-sky-600 text-white text-sm font-bold rounded-lg hover:bg-sky-700 disabled:opacity-50">{editingLogId ? 'Simpan Perubahan' : 'Simpan Log'}</button></div>
+                          <div className="md:col-span-4 flex justify-end mt-2 w-full"><button onClick={handleSaveLog} disabled={!logFormData.beban_puncak} className="w-full md:w-auto px-5 py-2.5 bg-sky-600 text-white text-sm font-bold rounded-lg hover:bg-sky-700 disabled:opacity-50">{editingLogId ? 'Simpan Perubahan' : 'Simpan Log'}</button></div>
                         </div>
                       )}
                     </div>
-                    <div className="border border-slate-200 rounded-xl overflow-hidden">
-                      <table className="w-full text-left"><thead className="bg-slate-50 text-xs font-bold text-slate-600 uppercase border-b"><tr><th className="p-4">Waktu</th><th className="p-4 text-right">Beban (kW)</th><th className="p-4">Status & Ket</th><th className="p-4 text-center w-24">Aksi</th></tr></thead>
+                    <div className="border border-slate-200 rounded-xl overflow-x-auto w-full">
+                      <table className="w-full text-left min-w-[600px]"><thead className="bg-slate-50 text-xs font-bold text-slate-600 uppercase border-b"><tr><th className="p-4">Waktu</th><th className="p-4 text-right">Beban (kW)</th><th className="p-4">Status & Ket</th><th className="p-4 text-center w-24">Aksi</th></tr></thead>
                         <tbody className="divide-y divide-slate-100">
                           {currentPltsLogs.map(log => (
                             <tr key={log._id} className="hover:bg-slate-50 text-sm group">
@@ -1351,7 +1361,7 @@ export default function App() {
                                 <div className="text-[10px] text-sky-600 font-bold mt-1 max-w-[150px] truncate" title={Array.isArray(log.petugas) ? log.petugas.join(', ') : ''}>👷 {Array.isArray(log.petugas) && log.petugas.length > 0 ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-'}</div>
                               </td>
                               <td className="p-4 text-right font-bold text-sky-600 text-base">{log.beban_puncak}</td>
-                              <td className="p-4"><div className="font-bold text-slate-700">{log.status}</div><div className="text-xs text-slate-500 italic max-w-xs truncate" title={log.keterangan}>{log.keterangan || '-'}</div></td>
+                              <td className="p-4"><div className="font-bold text-slate-700">{log.status}</div><div className="text-xs text-slate-500 italic max-w-[150px] truncate" title={log.keterangan}>{log.keterangan || '-'}</div></td>
                               <td className="p-4 text-center">
                                 <div className="flex justify-center gap-1">
                                   <button onClick={() => { let text = `*LAPORAN PLTS*\nTanggal: ${log.tanggal}\nJam: ${log.jam}\nBeban: ${log.beban_puncak} kW\nStatus: ${log.status}\nKet: ${log.keterangan || '-'}\nPetugas: ${Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-'}`; const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); setNotification('Salin WAG berhasil!'); }} className="p-1.5 bg-sky-50 text-sky-600 rounded hover:bg-sky-100" title="Salin ke WAG"><Copy className="w-4 h-4" /></button>
@@ -1365,9 +1375,9 @@ export default function App() {
                       </table>
                     </div>
                     {currentPltsLogs.length > 0 && (
-                      <div className="mt-6 bg-white p-6 border border-slate-200 rounded-xl shadow-sm">
+                      <div className="mt-6 bg-white p-4 md:p-6 border border-slate-200 rounded-xl shadow-sm w-full">
                         <h4 className="font-bold text-slate-800 mb-6 flex items-center gap-2"><Activity className="w-5 h-5 text-sky-500" /> Grafik Tren Beban Puncak</h4>
-                        <div className="h-72">
+                        <div className="h-64 md:h-72 w-full">
                           <ResponsiveContainer width="100%" height="100%">
                             <LineChart data={[...currentPltsLogs].reverse()} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
@@ -1388,61 +1398,61 @@ export default function App() {
 
           {activeTab === 'log_pltd' && (
             <div className="bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col min-h-[600px]">
-              <div className="p-6 border-b border-slate-100 flex flex-col sm:flex-row gap-4 justify-between items-center">
-                <div className="flex items-center gap-3">
+              <div className="p-4 md:p-6 border-b border-slate-100 flex flex-col sm:flex-row gap-4 justify-between items-center w-full">
+                <div className="flex items-center gap-3 w-full sm:w-auto">
                   <div className="p-2 bg-purple-50 text-purple-600 rounded-lg"><ClipboardList className="w-5 h-5" /></div>
-                  <h3 className="font-bold text-lg text-slate-800">Log Beban PLTD</h3>
+                  <h3 className="font-bold text-lg text-slate-800 truncate">Log Beban PLTD</h3>
                 </div>
                 {currentUser.role === 'admin' ? (
-                  <select className="px-4 py-2 border border-slate-300 rounded-lg text-sm bg-slate-50 font-medium text-slate-800" value={selectedPltdForLog} onChange={(e) => { setSelectedPltdForLog(e.target.value); setLogPltdFormData({ ...logPltdFormData, petugas: [] }); }}>
+                  <select className="w-full sm:w-auto px-4 py-2 border border-slate-300 rounded-lg text-sm bg-slate-50 font-medium text-slate-800" value={selectedPltdForLog} onChange={(e) => { setSelectedPltdForLog(e.target.value); setLogPltdFormData({ ...logPltdFormData, petugas: [] }); }}>
                     <option value="" disabled>-- Pilih PLTD --</option>
-                    {pltdAssets.map(p => <option key={p.site_id} value={p.site_id}>{p.nama_pltd} ({p.site_id})</option>)}
+                    {pltdAssets.map(p => <option key={p.site_id} value={p.site_id}>{p.nama_pltd}</option>)}
                   </select>
                 ) : (
-                  <div className="px-4 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-bold text-slate-700">
+                  <div className="w-full sm:w-auto px-4 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-bold text-slate-700 text-center">
                     {currentUser.name}
                   </div>
                 )}
               </div>
-              <div className="p-6">
+              <div className="p-4 md:p-6 w-full">
                 {!selectedPltdForLog ? (
                   <div className="text-center py-12 text-slate-400">Pilih PLTD terlebih dahulu.</div>
                 ) : (
                   <div className="space-y-6">
-                    <div className="bg-purple-50/50 p-5 rounded-xl border border-purple-100">
+                    <div className="bg-purple-50/50 p-4 md:p-5 rounded-xl border border-purple-100 w-full">
                       <div className="flex items-center justify-between mb-4">
                         <h4 className="font-bold text-purple-800 flex items-center gap-2"><Plus className="w-4 h-4" /> Catat Log Beban Baru</h4>
                         <button onClick={() => { setIsAddingLogPltd(!isAddingLogPltd); setEditingLogPltdId(null); }} className="text-xs font-bold text-purple-600 bg-white px-3 py-1.5 rounded-md border border-purple-200">{isAddingLogPltd ? 'Tutup' : 'Buka Formulir'}</button>
                       </div>
                       {isAddingLogPltd && (
-                        <div className="bg-white p-5 rounded-xl border border-purple-100 shadow-sm mt-4">
-                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                            <div><label className="block text-xs font-bold text-slate-600 mb-1">Tanggal</label><input type="date" className="w-full text-sm px-3 py-2.5 border rounded-lg bg-slate-50 focus:bg-white focus:ring-2 focus:ring-purple-500" value={logPltdFormData.tanggal} onChange={e => setLogPltdFormData({ ...logPltdFormData, tanggal: e.target.value })} /></div>
-                            <div><label className="block text-xs font-bold text-slate-600 mb-1">Jam</label><input type="time" className="w-full text-sm px-3 py-2.5 border rounded-lg bg-slate-50 focus:bg-white focus:ring-2 focus:ring-purple-500" value={logPltdFormData.jam} onChange={e => setLogPltdFormData({ ...logPltdFormData, jam: e.target.value })} /></div>
-                            <div className="bg-purple-50/50 p-3 rounded-lg border border-purple-100 col-span-1 md:col-span-2">
+                        <div className="bg-white p-4 md:p-5 rounded-xl border border-purple-100 shadow-sm mt-4 w-full">
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                            <div><label className="block text-xs font-bold text-slate-600 mb-1">Tanggal</label><input type="date" className="w-full text-sm px-3 py-2 border rounded-lg bg-slate-50 focus:bg-white focus:ring-2 focus:ring-purple-500" value={logPltdFormData.tanggal} onChange={e => setLogPltdFormData({ ...logPltdFormData, tanggal: e.target.value })} /></div>
+                            <div><label className="block text-xs font-bold text-slate-600 mb-1">Jam</label><input type="time" className="w-full text-sm px-3 py-2 border rounded-lg bg-slate-50 focus:bg-white focus:ring-2 focus:ring-purple-500" value={logPltdFormData.jam} onChange={e => setLogPltdFormData({ ...logPltdFormData, jam: e.target.value })} /></div>
+                            <div className="bg-purple-50/50 p-3 rounded-lg border border-purple-100 col-span-1 md:col-span-2 w-full">
                               <label className="block text-xs font-bold text-purple-800 mb-2">Beban (kW / kVAR)</label>
-                              <div className="flex gap-2">
+                              <div className="flex flex-col sm:flex-row gap-2">
                                 <input type="number" placeholder="Aktif (kW)" className="w-full text-sm px-3 py-2 border rounded-lg" value={logPltdFormData.beban_aktif} onChange={e => setLogPltdFormData({ ...logPltdFormData, beban_aktif: e.target.value })} />
                                 <input type="number" placeholder="Reaktif (kVAR)" className="w-full text-sm px-3 py-2 border rounded-lg" value={logPltdFormData.beban_reaktif} onChange={e => setLogPltdFormData({ ...logPltdFormData, beban_reaktif: e.target.value })} />
                               </div>
                             </div>
-                            <div className="bg-slate-50 p-3 rounded-lg border border-slate-200 col-span-1 md:col-span-2">
+                            <div className="bg-slate-50 p-3 rounded-lg border border-slate-200 col-span-1 md:col-span-2 w-full">
                               <label className="block text-xs font-bold text-slate-600 mb-2">Arus R / S / T (A)</label>
                               <div className="flex gap-2">
-                                <input type="number" placeholder="R" className="w-full text-sm px-2 py-2 border rounded-lg text-center" value={logPltdFormData.arus_r} onChange={e => setLogPltdFormData({ ...logPltdFormData, arus_r: e.target.value })} />
-                                <input type="number" placeholder="S" className="w-full text-sm px-2 py-2 border rounded-lg text-center" value={logPltdFormData.arus_s} onChange={e => setLogPltdFormData({ ...logPltdFormData, arus_s: e.target.value })} />
-                                <input type="number" placeholder="T" className="w-full text-sm px-2 py-2 border rounded-lg text-center" value={logPltdFormData.arus_t} onChange={e => setLogPltdFormData({ ...logPltdFormData, arus_t: e.target.value })} />
+                                <input type="number" placeholder="R" className="w-full text-sm px-2 py-2 border rounded-lg text-center min-w-0" value={logPltdFormData.arus_r} onChange={e => setLogPltdFormData({ ...logPltdFormData, arus_r: e.target.value })} />
+                                <input type="number" placeholder="S" className="w-full text-sm px-2 py-2 border rounded-lg text-center min-w-0" value={logPltdFormData.arus_s} onChange={e => setLogPltdFormData({ ...logPltdFormData, arus_s: e.target.value })} />
+                                <input type="number" placeholder="T" className="w-full text-sm px-2 py-2 border rounded-lg text-center min-w-0" value={logPltdFormData.arus_t} onChange={e => setLogPltdFormData({ ...logPltdFormData, arus_t: e.target.value })} />
                               </div>
                             </div>
-                            <div className="bg-slate-50 p-3 rounded-lg border border-slate-200 col-span-1 lg:col-span-1">
+                            <div className="bg-slate-50 p-3 rounded-lg border border-slate-200 col-span-1 lg:col-span-1 w-full">
                               <label className="block text-xs font-bold text-slate-600 mb-2">Teg. RS/ST/TR (kV)</label>
                               <div className="flex gap-2">
-                                <input type="number" placeholder="RS" step="0.1" className="w-full text-sm px-1 py-2 border rounded-lg text-center" value={logPltdFormData.tegangan_rs} onChange={e => setLogPltdFormData({ ...logPltdFormData, tegangan_rs: e.target.value })} />
-                                <input type="number" placeholder="ST" step="0.1" className="w-full text-sm px-1 py-2 border rounded-lg text-center" value={logPltdFormData.tegangan_st} onChange={e => setLogPltdFormData({ ...logPltdFormData, tegangan_st: e.target.value })} />
-                                <input type="number" placeholder="TR" step="0.1" className="w-full text-sm px-1 py-2 border rounded-lg text-center" value={logPltdFormData.tegangan_tr} onChange={e => setLogPltdFormData({ ...logPltdFormData, tegangan_tr: e.target.value })} />
+                                <input type="number" placeholder="RS" step="0.1" className="w-full text-sm px-1 py-2 border rounded-lg text-center min-w-0" value={logPltdFormData.tegangan_rs} onChange={e => setLogPltdFormData({ ...logPltdFormData, tegangan_rs: e.target.value })} />
+                                <input type="number" placeholder="ST" step="0.1" className="w-full text-sm px-1 py-2 border rounded-lg text-center min-w-0" value={logPltdFormData.tegangan_st} onChange={e => setLogPltdFormData({ ...logPltdFormData, tegangan_st: e.target.value })} />
+                                <input type="number" placeholder="TR" step="0.1" className="w-full text-sm px-1 py-2 border rounded-lg text-center min-w-0" value={logPltdFormData.tegangan_tr} onChange={e => setLogPltdFormData({ ...logPltdFormData, tegangan_tr: e.target.value })} />
                               </div>
                             </div>
-                            <div><label className="block text-xs font-bold text-slate-600 mb-1">Frekuensi (Hz)</label><input type="number" step="0.1" className="w-full text-lg font-bold px-3 py-2.5 border border-slate-300 rounded-lg text-center focus:ring-2 focus:ring-purple-500" value={logPltdFormData.frekuensi} onChange={e => setLogPltdFormData({ ...logPltdFormData, frekuensi: e.target.value })} /></div>
+                            <div><label className="block text-xs font-bold text-slate-600 mb-1">Frekuensi (Hz)</label><input type="number" step="0.1" className="w-full text-lg font-bold px-3 py-2 border border-slate-300 rounded-lg text-center focus:ring-2 focus:ring-purple-500" value={logPltdFormData.frekuensi} onChange={e => setLogPltdFormData({ ...logPltdFormData, frekuensi: e.target.value })} /></div>
                             <div className="lg:col-span-4 mt-2">
                               <label className="block text-xs font-bold text-slate-600 mb-2">Petugas Piket</label>
                               <div className="flex flex-wrap gap-3">
@@ -1455,14 +1465,14 @@ export default function App() {
                                   ))}
                               </div>
                             </div>
-                            <div className="lg:col-span-4 flex justify-end mt-4 pt-4 border-t border-slate-100">
-                              <button onClick={handleSaveLogPltd} disabled={!logPltdFormData.beban_aktif} className="px-8 py-3 bg-purple-600 text-white text-sm font-bold rounded-xl hover:bg-purple-700 shadow-md disabled:opacity-50">{editingLogPltdId ? 'Simpan Perubahan' : 'Simpan Log PLTD'}</button>
+                            <div className="lg:col-span-4 flex justify-end mt-4 pt-4 border-t border-slate-100 w-full">
+                              <button onClick={handleSaveLogPltd} disabled={!logPltdFormData.beban_aktif} className="w-full md:w-auto px-8 py-3 bg-purple-600 text-white text-sm font-bold rounded-xl hover:bg-purple-700 shadow-md disabled:opacity-50">{editingLogPltdId ? 'Simpan Perubahan' : 'Simpan Log PLTD'}</button>
                             </div>
                           </div>
                         </div>
                       )}
                     </div>
-                    <div className="border border-slate-200 rounded-xl overflow-x-auto">
+                    <div className="border border-slate-200 rounded-xl overflow-x-auto w-full">
                       <table className="w-full text-left min-w-[800px]"><thead className="bg-slate-50 text-xs font-bold text-slate-600 uppercase border-b"><tr><th className="p-4">Waktu</th><th className="p-4 text-right">B. Aktif (kW)</th><th className="p-4 text-right">B. Reaktif</th><th className="p-4 text-center">Arus (R/S/T)</th><th className="p-4 text-center">Teg. (RS/ST/TR)</th><th className="p-4 text-center">Frek (Hz)</th><th className="p-4 text-center">Aksi</th></tr></thead>
                         <tbody className="divide-y divide-slate-100 text-sm">
                           {currentPltdLogs.map(log => (
@@ -1483,9 +1493,9 @@ export default function App() {
                       </table>
                     </div>
                     {currentPltdLogs.length > 0 && (
-                      <div className="mt-6 bg-white p-6 border border-slate-200 rounded-xl shadow-sm">
+                      <div className="mt-6 bg-white p-4 md:p-6 border border-slate-200 rounded-xl shadow-sm w-full">
                         <h4 className="font-bold text-slate-800 mb-6 flex items-center gap-2"><Activity className="w-5 h-5 text-purple-500" /> Grafik Tren Beban Aktif & Reaktif</h4>
-                        <div className="h-72">
+                        <div className="h-64 md:h-72 w-full">
                           <ResponsiveContainer width="100%" height="100%">
                             <LineChart data={[...currentPltdLogs].reverse()} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
@@ -1508,38 +1518,38 @@ export default function App() {
 
           {activeTab === 'log_mesin' && (
             <div className="bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col min-h-[600px]">
-              <div className="p-6 border-b border-slate-100 flex flex-col sm:flex-row gap-4 justify-between items-center">
-                <div className="flex items-center gap-3">
+              <div className="p-4 md:p-6 border-b border-slate-100 flex flex-col sm:flex-row gap-4 justify-between items-center w-full">
+                <div className="flex items-center gap-3 w-full sm:w-auto">
                   <div className="p-2 bg-indigo-50 text-indigo-600 rounded-lg"><Server className="w-5 h-5" /></div>
-                  <h3 className="font-bold text-lg text-slate-800">Log Status Operasi Mesin</h3>
+                  <h3 className="font-bold text-lg text-slate-800 truncate">Log Status Operasi Mesin</h3>
                 </div>
                 {currentUser.role === 'admin' ? (
-                  <select className="px-4 py-2 border border-slate-300 rounded-lg text-sm bg-slate-50 font-medium text-slate-800" value={selectedPltdForMesinLog} onChange={(e) => setSelectedPltdForMesinLog(e.target.value)}>
+                  <select className="w-full sm:w-auto px-4 py-2 border border-slate-300 rounded-lg text-sm bg-slate-50 font-medium text-slate-800" value={selectedPltdForMesinLog} onChange={(e) => setSelectedPltdForMesinLog(e.target.value)}>
                     <option value="" disabled>-- Pilih PLTD --</option>
-                    {pltdAssets.map(p => <option key={p.site_id} value={p.site_id}>{p.nama_pltd} ({p.site_id})</option>)}
+                    {pltdAssets.map(p => <option key={p.site_id} value={p.site_id}>{p.nama_pltd}</option>)}
                   </select>
                 ) : (
-                  <div className="px-4 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-bold text-slate-700">
+                  <div className="w-full sm:w-auto px-4 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-bold text-slate-700 text-center">
                     {currentUser.name}
                   </div>
                 )}
               </div>
-              <div className="p-6">
+              <div className="p-4 md:p-6 w-full">
                 {!selectedPltdForMesinLog ? (
                   <div className="text-center py-12 text-slate-400">Pilih PLTD terlebih dahulu.</div>
                 ) : (
                   <div className="space-y-6">
-                    <div className="bg-indigo-50/50 p-5 rounded-xl border border-indigo-100">
+                    <div className="bg-indigo-50/50 p-4 md:p-5 rounded-xl border border-indigo-100 w-full">
                       <div className="flex items-center justify-between mb-4">
                         <h4 className="font-bold text-indigo-800 flex items-center gap-2"><Plus className="w-4 h-4" /> Catat Status Mesin</h4>
                         <button onClick={() => { if (isAddingMesinLog) setIsAddingMesinLog(false); else handleOpenAddMesinLog(); }} className="text-xs font-bold text-indigo-600 bg-white px-3 py-1.5 rounded-md border border-indigo-200">{isAddingMesinLog ? 'Batal' : 'Buka Formulir'}</button>
                       </div>
                       {isAddingMesinLog && (
-                        <div className="mt-4 bg-white p-5 rounded-xl border border-indigo-100 shadow-sm">
-                          <div className="flex flex-wrap gap-4 mb-4">
-                            <div><label className="block text-xs font-bold text-slate-600 mb-1">Tanggal</label><input type="date" className="w-40 text-sm px-3 py-2 border rounded-lg" value={mesinLogFormData.tanggal} onChange={e => setMesinLogFormData({ ...mesinLogFormData, tanggal: e.target.value })} /></div>
-                            <div><label className="block text-xs font-bold text-slate-600 mb-1">Jam (Jadwal)</label><select className="w-32 text-sm px-3 py-2 border rounded-lg" value={mesinLogFormData.jam} onChange={e => setMesinLogFormData({ ...mesinLogFormData, jam: e.target.value })}><option value="10:00">10:00 WIT</option><option value="19:00">19:00 WIT</option></select></div>
-                            <div className="flex-1 min-w-[200px]">
+                        <div className="mt-4 bg-white p-4 md:p-5 rounded-xl border border-indigo-100 shadow-sm w-full">
+                          <div className="flex flex-col sm:flex-row flex-wrap gap-4 mb-4">
+                            <div className="w-full sm:w-auto"><label className="block text-xs font-bold text-slate-600 mb-1">Tanggal</label><input type="date" className="w-full sm:w-40 text-sm px-3 py-2 border rounded-lg" value={mesinLogFormData.tanggal} onChange={e => setMesinLogFormData({ ...mesinLogFormData, tanggal: e.target.value })} /></div>
+                            <div className="w-full sm:w-auto"><label className="block text-xs font-bold text-slate-600 mb-1">Jam (Jadwal)</label><select className="w-full sm:w-32 text-sm px-3 py-2 border rounded-lg" value={mesinLogFormData.jam} onChange={e => setMesinLogFormData({ ...mesinLogFormData, jam: e.target.value })}><option value="10:00">10:00 WIT</option><option value="19:00">19:00 WIT</option></select></div>
+                            <div className="flex-1 w-full min-w-[200px]">
                               <label className="block text-xs font-bold text-slate-600 mb-2">Petugas Piket</label>
                               <div className="flex flex-wrap gap-2">
                                 {getOperatorsForSite(selectedPltdForMesinLog, true).length === 0 ? <span className="text-xs text-rose-500 italic">Belum ada data operator.</span> :
@@ -1552,7 +1562,7 @@ export default function App() {
                               </div>
                             </div>
                           </div>
-                          <div className="border border-slate-200 rounded-xl overflow-x-auto bg-white">
+                          <div className="border border-slate-200 rounded-xl overflow-x-auto bg-white w-full">
                             <table className="w-full text-left min-w-[700px]"><thead className="bg-slate-50 text-xs font-bold text-slate-600 uppercase border-b"><tr><th className="p-3 w-48">ID Mesin</th><th className="p-3 text-right">D. Terpasang</th><th className="p-3">Daya Mampu (kW)</th><th className="p-3">Beban Supply (kW)</th><th className="p-3">Status Operasi</th></tr></thead>
                               <tbody className="divide-y divide-slate-100">
                                 {mesinLogFormData.mesin_data.length === 0 ? (<tr><td colSpan={5} className="p-4 text-center text-rose-500 text-sm">Tidak ada mesin di Master Data.</td></tr>) : mesinLogFormData.mesin_data.map((m: any) => (
@@ -1567,12 +1577,12 @@ export default function App() {
                               </tbody>
                             </table>
                           </div>
-                          <div className="flex justify-end mt-4"><button onClick={handleSaveMesinLog} disabled={mesinLogFormData.mesin_data.length === 0} className="px-5 py-2.5 bg-indigo-600 text-white text-sm font-bold rounded-lg hover:bg-indigo-700 disabled:opacity-50 flex items-center gap-2"><Save className="w-4 h-4" /> Simpan & Update Master</button></div>
+                          <div className="flex justify-end mt-4 w-full"><button onClick={handleSaveMesinLog} disabled={mesinLogFormData.mesin_data.length === 0} className="w-full md:w-auto px-5 py-2.5 bg-indigo-600 text-white text-sm font-bold rounded-lg hover:bg-indigo-700 disabled:opacity-50 flex items-center justify-center gap-2"><Save className="w-4 h-4" /> Simpan & Update Master</button></div>
                         </div>
                       )}
                     </div>
-                    <div className="border border-slate-200 rounded-xl overflow-hidden">
-                      <table className="w-full text-left"><thead className="bg-slate-50 text-xs font-bold text-slate-600 uppercase border-b"><tr><th className="p-4 w-24 text-center">Waktu</th><th className="p-4">Petugas Piket</th><th className="p-4">Jumlah Mesin</th><th className="p-4 text-center w-24">Aksi</th></tr></thead>
+                    <div className="border border-slate-200 rounded-xl overflow-x-auto w-full">
+                      <table className="w-full text-left min-w-[500px]"><thead className="bg-slate-50 text-xs font-bold text-slate-600 uppercase border-b"><tr><th className="p-4 w-24 text-center">Waktu</th><th className="p-4">Petugas Piket</th><th className="p-4">Jumlah Mesin</th><th className="p-4 text-center w-24">Aksi</th></tr></thead>
                         <tbody className="divide-y divide-slate-100 text-sm">
                           {currentMesinLogs.map((log: any) => (
                             <tr key={log._id} className="hover:bg-slate-50 group">
@@ -1623,35 +1633,35 @@ export default function App() {
 
           {activeTab === 'log_produksi' && (
             <div className="bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col min-h-[600px]">
-              <div className="p-6 border-b border-slate-100 flex flex-col sm:flex-row gap-4 justify-between items-center">
-                <div className="flex items-center gap-3">
+              <div className="p-4 md:p-6 border-b border-slate-100 flex flex-col sm:flex-row gap-4 justify-between items-center w-full">
+                <div className="flex items-center gap-3 w-full sm:w-auto">
                   <div className="p-2 bg-orange-50 text-orange-600 rounded-lg"><Gauge className="w-5 h-5" /></div>
-                  <div><h3 className="font-bold text-lg text-slate-800">Pencatatan Produksi & SFC PLTD</h3></div>
+                  <div><h3 className="font-bold text-lg text-slate-800 truncate">Pencatatan Produksi & SFC</h3></div>
                 </div>
                 {currentUser.role === 'admin' ? (
-                  <select className="px-4 py-2 border border-slate-300 rounded-lg text-sm bg-slate-50 font-medium text-slate-800" value={selectedPltdForProduksi} onChange={(e) => { setSelectedPltdForProduksi(e.target.value); setProduksiFormData({ ...produksiFormData, petugas: [] }); }}>
+                  <select className="w-full sm:w-auto px-4 py-2 border border-slate-300 rounded-lg text-sm bg-slate-50 font-medium text-slate-800" value={selectedPltdForProduksi} onChange={(e) => { setSelectedPltdForProduksi(e.target.value); setProduksiFormData({ ...produksiFormData, petugas: [] }); }}>
                     <option value="" disabled>-- Pilih PLTD --</option>
-                    {pltdAssets.map(p => <option key={p.site_id} value={p.site_id}>{p.nama_pltd} ({p.site_id})</option>)}
+                    {pltdAssets.map(p => <option key={p.site_id} value={p.site_id}>{p.nama_pltd}</option>)}
                   </select>
                 ) : (
-                  <div className="px-4 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-bold text-slate-700">
+                  <div className="w-full sm:w-auto px-4 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-bold text-slate-700 text-center">
                     {currentUser.name}
                   </div>
                 )}
               </div>
 
-              <div className="p-6">
+              <div className="p-4 md:p-6 w-full">
                 {!selectedPltdForProduksi ? (
                   <div className="text-center py-12 text-slate-400">Pilih PLTD terlebih dahulu.</div>
                 ) : (
                   <div className="space-y-6">
-                    <div className="bg-orange-50/30 p-6 rounded-xl border border-orange-100 shadow-sm">
-                      <div className="mb-4 pb-4 border-b border-orange-100 flex flex-wrap gap-4 justify-between items-center">
-                        <div className="flex items-center gap-4">
+                    <div className="bg-orange-50/30 p-4 md:p-6 rounded-xl border border-orange-100 shadow-sm w-full">
+                      <div className="mb-4 pb-4 border-b border-orange-100 flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
+                        <div className="flex items-center gap-4 w-full sm:w-auto">
                           <h4 className="font-bold text-orange-800 flex items-center gap-2"><Calendar className="w-5 h-5" /> Tanggal</h4>
-                          <input type="date" className="px-3 py-2 border border-slate-300 rounded-lg text-sm font-bold" value={produksiFormData.tanggal} onChange={e => setProduksiFormData({ ...produksiFormData, tanggal: e.target.value })} />
+                          <input type="date" className="px-3 py-2 border border-slate-300 rounded-lg text-sm font-bold flex-1" value={produksiFormData.tanggal} onChange={e => setProduksiFormData({ ...produksiFormData, tanggal: e.target.value })} />
                         </div>
-                        <div className="flex items-center gap-2 flex-1 max-w-lg">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 w-full sm:w-auto">
                           <h4 className="font-bold text-orange-800 text-sm whitespace-nowrap">Petugas:</h4>
                           <div className="flex flex-wrap gap-1">
                             {getOperatorsForSite(selectedPltdForProduksi, true).length === 0 ? <span className="text-xs text-rose-500 italic">Belum ada operator.</span> :
@@ -1664,33 +1674,33 @@ export default function App() {
                           </div>
                         </div>
                       </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="bg-white p-4 rounded-xl border border-slate-200">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+                        <div className="bg-white p-4 rounded-xl border border-slate-200 w-full">
                           <h5 className="font-bold text-slate-700 mb-4 flex items-center gap-2 text-sm"><Activity className="w-4 h-4 text-sky-500" /> Data Produksi kWh</h5>
                           <div className="grid grid-cols-2 gap-4 mb-4">
-                            <div><label className="block text-xs font-bold text-slate-500 mb-1">Stand Kemarin</label><input type="number" className={`w-full px-3 py-2 border rounded-lg text-sm ${previousProduksiLog ? 'bg-slate-100' : 'bg-yellow-50'}`} value={produksiFormData.stand_kwh_kemarin} onChange={e => setProduksiFormData({ ...produksiFormData, stand_kwh_kemarin: e.target.value })} readOnly={!!previousProduksiLog} /></div>
-                            <div><label className="block text-xs font-bold text-slate-700 mb-1">Stand Hari Ini</label><input type="number" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-bold" value={produksiFormData.stand_kwh_hari_ini} onChange={e => setProduksiFormData({ ...produksiFormData, stand_kwh_hari_ini: e.target.value })} /></div>
+                            <div><label className="block text-xs font-bold text-slate-500 mb-1">Stand Kemarin</label><input type="number" className={`w-full px-3 py-2 border rounded-lg text-sm min-w-0 ${previousProduksiLog ? 'bg-slate-100' : 'bg-yellow-50'}`} value={produksiFormData.stand_kwh_kemarin} onChange={e => setProduksiFormData({ ...produksiFormData, stand_kwh_kemarin: e.target.value })} readOnly={!!previousProduksiLog} /></div>
+                            <div><label className="block text-xs font-bold text-slate-700 mb-1">Stand Hari Ini</label><input type="number" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-bold min-w-0" value={produksiFormData.stand_kwh_hari_ini} onChange={e => setProduksiFormData({ ...produksiFormData, stand_kwh_hari_ini: e.target.value })} /></div>
                           </div>
-                          <div className="bg-sky-50 p-3 rounded-lg border border-sky-100 flex justify-between items-center"><span className="text-xs font-bold text-sky-700 uppercase">Produksi (kWh)</span><span className="text-lg font-black text-sky-600">{Number(kwhProduksiCalc).toLocaleString('id-ID')}</span></div>
+                          <div className="bg-sky-50 p-3 rounded-lg border border-sky-100 flex flex-wrap justify-between items-center"><span className="text-xs font-bold text-sky-700 uppercase">Produksi (kWh)</span><span className="text-lg font-black text-sky-600 break-all">{Number(kwhProduksiCalc).toLocaleString('id-ID')}</span></div>
                         </div>
-                        <div className="bg-white p-4 rounded-xl border border-slate-200">
+                        <div className="bg-white p-4 rounded-xl border border-slate-200 w-full">
                           <h5 className="font-bold text-slate-700 mb-4 flex items-center gap-2 text-sm"><Droplet className="w-4 h-4 text-rose-500" /> Data Flow Meter BBM</h5>
                           <div className="grid grid-cols-2 gap-4 mb-4">
-                            <div><label className="block text-xs font-bold text-slate-500 mb-1">Stand Kemarin</label><input type="number" className={`w-full px-3 py-2 border rounded-lg text-sm ${previousProduksiLog ? 'bg-slate-100' : 'bg-yellow-50'}`} value={produksiFormData.stand_bbm_kemarin} onChange={e => setProduksiFormData({ ...produksiFormData, stand_bbm_kemarin: e.target.value })} readOnly={!!previousProduksiLog} /></div>
-                            <div><label className="block text-xs font-bold text-slate-700 mb-1">Stand Hari Ini</label><input type="number" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-bold" value={produksiFormData.stand_bbm_hari_ini} onChange={e => setProduksiFormData({ ...produksiFormData, stand_bbm_hari_ini: e.target.value })} /></div>
+                            <div><label className="block text-xs font-bold text-slate-500 mb-1">Stand Kemarin</label><input type="number" className={`w-full px-3 py-2 border rounded-lg text-sm min-w-0 ${previousProduksiLog ? 'bg-slate-100' : 'bg-yellow-50'}`} value={produksiFormData.stand_bbm_kemarin} onChange={e => setProduksiFormData({ ...produksiFormData, stand_bbm_kemarin: e.target.value })} readOnly={!!previousProduksiLog} /></div>
+                            <div><label className="block text-xs font-bold text-slate-700 mb-1">Stand Hari Ini</label><input type="number" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm font-bold min-w-0" value={produksiFormData.stand_bbm_hari_ini} onChange={e => setProduksiFormData({ ...produksiFormData, stand_bbm_hari_ini: e.target.value })} /></div>
                           </div>
-                          <div className="bg-rose-50 p-3 rounded-lg border border-rose-100 flex justify-between items-center"><span className="text-xs font-bold text-rose-700 uppercase">Pemakaian (L)</span><span className="text-lg font-black text-rose-600">{Number(bbmPemakaianCalc).toLocaleString('id-ID')}</span></div>
+                          <div className="bg-rose-50 p-3 rounded-lg border border-rose-100 flex flex-wrap justify-between items-center"><span className="text-xs font-bold text-rose-700 uppercase">Pemakaian (L)</span><span className="text-lg font-black text-rose-600 break-all">{Number(bbmPemakaianCalc).toLocaleString('id-ID')}</span></div>
                         </div>
                       </div>
-                      <div className="mt-6 flex flex-col md:flex-row gap-4 items-center">
+                      <div className="mt-6 flex flex-col md:flex-row gap-4 items-center w-full">
                         <div className="flex-1 bg-emerald-50 border border-emerald-200 p-4 rounded-xl flex justify-between items-center w-full">
                           <div><h4 className="font-bold text-emerald-800 text-sm">SFC</h4><p className="text-[10px] text-emerald-600 font-medium">Liter / kWh</p></div>
-                          <div className="text-right"><span className="text-3xl font-black text-emerald-600 tracking-tight">{sfcCalc}</span></div>
+                          <div className="text-right"><span className="text-3xl font-black text-emerald-600 tracking-tight break-all">{sfcCalc}</span></div>
                         </div>
                         <button onClick={handleSaveProduksiLog} disabled={!produksiFormData.stand_kwh_hari_ini || !produksiFormData.stand_bbm_hari_ini} className="w-full md:w-auto h-full px-8 py-4 bg-orange-600 text-white font-bold rounded-xl hover:bg-orange-700 disabled:opacity-50"><Save className="w-5 h-5 inline mr-2" /> Simpan Data</button>
                       </div>
                     </div>
-                    <div className="border border-slate-200 rounded-xl overflow-x-auto bg-white">
+                    <div className="border border-slate-200 rounded-xl overflow-x-auto bg-white w-full">
                       <table className="w-full text-left min-w-[700px]">
                         <thead className="bg-slate-50 text-xs font-bold text-slate-500 uppercase border-b"><tr><th className="p-4">Tanggal & Petugas</th><th className="p-4 text-center">Produksi (kWh)</th><th className="p-4 text-center">BBM (L)</th><th className="p-4 text-center">SFC</th><th className="p-4 text-center">Aksi</th></tr></thead>
                         <tbody className="divide-y divide-slate-100">
@@ -1719,9 +1729,9 @@ export default function App() {
                       </table>
                     </div>
                     {currentProduksiLogs.length > 0 && (
-                      <div className="mt-6 bg-white p-6 border border-slate-200 rounded-xl shadow-sm">
+                      <div className="mt-6 bg-white p-4 md:p-6 border border-slate-200 rounded-xl shadow-sm w-full">
                         <h4 className="font-bold text-slate-800 mb-6 flex items-center gap-2"><Gauge className="w-5 h-5 text-orange-500" /> Grafik Tren Produksi & SFC</h4>
-                        <div className="h-72">
+                        <div className="h-64 md:h-72 w-full">
                           <ResponsiveContainer width="100%" height="100%">
                             <LineChart data={[...currentProduksiLogs].reverse()} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
@@ -1745,37 +1755,37 @@ export default function App() {
 
           {activeTab === 'input_bbm' && (
             <div className="bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col min-h-[600px]">
-              <div className="p-6 border-b border-slate-100 flex flex-col sm:flex-row gap-4 justify-between items-center">
-                <div className="flex items-center gap-3"><div className="p-2 bg-teal-50 text-teal-600 rounded-lg"><Droplet className="w-5 h-5" /></div><div><h3 className="font-bold text-lg text-slate-800">Input Stok BBM Tangki</h3><p className="text-xs text-slate-500">Penerimaan DO / Koreksi Stok Opname</p></div></div>
+              <div className="p-4 md:p-6 border-b border-slate-100 flex flex-col sm:flex-row gap-4 justify-between items-center w-full">
+                <div className="flex items-center gap-3 w-full sm:w-auto"><div className="p-2 bg-teal-50 text-teal-600 rounded-lg"><Droplet className="w-5 h-5" /></div><div className="overflow-hidden"><h3 className="font-bold text-lg text-slate-800 truncate">Input Stok BBM Tangki</h3><p className="text-xs text-slate-500 truncate">Penerimaan DO / Koreksi Stok Opname</p></div></div>
                 {currentUser.role === 'admin' ? (
-                  <select className="px-4 py-2 border border-slate-300 rounded-lg text-sm bg-slate-50 font-medium text-slate-800" value={selectedPltdForBBM} onChange={(e) => { setSelectedPltdForBBM(e.target.value); setIsAddingBBM(false); }}>
+                  <select className="w-full sm:w-auto px-4 py-2 border border-slate-300 rounded-lg text-sm bg-slate-50 font-medium text-slate-800" value={selectedPltdForBBM} onChange={(e) => { setSelectedPltdForBBM(e.target.value); setIsAddingBBM(false); }}>
                     <option value="" disabled>-- Pilih PLTD --</option>
-                    {pltdAssets.map(p => <option key={p.site_id} value={p.site_id}>{p.nama_pltd} ({p.site_id})</option>)}
+                    {pltdAssets.map(p => <option key={p.site_id} value={p.site_id}>{p.nama_pltd}</option>)}
                   </select>
                 ) : (
-                  <div className="px-4 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-bold text-slate-700">
+                  <div className="w-full sm:w-auto px-4 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-bold text-slate-700 text-center">
                     {currentUser.name}
                   </div>
                 )}
               </div>
-              <div className="p-6">
+              <div className="p-4 md:p-6 w-full">
                 {!selectedPltdForBBM ? (
                   <div className="text-center py-12 text-slate-400">Pilih PLTD terlebih dahulu.</div>
                 ) : (
                   <div className="space-y-6">
-                    <div className="bg-teal-50/50 p-6 rounded-xl border border-teal-100">
-                      <div className="flex justify-between items-center mb-6">
-                        <h4 className="font-bold text-teal-800 flex items-center gap-2"><Plus className="w-5 h-5" /> Form Input Massal Tangki</h4>
-                        {!isAddingBBM && <button onClick={handleOpenInputBBM} className="px-4 py-2 bg-white border border-teal-200 text-teal-700 font-bold rounded-lg text-sm shadow-sm hover:bg-teal-50">Buka Formulir</button>}
+                    <div className="bg-teal-50/50 p-4 md:p-6 rounded-xl border border-teal-100 w-full">
+                      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                        <h4 className="font-bold text-teal-800 flex items-center gap-2 w-full sm:w-auto"><Plus className="w-5 h-5 shrink-0" /> <span className="truncate">Form Input Tangki</span></h4>
+                        {!isAddingBBM && <button onClick={handleOpenInputBBM} className="w-full sm:w-auto px-4 py-2 bg-white border border-teal-200 text-teal-700 font-bold rounded-lg text-sm shadow-sm hover:bg-teal-50">Buka Formulir</button>}
                       </div>
 
                       {isAddingBBM && (
-                        <div className="bg-white p-5 rounded-xl border border-teal-200 shadow-sm">
+                        <div className="bg-white p-4 md:p-5 rounded-xl border border-teal-200 shadow-sm w-full">
                           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 pb-6 border-b border-slate-100">
-                            <div><label className="block text-xs font-bold text-slate-600 mb-1">Tanggal & Jam</label><div className="flex gap-2"><input type="date" className="w-full text-sm px-3 py-2 border rounded-lg" value={bbmFormData.tanggal} onChange={e => setBbmFormData({ ...bbmFormData, tanggal: e.target.value })} /><input type="time" className="w-24 text-sm px-2 py-2 border rounded-lg" value={bbmFormData.jam} onChange={e => setBbmFormData({ ...bbmFormData, jam: e.target.value })} /></div></div>
-                            <div><label className="block text-xs font-bold text-slate-600 mb-1">Jenis Input</label><select className="w-full text-sm px-3 py-2 border rounded-lg bg-teal-50 font-bold text-teal-800" value={bbmFormData.jenis_input} onChange={e => setBbmFormData({ ...bbmFormData, jenis_input: e.target.value })}><option value="Penerimaan">Penerimaan (Tambah Volume)</option><option value="Stok Opname">Stok Opname (Ubah Aktual)</option></select></div>
-                            <div className="md:col-span-2"><label className="block text-xs font-bold text-slate-600 mb-1">Referensi / Keterangan</label><input type="text" placeholder="Misal: No. DO Pertamina / Hasil Opname Akhir Bulan" className="w-full text-sm px-3 py-2 border rounded-lg" value={bbmFormData.referensi} onChange={e => setBbmFormData({ ...bbmFormData, referensi: e.target.value })} /></div>
-                            <div className="md:col-span-4"><label className="block text-xs font-bold text-slate-600 mb-2">Petugas Pendamping / Pelaksana</label>
+                            <div className="w-full"><label className="block text-xs font-bold text-slate-600 mb-1">Tanggal & Jam</label><div className="flex flex-col sm:flex-row gap-2"><input type="date" className="w-full text-sm px-3 py-2 border rounded-lg" value={bbmFormData.tanggal} onChange={e => setBbmFormData({ ...bbmFormData, tanggal: e.target.value })} /><input type="time" className="w-full sm:w-24 text-sm px-2 py-2 border rounded-lg" value={bbmFormData.jam} onChange={e => setBbmFormData({ ...bbmFormData, jam: e.target.value })} /></div></div>
+                            <div className="w-full"><label className="block text-xs font-bold text-slate-600 mb-1">Jenis Input</label><select className="w-full text-sm px-3 py-2 border rounded-lg bg-teal-50 font-bold text-teal-800" value={bbmFormData.jenis_input} onChange={e => setBbmFormData({ ...bbmFormData, jenis_input: e.target.value })}><option value="Penerimaan">Penerimaan (Tambah Volume)</option><option value="Stok Opname">Stok Opname (Ubah Aktual)</option></select></div>
+                            <div className="md:col-span-2 w-full"><label className="block text-xs font-bold text-slate-600 mb-1">Referensi / Keterangan</label><input type="text" placeholder="No. DO / Hasil Opname" className="w-full text-sm px-3 py-2 border rounded-lg" value={bbmFormData.referensi} onChange={e => setBbmFormData({ ...bbmFormData, referensi: e.target.value })} /></div>
+                            <div className="md:col-span-4 w-full"><label className="block text-xs font-bold text-slate-600 mb-2">Petugas Pendamping / Pelaksana</label>
                               <div className="flex flex-wrap gap-2">
                                 {getOperatorsForSite(selectedPltdForBBM, true).length === 0 ? <span className="text-xs text-rose-500 italic">Belum ada operator terdata.</span> :
                                   getOperatorsForSite(selectedPltdForBBM, true).map(op => (
@@ -1787,24 +1797,24 @@ export default function App() {
                               </div>
                             </div>
                           </div>
-                          <div className="overflow-x-auto"><table className="w-full text-left border-collapse"><thead className="bg-slate-50 text-xs font-bold text-slate-600 uppercase border-b border-t"><tr><th className="p-3">ID Tangki</th><th className="p-3 text-right">Kapasitas (L)</th><th className="p-3 text-right">Volume Terkini (L)</th><th className="p-3 bg-teal-50 w-48">{bbmFormData.jenis_input === 'Penerimaan' ? 'Jml Tambah (L)' : 'Vol Aktual (L)'}</th></tr></thead>
+                          <div className="overflow-x-auto w-full"><table className="w-full text-left border-collapse min-w-[500px]"><thead className="bg-slate-50 text-xs font-bold text-slate-600 uppercase border-b border-t"><tr><th className="p-3">ID Tangki</th><th className="p-3 text-right">Kapasitas (L)</th><th className="p-3 text-right">Volume Terkini (L)</th><th className="p-3 bg-teal-50 w-32 sm:w-48">{bbmFormData.jenis_input === 'Penerimaan' ? 'Jml Tambah (L)' : 'Vol Aktual (L)'}</th></tr></thead>
                             <tbody className="divide-y divide-slate-100">
                               {bbmFormData.tangki_data.length === 0 ? <tr><td colSpan={4} className="p-4 text-center text-rose-500 text-sm">Tidak ada tangki terdata di PLTD ini.</td></tr> : bbmFormData.tangki_data.map((t: any) => (
                                 <tr key={t._id} className="hover:bg-slate-50 text-sm"><td className="p-3 font-bold text-slate-700">{t.id_tangki}</td><td className="p-3 text-right text-slate-500">{Number(t.kapasitas_liter).toLocaleString('id-ID')}</td><td className="p-3 text-right font-bold text-slate-700">{Number(t.volume_terkini).toLocaleString('id-ID')}</td><td className="p-3 bg-teal-50/30"><input type="number" className="w-full px-2 py-1.5 border border-teal-200 rounded text-right font-bold focus:ring-2 focus:ring-teal-500" value={t.input_volume} onChange={e => handleBbmDataChange(t._id, e.target.value)} placeholder="0" /></td></tr>
                               ))}
                             </tbody>
                           </table></div>
-                          <div className="flex justify-end mt-4 pt-4 border-t border-slate-100 gap-3">
-                            <button onClick={() => setIsAddingBBM(false)} className="px-5 py-2.5 text-slate-500 font-bold hover:bg-slate-100 rounded-lg text-sm">Batal</button>
-                            <button onClick={handleSaveBBM} className="px-6 py-2.5 bg-teal-600 text-white text-sm font-bold rounded-lg hover:bg-teal-700 shadow-md flex items-center gap-2"><Save className="w-4 h-4" /> Simpan & Update Semua Tangki</button>
+                          <div className="flex flex-col sm:flex-row justify-end mt-4 pt-4 border-t border-slate-100 gap-3 w-full">
+                            <button onClick={() => setIsAddingBBM(false)} className="w-full sm:w-auto px-5 py-2.5 text-slate-500 font-bold hover:bg-slate-100 rounded-lg text-sm">Batal</button>
+                            <button onClick={handleSaveBBM} className="w-full sm:w-auto px-6 py-2.5 bg-teal-600 text-white text-sm font-bold rounded-lg hover:bg-teal-700 shadow-md flex items-center justify-center gap-2"><Save className="w-4 h-4" /> Simpan & Update</button>
                           </div>
                         </div>
                       )}
                     </div>
 
                     {/* --- KODE TABEL LOG BBM (DIPINDAH KE LUAR FORMULIR) --- */}
-                    <div className="border border-slate-200 rounded-xl overflow-x-auto bg-white mt-6 shadow-sm">
-                      <table className="w-full text-left min-w-[800px]">
+                    <div className="border border-slate-200 rounded-xl overflow-x-auto bg-white mt-6 shadow-sm w-full">
+                      <table className="w-full text-left min-w-[700px]">
                         <thead className="bg-slate-50 text-xs font-bold text-slate-500 uppercase border-b">
                           <tr><th className="p-4">Waktu & Petugas</th><th className="p-4">Jenis Input & Ref</th><th className="p-4">Rincian Tangki (Volume)</th><th className="p-4 text-center">Aksi</th></tr>
                         </thead>
@@ -1841,11 +1851,14 @@ export default function App() {
 
           {activeTab === 'absensi_plts' && (
             <div className="bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col min-h-[600px]">
-              <div className="p-6 border-b border-slate-100 flex flex-col sm:flex-row gap-4 justify-between items-center bg-slate-50 rounded-t-2xl">
-                <div className="flex items-center gap-3"><div className="p-2 bg-pink-100 text-pink-600 rounded-lg"><UserCheck className="w-6 h-6" /></div><div><h3 className="font-bold text-lg text-slate-800">Rekap Absensi Operator PLTS</h3><p className="text-xs text-slate-500">Ter-generate otomatis dari Log Beban</p></div></div>
-                <div className="flex items-center gap-3 bg-white p-2 rounded-xl shadow-sm border border-slate-200"><Calendar className="w-5 h-5 text-slate-400 ml-2" /><input type="date" className="px-2 py-1 text-sm font-bold text-slate-700 outline-none cursor-pointer" value={absensiDate} onChange={e => setAbsensiDate(e.target.value)} /><button onClick={handleCopyAbsensi} className="px-4 py-2 bg-pink-600 text-white rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-pink-700 transition-colors shadow-sm"><Copy className="w-4 h-4" /> Salin Rekap WAG</button></div>
+              <div className="p-4 md:p-6 border-b border-slate-100 flex flex-col sm:flex-row gap-4 justify-between items-center bg-slate-50 rounded-t-2xl w-full">
+                <div className="flex items-center gap-3 w-full sm:w-auto"><div className="p-2 bg-pink-100 text-pink-600 rounded-lg shrink-0"><UserCheck className="w-6 h-6" /></div><div className="overflow-hidden"><h3 className="font-bold text-lg text-slate-800 truncate">Rekap Absensi Operator PLTS</h3><p className="text-xs text-slate-500 truncate">Ter-generate otomatis dari Log Beban</p></div></div>
+                <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto bg-white p-2 rounded-xl shadow-sm border border-slate-200">
+                  <div className="flex items-center gap-2 flex-1"><Calendar className="w-5 h-5 text-slate-400 ml-2 shrink-0" /><input type="date" className="px-2 py-1 text-sm font-bold text-slate-700 outline-none cursor-pointer w-full" value={absensiDate} onChange={e => setAbsensiDate(e.target.value)} /></div>
+                  <button onClick={handleCopyAbsensi} className="px-4 py-2 bg-pink-600 text-white rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-pink-700 transition-colors shadow-sm w-full sm:w-auto"><Copy className="w-4 h-4 shrink-0" /> Salin WAG</button>
+                </div>
               </div>
-              <div className="p-0 overflow-x-auto">
+              <div className="p-0 overflow-x-auto w-full">
                 <table className="w-full text-left border-collapse min-w-[700px]"><thead className="bg-white border-b border-slate-200 text-xs font-bold text-slate-500 uppercase tracking-wider"><tr><th className="p-5 w-16 text-center">No</th><th className="p-5 w-64">Lokasi PLTS</th><th className="p-5 w-40 text-center">Status Lapor</th><th className="p-5">Daftar Operator (Hadir / Tidak)</th></tr></thead>
                   <tbody className="divide-y divide-slate-100 text-sm">
                     {absensiData.map((row, idx) => (
@@ -1873,11 +1886,14 @@ export default function App() {
 
           {activeTab === 'absensi_pltd' && (
             <div className="bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col min-h-[600px]">
-              <div className="p-6 border-b border-slate-100 flex flex-col sm:flex-row gap-4 justify-between items-center bg-slate-50 rounded-t-2xl">
-                <div className="flex items-center gap-3"><div className="p-2 bg-purple-100 text-purple-600 rounded-lg"><UserCheck className="w-6 h-6" /></div><div><h3 className="font-bold text-lg text-slate-800">Rekap Absensi Operator PLTD</h3><p className="text-xs text-slate-500">Ter-generate otomatis dari Log Beban PLTD</p></div></div>
-                <div className="flex items-center gap-3 bg-white p-2 rounded-xl shadow-sm border border-slate-200"><Calendar className="w-5 h-5 text-slate-400 ml-2" /><input type="date" className="px-2 py-1 text-sm font-bold text-slate-700 outline-none cursor-pointer" value={absensiDatePltd} onChange={e => setAbsensiDatePltd(e.target.value)} /><button onClick={handleCopyAbsensiPltd} className="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-purple-700 transition-colors shadow-sm"><Copy className="w-4 h-4" /> Salin Rekap WAG</button></div>
+              <div className="p-4 md:p-6 border-b border-slate-100 flex flex-col sm:flex-row gap-4 justify-between items-center bg-slate-50 rounded-t-2xl w-full">
+                <div className="flex items-center gap-3 w-full sm:w-auto"><div className="p-2 bg-purple-100 text-purple-600 rounded-lg shrink-0"><UserCheck className="w-6 h-6" /></div><div className="overflow-hidden"><h3 className="font-bold text-lg text-slate-800 truncate">Rekap Absensi Operator PLTD</h3><p className="text-xs text-slate-500 truncate">Ter-generate otomatis dari Log PLTD</p></div></div>
+                <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto bg-white p-2 rounded-xl shadow-sm border border-slate-200">
+                  <div className="flex items-center gap-2 flex-1"><Calendar className="w-5 h-5 text-slate-400 ml-2 shrink-0" /><input type="date" className="px-2 py-1 text-sm font-bold text-slate-700 outline-none cursor-pointer w-full" value={absensiDatePltd} onChange={e => setAbsensiDatePltd(e.target.value)} /></div>
+                  <button onClick={handleCopyAbsensiPltd} className="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-purple-700 transition-colors shadow-sm w-full sm:w-auto"><Copy className="w-4 h-4 shrink-0" /> Salin WAG</button>
+                </div>
               </div>
-              <div className="p-0 overflow-x-auto">
+              <div className="p-0 overflow-x-auto w-full">
                 <table className="w-full text-left border-collapse min-w-[700px]"><thead className="bg-white border-b border-slate-200 text-xs font-bold text-slate-500 uppercase tracking-wider"><tr><th className="p-5 w-16 text-center">No</th><th className="p-5 w-64">Lokasi PLTD</th><th className="p-5 w-40 text-center">Status Lapor</th><th className="p-5">Daftar Operator (Hadir / Tidak)</th></tr></thead>
                   <tbody className="divide-y divide-slate-100 text-sm">
                     {absensiDataPltd.map((row, idx) => (
@@ -1948,31 +1964,31 @@ export default function App() {
           {viewingMesin && (
             <div className="fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center p-4">
               <div className="bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col animate-in fade-in zoom-in duration-200">
-                <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50 rounded-t-2xl">
-                  <div className="flex items-center gap-3"><div className="p-2 bg-purple-100 text-purple-600 rounded-lg"><Cpu className="w-5 h-5" /></div><div><h3 className="text-lg font-bold text-slate-800">Master Data Mesin</h3><p className="text-xs text-slate-500 font-medium">{viewingMesin.nama_pltd} ({viewingMesin.site_id})</p></div></div>
-                  <div className="flex items-center gap-3">
-                    <button onClick={() => setIsAddingMesin(true)} className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-600 text-white rounded-lg text-xs font-bold hover:bg-purple-700 transition-colors"><Plus className="w-3.5 h-3.5" /> Tambah Mesin</button>
-                    <div className="w-px h-6 bg-slate-300 mx-1"></div>
+                <div className="p-4 md:p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50 rounded-t-2xl w-full">
+                  <div className="flex items-center gap-3 overflow-hidden"><div className="p-2 bg-purple-100 text-purple-600 rounded-lg shrink-0"><Cpu className="w-5 h-5" /></div><div className="overflow-hidden"><h3 className="text-lg font-bold text-slate-800 truncate">Master Data Mesin</h3><p className="text-xs text-slate-500 font-medium truncate">{viewingMesin.nama_pltd} ({viewingMesin.site_id})</p></div></div>
+                  <div className="flex items-center gap-2 md:gap-3 shrink-0">
+                    <button onClick={() => setIsAddingMesin(true)} className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-600 text-white rounded-lg text-xs font-bold hover:bg-purple-700 transition-colors"><Plus className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Tambah Mesin</span></button>
+                    <div className="hidden sm:block w-px h-6 bg-slate-300 mx-1"></div>
                     <button onClick={() => setViewingMesin(null)} className="text-slate-400 hover:text-slate-600"><X className="w-5 h-5" /></button>
                   </div>
                 </div>
-                <div className="bg-white border-b border-slate-200 px-6 py-3 flex flex-wrap gap-6 shadow-sm z-20">
-                  <div className="flex items-center gap-3"><div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500"><Zap className="w-4 h-4" /></div><div><p className="text-[10px] font-bold text-slate-500 uppercase">Total Daya Terpasang</p><p className="text-sm font-bold text-slate-800">{mesinPltd.filter(m => m.site_id === viewingMesin.site_id).reduce((sum, m) => sum + (Number(m.daya_terpasang) || 0), 0).toLocaleString('id-ID')} kW</p></div></div>
-                  <div className="w-px h-8 bg-slate-200"></div>
-                  <div className="flex items-center gap-3"><div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600"><Zap className="w-4 h-4" /></div><div><p className="text-[10px] font-bold text-emerald-600 uppercase">Total Daya Mampu</p><p className="text-sm font-bold text-emerald-700">{mesinPltd.filter(m => m.site_id === viewingMesin.site_id).reduce((sum, m) => sum + (Number(m.daya_mampu) || 0), 0).toLocaleString('id-ID')} kW</p></div></div>
-                  <div className="w-px h-8 bg-slate-200"></div>
-                  <div className="flex items-center gap-3"><div className="w-8 h-8 rounded-full bg-sky-100 flex items-center justify-center text-sky-600"><Activity className="w-4 h-4" /></div><div><p className="text-[10px] font-bold text-sky-600 uppercase">Total Beban Supply</p><p className="text-sm font-bold text-sky-700">{mesinPltd.filter(m => m.site_id === viewingMesin.site_id).reduce((sum, m) => sum + (Number(m.beban_supply) || 0), 0).toLocaleString('id-ID')} kW</p></div></div>
+                <div className="bg-white border-b border-slate-200 px-4 md:px-6 py-3 flex flex-wrap gap-4 md:gap-6 shadow-sm z-20 overflow-x-auto">
+                  <div className="flex items-center gap-3 shrink-0"><div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500"><Zap className="w-4 h-4" /></div><div><p className="text-[10px] font-bold text-slate-500 uppercase">Total Terpasang</p><p className="text-sm font-bold text-slate-800">{mesinPltd.filter(m => m.site_id === viewingMesin.site_id).reduce((sum, m) => sum + (Number(m.daya_terpasang) || 0), 0).toLocaleString('id-ID')} kW</p></div></div>
+                  <div className="hidden md:block w-px h-8 bg-slate-200"></div>
+                  <div className="flex items-center gap-3 shrink-0"><div className="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600"><Zap className="w-4 h-4" /></div><div><p className="text-[10px] font-bold text-emerald-600 uppercase">Total Mampu</p><p className="text-sm font-bold text-emerald-700">{mesinPltd.filter(m => m.site_id === viewingMesin.site_id).reduce((sum, m) => sum + (Number(m.daya_mampu) || 0), 0).toLocaleString('id-ID')} kW</p></div></div>
+                  <div className="hidden md:block w-px h-8 bg-slate-200"></div>
+                  <div className="flex items-center gap-3 shrink-0"><div className="w-8 h-8 rounded-full bg-sky-100 flex items-center justify-center text-sky-600"><Activity className="w-4 h-4" /></div><div><p className="text-[10px] font-bold text-sky-600 uppercase">Total Beban</p><p className="text-sm font-bold text-sky-700">{mesinPltd.filter(m => m.site_id === viewingMesin.site_id).reduce((sum, m) => sum + (Number(m.beban_supply) || 0), 0).toLocaleString('id-ID')} kW</p></div></div>
                 </div>
-                <div className="p-0 overflow-x-auto overflow-y-auto flex-1">
+                <div className="p-0 overflow-x-auto overflow-y-auto flex-1 w-full">
                   <table className="w-full text-left border-collapse min-w-[700px]">
                     <thead className="sticky top-0 bg-white shadow-sm z-10"><tr className="border-b border-slate-200 text-slate-600 text-[11px] font-bold uppercase tracking-wider bg-slate-50"><th className="p-4 w-12 text-center">#</th><th className="p-4 w-24 text-center">Aksi</th><th className="p-4">ID Mesin</th><th className="p-4">Merk / Type</th><th className="p-4">SN</th><th className="p-4 text-right">D. Terpasang</th><th className="p-4 text-right">D. Mampu</th><th className="p-4 text-right">B. Supply</th><th className="p-4">Status</th></tr></thead>
                     <tbody className="divide-y divide-slate-100 text-sm text-slate-700">
                       {isAddingMesin && (
-                        <tr className="bg-purple-50/50"><td className="p-3 text-center">-</td><td className="p-3 text-center flex gap-1 justify-center"><button onClick={handleSaveAddMesin} className="p-1 bg-emerald-100 text-emerald-600 rounded"><Check className="w-4 h-4" /></button><button onClick={() => setIsAddingMesin(false)} className="p-1 bg-rose-100 text-rose-600 rounded"><X className="w-4 h-4" /></button></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded" value={mesinAddFormData.id_mesin || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, id_mesin: e.target.value })} /></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded" value={mesinAddFormData.merk_type || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, merk_type: e.target.value })} /></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded" value={mesinAddFormData.sn || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, sn: e.target.value })} /></td><td className="p-2"><input type="number" className="w-full px-2 py-1 border rounded text-right" value={mesinAddFormData.daya_terpasang || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, daya_terpasang: e.target.value })} /></td><td className="p-2"><input type="number" className="w-full px-2 py-1 border rounded text-right" value={mesinAddFormData.daya_mampu || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, daya_mampu: e.target.value })} /></td><td className="p-2"><input type="number" className="w-full px-2 py-1 border rounded text-right" value={mesinAddFormData.beban_supply || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, beban_supply: e.target.value })} /></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded" value={mesinAddFormData.status_operasi || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, status_operasi: e.target.value })} /></td></tr>
+                        <tr className="bg-purple-50/50"><td className="p-3 text-center">-</td><td className="p-3 text-center flex gap-1 justify-center"><button onClick={handleSaveAddMesin} className="p-1 bg-emerald-100 text-emerald-600 rounded"><Check className="w-4 h-4" /></button><button onClick={() => setIsAddingMesin(false)} className="p-1 bg-rose-100 text-rose-600 rounded"><X className="w-4 h-4" /></button></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded min-w-[80px]" value={mesinAddFormData.id_mesin || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, id_mesin: e.target.value })} /></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded min-w-[80px]" value={mesinAddFormData.merk_type || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, merk_type: e.target.value })} /></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded min-w-[80px]" value={mesinAddFormData.sn || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, sn: e.target.value })} /></td><td className="p-2"><input type="number" className="w-full px-2 py-1 border rounded text-right min-w-[60px]" value={mesinAddFormData.daya_terpasang || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, daya_terpasang: e.target.value })} /></td><td className="p-2"><input type="number" className="w-full px-2 py-1 border rounded text-right min-w-[60px]" value={mesinAddFormData.daya_mampu || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, daya_mampu: e.target.value })} /></td><td className="p-2"><input type="number" className="w-full px-2 py-1 border rounded text-right min-w-[60px]" value={mesinAddFormData.beban_supply || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, beban_supply: e.target.value })} /></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded min-w-[80px]" value={mesinAddFormData.status_operasi || ''} onChange={e => setMesinAddFormData({ ...mesinAddFormData, status_operasi: e.target.value })} /></td></tr>
                       )}
                       {mesinPltd.filter(m => m.site_id === viewingMesin.site_id).map((mesin, idx) => {
                         if (editingMesinId === mesin._id) {
-                          return <tr key={mesin._id} className="bg-blue-50/40"><td className="p-3 text-center">{idx + 1}</td><td className="p-3 text-center flex gap-1 justify-center"><button onClick={handleSaveEditMesin} className="p-1 bg-emerald-100 text-emerald-600 rounded"><Check className="w-4 h-4" /></button><button onClick={() => setEditingMesinId(null)} className="p-1 bg-rose-100 text-rose-600 rounded"><X className="w-4 h-4" /></button></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded" value={mesinEditFormData.id_mesin || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, id_mesin: e.target.value })} /></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded" value={mesinEditFormData.merk_type || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, merk_type: e.target.value })} /></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded" value={mesinEditFormData.sn || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, sn: e.target.value })} /></td><td className="p-2"><input type="number" className="w-full px-2 py-1 border rounded text-right" value={mesinEditFormData.daya_terpasang || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, daya_terpasang: e.target.value })} /></td><td className="p-2"><input type="number" className="w-full px-2 py-1 border rounded text-right" value={mesinEditFormData.daya_mampu || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, daya_mampu: e.target.value })} /></td><td className="p-2"><input type="number" className="w-full px-2 py-1 border rounded text-right" value={mesinEditFormData.beban_supply || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, beban_supply: e.target.value })} /></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded" value={mesinEditFormData.status_operasi || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, status_operasi: e.target.value })} /></td></tr>
+                          return <tr key={mesin._id} className="bg-blue-50/40"><td className="p-3 text-center">{idx + 1}</td><td className="p-3 text-center flex gap-1 justify-center"><button onClick={handleSaveEditMesin} className="p-1 bg-emerald-100 text-emerald-600 rounded"><Check className="w-4 h-4" /></button><button onClick={() => setEditingMesinId(null)} className="p-1 bg-rose-100 text-rose-600 rounded"><X className="w-4 h-4" /></button></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded min-w-[80px]" value={mesinEditFormData.id_mesin || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, id_mesin: e.target.value })} /></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded min-w-[80px]" value={mesinEditFormData.merk_type || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, merk_type: e.target.value })} /></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded min-w-[80px]" value={mesinEditFormData.sn || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, sn: e.target.value })} /></td><td className="p-2"><input type="number" className="w-full px-2 py-1 border rounded text-right min-w-[60px]" value={mesinEditFormData.daya_terpasang || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, daya_terpasang: e.target.value })} /></td><td className="p-2"><input type="number" className="w-full px-2 py-1 border rounded text-right min-w-[60px]" value={mesinEditFormData.daya_mampu || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, daya_mampu: e.target.value })} /></td><td className="p-2"><input type="number" className="w-full px-2 py-1 border rounded text-right min-w-[60px]" value={mesinEditFormData.beban_supply || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, beban_supply: e.target.value })} /></td><td className="p-2"><input type="text" className="w-full px-2 py-1 border rounded min-w-[80px]" value={mesinEditFormData.status_operasi || ''} onChange={e => setMesinEditFormData({ ...mesinEditFormData, status_operasi: e.target.value })} /></td></tr>
                         }
                         return (
                           <tr key={mesin._id} className="hover:bg-slate-50 group">
@@ -1980,8 +1996,8 @@ export default function App() {
                             <td className="p-4 text-center">
                               <div className="flex justify-center gap-1 opacity-0 group-hover:opacity-100"><button onClick={() => { setEditingMesinId(mesin._id); setMesinEditFormData(mesin); }} className="p-1 bg-blue-50 text-blue-600 rounded"><Edit className="w-4 h-4" /></button><button onClick={() => setDeletingMesin(mesin)} className="p-1 bg-rose-50 text-rose-600 rounded"><Trash2 className="w-4 h-4" /></button></div>
                             </td>
-                            <td className="p-4 font-semibold">{mesin.id_mesin}</td><td className="p-4">{mesin.merk_type}</td><td className="p-4">{mesin.sn}</td>
-                            <td className="p-4 text-right font-bold">{mesin.daya_terpasang}</td><td className="p-4 text-right font-bold text-emerald-600">{mesin.daya_mampu}</td><td className="p-4 text-right font-bold text-sky-600">{mesin.beban_supply || '0'}</td><td className="p-4 font-bold text-xs">{mesin.status_operasi}</td>
+                            <td className="p-4 font-semibold whitespace-nowrap">{mesin.id_mesin}</td><td className="p-4 whitespace-nowrap">{mesin.merk_type}</td><td className="p-4 whitespace-nowrap">{mesin.sn}</td>
+                            <td className="p-4 text-right font-bold whitespace-nowrap">{mesin.daya_terpasang}</td><td className="p-4 text-right font-bold text-emerald-600 whitespace-nowrap">{mesin.daya_mampu}</td><td className="p-4 text-right font-bold text-sky-600 whitespace-nowrap">{mesin.beban_supply || '0'}</td><td className="p-4 font-bold text-xs whitespace-nowrap">{mesin.status_operasi}</td>
                           </tr>
                         )
                       })}
@@ -1995,28 +2011,28 @@ export default function App() {
           {viewingTangki && (
             <div className="fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center p-4">
               <div className="bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col animate-in fade-in zoom-in duration-200">
-                <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50 rounded-t-2xl">
-                  <div className="flex items-center gap-3"><div className="p-2 bg-teal-100 text-teal-600 rounded-lg"><Database className="w-5 h-5" /></div><div><h3 className="text-lg font-bold text-slate-800">Data Kapasitas Tangki</h3><p className="text-xs text-slate-500 font-medium">{viewingTangki.nama_pltd}</p></div></div>
-                  <div className="flex gap-2">
-                    <button onClick={() => setIsAddingTangki(true)} className="flex items-center gap-1.5 px-3 py-1.5 bg-teal-600 text-white rounded-lg text-xs font-bold hover:bg-teal-700 transition-colors"><Plus className="w-3.5 h-3.5" /> Tambah Tangki</button>
-                    <button onClick={() => setViewingTangki(null)} className="text-slate-400 hover:text-slate-600 ml-2"><X className="w-5 h-5" /></button>
+                <div className="p-4 md:p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50 rounded-t-2xl w-full">
+                  <div className="flex items-center gap-3 overflow-hidden"><div className="p-2 bg-teal-100 text-teal-600 rounded-lg shrink-0"><Database className="w-5 h-5" /></div><div className="overflow-hidden"><h3 className="text-lg font-bold text-slate-800 truncate">Data Kapasitas Tangki</h3><p className="text-xs text-slate-500 font-medium truncate">{viewingTangki.nama_pltd}</p></div></div>
+                  <div className="flex items-center gap-2 md:gap-3 shrink-0">
+                    <button onClick={() => setIsAddingTangki(true)} className="flex items-center gap-1.5 px-3 py-1.5 bg-teal-600 text-white rounded-lg text-xs font-bold hover:bg-teal-700 transition-colors"><Plus className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Tambah Tangki</span></button>
+                    <button onClick={() => setViewingTangki(null)} className="text-slate-400 hover:text-slate-600 ml-1 md:ml-2"><X className="w-5 h-5" /></button>
                   </div>
                 </div>
-                <div className="bg-white border-b border-slate-200 px-6 py-4 flex gap-8 shadow-sm">
-                  <div className="flex items-center gap-3"><div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500"><Database className="w-4 h-4" /></div><div><p className="text-[10px] font-bold text-slate-500 uppercase">Total Kapasitas</p><p className="text-sm font-bold text-slate-800">{tangkiPltd.filter(t => t.site_id === viewingTangki.site_id).reduce((sum, t) => sum + (Number(t.kapasitas_liter) || 0), 0).toLocaleString('id-ID')} L</p></div></div>
-                  <div className="w-px h-8 bg-slate-200"></div>
-                  <div className="flex items-center gap-3"><div className="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center text-teal-600"><Droplet className="w-4 h-4" /></div><div><p className="text-[10px] font-bold text-teal-600 uppercase">Total Volume Terkini</p><p className="text-sm font-bold text-teal-700">{tangkiPltd.filter(t => t.site_id === viewingTangki.site_id).reduce((sum, t) => sum + (Number(t.volume_terkini) || 0), 0).toLocaleString('id-ID')} L</p></div></div>
+                <div className="bg-white border-b border-slate-200 px-4 md:px-6 py-3 md:py-4 flex flex-wrap gap-4 md:gap-8 shadow-sm overflow-x-auto w-full">
+                  <div className="flex items-center gap-3 shrink-0"><div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500"><Database className="w-4 h-4" /></div><div><p className="text-[10px] font-bold text-slate-500 uppercase">Total Kapasitas</p><p className="text-sm font-bold text-slate-800">{tangkiPltd.filter(t => t.site_id === viewingTangki.site_id).reduce((sum, t) => sum + (Number(t.kapasitas_liter) || 0), 0).toLocaleString('id-ID')} L</p></div></div>
+                  <div className="hidden md:block w-px h-8 bg-slate-200"></div>
+                  <div className="flex items-center gap-3 shrink-0"><div className="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center text-teal-600"><Droplet className="w-4 h-4" /></div><div><p className="text-[10px] font-bold text-teal-600 uppercase">Total Volume Terkini</p><p className="text-sm font-bold text-teal-700">{tangkiPltd.filter(t => t.site_id === viewingTangki.site_id).reduce((sum, t) => sum + (Number(t.volume_terkini) || 0), 0).toLocaleString('id-ID')} L</p></div></div>
                 </div>
-                <div className="p-0 overflow-y-auto">
-                  <table className="w-full text-left">
-                    <thead className="bg-white sticky top-0 border-b border-slate-200 text-xs font-bold text-slate-500 uppercase"><tr><th className="p-4 w-24 text-center">Aksi</th><th className="p-4">ID Tangki / Tandon</th><th className="p-4 text-right">Kapasitas Maksimal (Liter)</th><th className="p-4 text-right">Volume Terkini (Liter)</th></tr></thead>
+                <div className="p-0 overflow-y-auto overflow-x-auto w-full flex-1">
+                  <table className="w-full text-left min-w-[500px]">
+                    <thead className="bg-white sticky top-0 border-b border-slate-200 text-xs font-bold text-slate-500 uppercase z-10"><tr><th className="p-4 w-24 text-center">Aksi</th><th className="p-4">ID Tangki / Tandon</th><th className="p-4 text-right">Kapasitas Maksimal (Liter)</th><th className="p-4 text-right">Volume Terkini (Liter)</th></tr></thead>
                     <tbody className="divide-y divide-slate-100">
                       {isAddingTangki && (
                         <tr className="bg-teal-50/50">
                           <td className="p-3 text-center flex justify-center gap-1"><button onClick={handleSaveAddTangki} className="p-1 bg-emerald-100 text-emerald-600 rounded"><Check className="w-4 h-4" /></button><button onClick={() => setIsAddingTangki(false)} className="p-1 bg-rose-100 text-rose-600 rounded"><X className="w-4 h-4" /></button></td>
-                          <td className="p-3"><input type="text" className="w-full px-2 py-1.5 border rounded text-sm" value={tangkiAddFormData.id_tangki || ''} onChange={e => setTangkiAddFormData({ ...tangkiAddFormData, id_tangki: e.target.value })} placeholder="Nama Tangki" /></td>
-                          <td className="p-3"><input type="number" className="w-full px-2 py-1.5 border rounded text-sm text-right" value={tangkiAddFormData.kapasitas_liter || ''} onChange={e => setTangkiAddFormData({ ...tangkiAddFormData, kapasitas_liter: e.target.value })} placeholder="0" /></td>
-                          <td className="p-3 text-right text-sm text-slate-400 italic">0 (Default)</td>
+                          <td className="p-3"><input type="text" className="w-full px-2 py-1.5 border rounded text-sm min-w-[120px]" value={tangkiAddFormData.id_tangki || ''} onChange={e => setTangkiAddFormData({ ...tangkiAddFormData, id_tangki: e.target.value })} placeholder="Nama Tangki" /></td>
+                          <td className="p-3"><input type="number" className="w-full px-2 py-1.5 border rounded text-sm text-right min-w-[80px]" value={tangkiAddFormData.kapasitas_liter || ''} onChange={e => setTangkiAddFormData({ ...tangkiAddFormData, kapasitas_liter: e.target.value })} placeholder="0" /></td>
+                          <td className="p-3 text-right text-sm text-slate-400 italic whitespace-nowrap">0 (Default)</td>
                         </tr>
                       )}
                       {tangkiPltd.filter(t => t.site_id === viewingTangki.site_id).map(t => {
@@ -2024,9 +2040,9 @@ export default function App() {
                           return (
                             <tr key={t._id} className="bg-blue-50/40">
                               <td className="p-3 text-center flex justify-center gap-1"><button onClick={handleSaveEditTangki} className="p-1 bg-emerald-100 text-emerald-600 rounded"><Check className="w-4 h-4" /></button><button onClick={() => setEditingTangkiId(null)} className="p-1 bg-rose-100 text-rose-600 rounded"><X className="w-4 h-4" /></button></td>
-                              <td className="p-3"><input type="text" className="w-full px-2 py-1.5 border rounded text-sm" value={tangkiEditFormData.id_tangki || ''} onChange={e => setTangkiEditFormData({ ...tangkiEditFormData, id_tangki: e.target.value })} /></td>
-                              <td className="p-3"><input type="number" className="w-full px-2 py-1.5 border rounded text-sm text-right" value={tangkiEditFormData.kapasitas_liter || ''} onChange={e => setTangkiEditFormData({ ...tangkiEditFormData, kapasitas_liter: e.target.value })} /></td>
-                              <td className="p-3"><input type="number" className="w-full px-2 py-1.5 border rounded text-sm text-right font-bold text-teal-600" value={tangkiEditFormData.volume_terkini || ''} onChange={e => setTangkiEditFormData({ ...tangkiEditFormData, volume_terkini: e.target.value })} /></td>
+                              <td className="p-3"><input type="text" className="w-full px-2 py-1.5 border rounded text-sm min-w-[120px]" value={tangkiEditFormData.id_tangki || ''} onChange={e => setTangkiEditFormData({ ...tangkiEditFormData, id_tangki: e.target.value })} /></td>
+                              <td className="p-3"><input type="number" className="w-full px-2 py-1.5 border rounded text-sm text-right min-w-[80px]" value={tangkiEditFormData.kapasitas_liter || ''} onChange={e => setTangkiEditFormData({ ...tangkiEditFormData, kapasitas_liter: e.target.value })} /></td>
+                              <td className="p-3"><input type="number" className="w-full px-2 py-1.5 border rounded text-sm text-right font-bold text-teal-600 min-w-[80px]" value={tangkiEditFormData.volume_terkini || ''} onChange={e => setTangkiEditFormData({ ...tangkiEditFormData, volume_terkini: e.target.value })} /></td>
                             </tr>
                           )
                         }
@@ -2035,9 +2051,9 @@ export default function App() {
                             <td className="p-4 text-center">
                               <div className="flex justify-center gap-1 opacity-0 group-hover:opacity-100"><button onClick={() => { setEditingTangkiId(t._id); setTangkiEditFormData(t); }} className="p-1.5 bg-blue-50 text-blue-600 rounded hover:bg-blue-100"><Edit className="w-4 h-4" /></button><button onClick={() => setDeletingTangki(t)} className="p-1.5 bg-rose-50 text-rose-600 rounded hover:bg-rose-100"><Trash2 className="w-4 h-4" /></button></div>
                             </td>
-                            <td className="p-4 font-bold text-slate-700">{t.id_tangki}</td>
-                            <td className="p-4 text-right text-slate-500 font-medium">{Number(t.kapasitas_liter).toLocaleString('id-ID')}</td>
-                            <td className="p-4 text-right font-bold text-teal-600 text-base">{Number(t.volume_terkini || 0).toLocaleString('id-ID')}</td>
+                            <td className="p-4 font-bold text-slate-700 whitespace-nowrap">{t.id_tangki}</td>
+                            <td className="p-4 text-right text-slate-500 font-medium whitespace-nowrap">{Number(t.kapasitas_liter).toLocaleString('id-ID')}</td>
+                            <td className="p-4 text-right font-bold text-teal-600 text-base whitespace-nowrap">{Number(t.volume_terkini || 0).toLocaleString('id-ID')}</td>
                           </tr>
                         )
                       })}
@@ -2052,31 +2068,31 @@ export default function App() {
           {editingMesinLog && (
             <div className="fixed inset-0 bg-slate-900/50 z-[70] flex items-center justify-center p-4">
               <div className="bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col animate-in fade-in zoom-in duration-200">
-                <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50 rounded-t-2xl">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-indigo-100 text-indigo-600 rounded-lg"><Server className="w-5 h-5" /></div>
-                    <div>
-                      <h3 className="text-lg font-bold text-slate-800">Edit Log Status Mesin</h3>
-                      <p className="text-xs text-slate-500 font-medium">Ubah data riwayat pencatatan</p>
+                <div className="p-4 md:p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50 rounded-t-2xl w-full">
+                  <div className="flex items-center gap-3 overflow-hidden">
+                    <div className="p-2 bg-indigo-100 text-indigo-600 rounded-lg shrink-0"><Server className="w-5 h-5" /></div>
+                    <div className="overflow-hidden">
+                      <h3 className="text-lg font-bold text-slate-800 truncate">Edit Log Status Mesin</h3>
+                      <p className="text-xs text-slate-500 font-medium truncate">Ubah data riwayat pencatatan</p>
                     </div>
                   </div>
-                  <button onClick={() => setEditingMesinLog(null)} className="text-slate-400 hover:text-rose-500 transition-colors"><X className="w-5 h-5" /></button>
+                  <button onClick={() => setEditingMesinLog(null)} className="text-slate-400 hover:text-rose-500 transition-colors shrink-0"><X className="w-5 h-5" /></button>
                 </div>
 
-                <div className="p-6 overflow-y-auto">
-                  <div className="flex flex-wrap gap-4 mb-6">
-                    <div>
+                <div className="p-4 md:p-6 overflow-y-auto w-full">
+                  <div className="flex flex-col sm:flex-row flex-wrap gap-4 mb-6">
+                    <div className="w-full sm:w-auto">
                       <label className="block text-xs font-bold text-slate-600 mb-1">Tanggal</label>
-                      <input type="date" className="w-40 text-sm px-3 py-2 border border-slate-300 rounded-lg" value={editingMesinLog.tanggal || ''} onChange={e => setEditingMesinLog({ ...editingMesinLog, tanggal: e.target.value })} />
+                      <input type="date" className="w-full sm:w-40 text-sm px-3 py-2 border border-slate-300 rounded-lg" value={editingMesinLog.tanggal || ''} onChange={e => setEditingMesinLog({ ...editingMesinLog, tanggal: e.target.value })} />
                     </div>
-                    <div>
+                    <div className="w-full sm:w-auto">
                       <label className="block text-xs font-bold text-slate-600 mb-1">Jam (Jadwal)</label>
-                      <select className="w-32 text-sm px-3 py-2 border border-slate-300 rounded-lg" value={editingMesinLog.jam || ''} onChange={e => setEditingMesinLog({ ...editingMesinLog, jam: e.target.value })}>
+                      <select className="w-full sm:w-32 text-sm px-3 py-2 border border-slate-300 rounded-lg" value={editingMesinLog.jam || ''} onChange={e => setEditingMesinLog({ ...editingMesinLog, jam: e.target.value })}>
                         <option value="10:00">10:00 WIT</option>
                         <option value="19:00">19:00 WIT</option>
                       </select>
                     </div>
-                    <div className="flex-1 min-w-[200px]">
+                    <div className="flex-1 w-full min-w-[200px]">
                       <label className="block text-xs font-bold text-slate-600 mb-2">Petugas Piket</label>
                       <div className="flex flex-wrap gap-2">
                         {getOperatorsForSite(selectedPltdForMesinLog, true).length === 0 ? <span className="text-xs text-rose-500 italic">Belum ada data operator.</span> :
@@ -2090,7 +2106,7 @@ export default function App() {
                     </div>
                   </div>
 
-                  <div className="border border-slate-200 rounded-xl overflow-x-auto bg-white shadow-sm">
+                  <div className="border border-slate-200 rounded-xl overflow-x-auto bg-white shadow-sm w-full">
                     <table className="w-full text-left min-w-[700px]">
                       <thead className="bg-slate-50 text-xs font-bold text-slate-600 uppercase border-b">
                         <tr><th className="p-3 w-48">ID Mesin</th><th className="p-3 text-right">D. Terpasang</th><th className="p-3">Daya Mampu (kW)</th><th className="p-3">Beban Supply (kW)</th><th className="p-3">Status Operasi</th></tr>
@@ -2098,12 +2114,12 @@ export default function App() {
                       <tbody className="divide-y divide-slate-100">
                         {editingMesinLog.mesin_data.map((m: any) => (
                           <tr key={m._id} className="hover:bg-slate-50">
-                            <td className="p-3"><div className="font-bold text-sm text-slate-700">{m.id_mesin}</div><div className="text-[10px] text-slate-400">{m.merk_type}</div></td>
+                            <td className="p-3"><div className="font-bold text-sm text-slate-700 whitespace-nowrap">{m.id_mesin}</div><div className="text-[10px] text-slate-400">{m.merk_type}</div></td>
                             <td className="p-3 text-right text-sm font-semibold text-slate-500">{m.daya_terpasang}</td>
-                            <td className="p-3"><input type="number" className="w-full px-2 py-1.5 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-indigo-500" value={m.daya_mampu} onChange={e => handleUpdateMesinLogData(m._id, 'daya_mampu', e.target.value)} /></td>
-                            <td className="p-3"><input type="number" className="w-full px-2 py-1.5 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-indigo-500" value={m.beban_supply} onChange={e => handleUpdateMesinLogData(m._id, 'beban_supply', e.target.value)} /></td>
+                            <td className="p-3"><input type="number" className="w-full min-w-[80px] px-2 py-1.5 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-indigo-500" value={m.daya_mampu} onChange={e => handleUpdateMesinLogData(m._id, 'daya_mampu', e.target.value)} /></td>
+                            <td className="p-3"><input type="number" className="w-full min-w-[80px] px-2 py-1.5 border border-slate-300 rounded text-sm focus:ring-2 focus:ring-indigo-500" value={m.beban_supply} onChange={e => handleUpdateMesinLogData(m._id, 'beban_supply', e.target.value)} /></td>
                             <td className="p-3">
-                              <select className="w-full px-2 py-1.5 border border-slate-300 rounded text-xs font-bold focus:ring-2 focus:ring-indigo-500" value={m.status_operasi} onChange={e => handleUpdateMesinLogData(m._id, 'status_operasi', e.target.value)}>
+                              <select className="w-full min-w-[100px] px-2 py-1.5 border border-slate-300 rounded text-xs font-bold focus:ring-2 focus:ring-indigo-500" value={m.status_operasi} onChange={e => handleUpdateMesinLogData(m._id, 'status_operasi', e.target.value)}>
                                 <option value="OPERASI">OPERASI</option><option value="STAND BY">STAND BY</option><option value="GANGGUAN">GANGGUAN</option>
                               </select>
                             </td>
@@ -2114,9 +2130,9 @@ export default function App() {
                   </div>
                 </div>
 
-                <div className="p-6 bg-slate-50 rounded-b-2xl border-t border-slate-100 flex justify-end gap-3">
-                  <button onClick={() => setEditingMesinLog(null)} className="px-5 py-2.5 text-slate-500 font-bold hover:bg-slate-200 rounded-lg text-sm transition-colors">Batal</button>
-                  <button onClick={handleSaveEditMesinLog} className="px-6 py-2.5 bg-indigo-600 text-white rounded-lg text-sm font-bold shadow-md hover:bg-indigo-700 flex items-center gap-2 transition-colors">
+                <div className="p-4 md:p-6 bg-slate-50 rounded-b-2xl border-t border-slate-100 flex flex-col sm:flex-row justify-end gap-3 w-full">
+                  <button onClick={() => setEditingMesinLog(null)} className="w-full sm:w-auto px-5 py-2.5 text-slate-500 font-bold hover:bg-slate-200 rounded-lg text-sm transition-colors">Batal</button>
+                  <button onClick={handleSaveEditMesinLog} className="w-full sm:w-auto px-6 py-2.5 bg-indigo-600 text-white rounded-lg text-sm font-bold shadow-md hover:bg-indigo-700 flex items-center justify-center gap-2 transition-colors">
                     <Save className="w-4 h-4" /> Simpan Perubahan
                   </button>
                 </div>
@@ -2127,14 +2143,13 @@ export default function App() {
           {(isAddingAsset || editingAsset) && (
             <div className="fixed inset-0 bg-slate-900/50 z-[70] flex items-center justify-center p-4">
               <div className="bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col animate-in fade-in zoom-in duration-200">
-                <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50 rounded-t-2xl">
-                  <h3 className="text-lg font-bold text-slate-800">{isAddingAsset ? 'Tambah Data Aset' : 'Edit Data Aset'}</h3>
-                  <button onClick={() => { setIsAddingAsset(false); setEditingAsset(null); }} className="text-slate-400 hover:text-rose-500 transition-colors"><X className="w-5 h-5" /></button>
+                <div className="p-4 md:p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50 rounded-t-2xl w-full">
+                  <h3 className="text-lg font-bold text-slate-800 truncate">{isAddingAsset ? 'Tambah Data Aset' : 'Edit Data Aset'}</h3>
+                  <button onClick={() => { setIsAddingAsset(false); setEditingAsset(null); }} className="text-slate-400 hover:text-rose-500 transition-colors shrink-0"><X className="w-5 h-5" /></button>
                 </div>
 
-                <div className="p-6 overflow-y-auto">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                    {/* BAGIAN YANG DIUBAH: Tambahkan logika sort() menggunakan prioritasKolom */}
+                <div className="p-4 md:p-6 overflow-y-auto w-full">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
                     {[...currentHeaders].sort((a, b) => {
                       const indexA = prioritasKolom.indexOf(a);
                       const indexB = prioritasKolom.indexOf(b);
@@ -2144,7 +2159,7 @@ export default function App() {
                       return a.localeCompare(b);
                     }).map((h, i) => (
                       <div key={i} className="flex flex-col">
-                        <label className="text-[10px] font-bold block mb-1.5 uppercase tracking-wider text-slate-500">
+                        <label className="text-[10px] font-bold block mb-1.5 uppercase tracking-wider text-slate-500 truncate">
                           {h.replace(/_/g, ' ')}
                         </label>
                         <input
@@ -2158,9 +2173,9 @@ export default function App() {
                   </div>
                 </div>
 
-                <div className="p-6 bg-slate-50 rounded-b-2xl border-t border-slate-100 flex justify-end gap-3">
-                  <button onClick={() => { setIsAddingAsset(false); setEditingAsset(null); }} className="px-5 py-2 text-slate-500 font-bold hover:bg-slate-200 rounded-lg text-sm transition-colors">Batal</button>
-                  <button onClick={isAddingAsset ? handleSaveAdd : handleSaveEdit} className="px-6 py-2 bg-blue-600 text-white rounded-lg text-sm font-bold shadow-md hover:bg-blue-700 flex items-center gap-2 transition-colors">
+                <div className="p-4 md:p-6 bg-slate-50 rounded-b-2xl border-t border-slate-100 flex flex-col sm:flex-row justify-end gap-3 w-full">
+                  <button onClick={() => { setIsAddingAsset(false); setEditingAsset(null); }} className="w-full sm:w-auto px-5 py-2.5 text-slate-500 font-bold hover:bg-slate-200 rounded-lg text-sm transition-colors">Batal</button>
+                  <button onClick={isAddingAsset ? handleSaveAdd : handleSaveEdit} className="w-full sm:w-auto px-6 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-bold shadow-md hover:bg-blue-700 flex items-center justify-center gap-2 transition-colors">
                     <Save className="w-4 h-4" /> Simpan Data
                   </button>
                 </div>
@@ -2172,7 +2187,10 @@ export default function App() {
             <div className="fixed inset-0 bg-slate-900/50 z-[70] flex items-center justify-center p-4">
               <div className="bg-white rounded-2xl shadow-xl p-6 text-center w-full max-w-sm">
                 <h3 className="font-bold text-lg mb-2">Hapus Data?</h3><p className="text-sm text-slate-500 mb-6">Tindakan ini tidak bisa dibatalkan.</p>
-                <div className="flex justify-center gap-3"><button onClick={() => { setDeletingAsset(null); setDeletingLogId(null); setDeletingLogPltdId(null); setDeletingMesinLog(null); }} className="px-4 py-2 border rounded-lg font-bold">Batal</button><button onClick={deletingAsset ? confirmDelete : (deletingLogId ? confirmDeleteLog : (deletingLogPltdId ? confirmDeleteLogPltd : confirmDeleteMesinLog))} className="px-4 py-2 bg-rose-600 text-white rounded-lg font-bold">Hapus Permanen</button></div>
+                <div className="flex flex-col sm:flex-row justify-center gap-3">
+                  <button onClick={() => { setDeletingAsset(null); setDeletingLogId(null); setDeletingLogPltdId(null); setDeletingMesinLog(null); }} className="w-full sm:w-auto px-4 py-2 border rounded-lg font-bold">Batal</button>
+                  <button onClick={deletingAsset ? confirmDelete : (deletingLogId ? confirmDeleteLog : (deletingLogPltdId ? confirmDeleteLogPltd : confirmDeleteMesinLog))} className="w-full sm:w-auto px-4 py-2 bg-rose-600 text-white rounded-lg font-bold">Hapus Permanen</button>
+                </div>
               </div>
             </div>
           )}
@@ -2181,24 +2199,24 @@ export default function App() {
           {editingProduksiId && (
             <div className="fixed inset-0 bg-slate-900/50 z-[70] flex items-center justify-center p-4">
               <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col animate-in fade-in zoom-in duration-200">
-                <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50 rounded-t-2xl">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-orange-100 text-orange-600 rounded-lg"><Gauge className="w-5 h-5" /></div>
-                    <div>
-                      <h3 className="text-lg font-bold text-slate-800">Edit Log Produksi & BBM</h3>
-                      <p className="text-xs text-slate-500 font-medium">Ubah data stand kWh dan BBM</p>
+                <div className="p-4 md:p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50 rounded-t-2xl w-full">
+                  <div className="flex items-center gap-3 overflow-hidden">
+                    <div className="p-2 bg-orange-100 text-orange-600 rounded-lg shrink-0"><Gauge className="w-5 h-5" /></div>
+                    <div className="overflow-hidden">
+                      <h3 className="text-lg font-bold text-slate-800 truncate">Edit Log Produksi & BBM</h3>
+                      <p className="text-xs text-slate-500 font-medium truncate">Ubah data stand kWh dan BBM</p>
                     </div>
                   </div>
-                  <button onClick={() => setEditingProduksiId(null)} className="text-slate-400 hover:text-rose-500"><X className="w-5 h-5" /></button>
+                  <button onClick={() => setEditingProduksiId(null)} className="text-slate-400 hover:text-rose-500 shrink-0"><X className="w-5 h-5" /></button>
                 </div>
 
-                <div className="p-6 overflow-y-auto space-y-6">
-                  <div className="grid grid-cols-2 gap-6">
-                    <div>
+                <div className="p-4 md:p-6 overflow-y-auto space-y-6 w-full">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+                    <div className="w-full">
                       <label className="block text-xs font-bold text-slate-600 mb-1">Tanggal</label>
                       <input type="date" className="w-full px-3 py-2 border rounded-lg text-sm" value={editProduksiFormData.tanggal || ''} onChange={e => setEditProduksiFormData({ ...editProduksiFormData, tanggal: e.target.value })} />
                     </div>
-                    <div>
+                    <div className="w-full">
                       <label className="block text-xs font-bold text-slate-600 mb-1">Petugas</label>
                       <div className="flex flex-wrap gap-2">
                         {getOperatorsForSite(selectedPltdForProduksi, true).map(op => (
@@ -2210,8 +2228,8 @@ export default function App() {
                       </div>
                     </div>
 
-                    <div className="col-span-2 grid grid-cols-2 gap-4">
-                      <div className="bg-sky-50 p-4 rounded-xl border border-sky-100">
+                    <div className="sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+                      <div className="bg-sky-50 p-4 rounded-xl border border-sky-100 w-full">
                         <h5 className="font-bold text-sky-800 mb-3 text-sm">Stand kWh Produksi</h5>
                         <div className="space-y-3">
                           <div><label className="text-xs font-medium text-slate-600 block mb-1">Stand Kemarin</label><input type="number" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" value={editProduksiFormData.stand_kwh_kemarin || ''} onChange={e => setEditProduksiFormData({ ...editProduksiFormData, stand_kwh_kemarin: e.target.value })} /></div>
@@ -2220,7 +2238,7 @@ export default function App() {
                         </div>
                       </div>
 
-                      <div className="bg-rose-50 p-4 rounded-xl border border-rose-100">
+                      <div className="bg-rose-50 p-4 rounded-xl border border-rose-100 w-full">
                         <h5 className="font-bold text-rose-800 mb-3 text-sm">Stand Flow BBM</h5>
                         <div className="space-y-3">
                           <div><label className="text-xs font-medium text-slate-600 block mb-1">Stand Kemarin</label><input type="number" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" value={editProduksiFormData.stand_bbm_kemarin || ''} onChange={e => setEditProduksiFormData({ ...editProduksiFormData, stand_bbm_kemarin: e.target.value })} /></div>
@@ -2230,16 +2248,16 @@ export default function App() {
                       </div>
                     </div>
 
-                    <div className="col-span-2 bg-emerald-50 p-3 rounded-lg flex justify-between items-center border border-emerald-100">
+                    <div className="sm:col-span-2 bg-emerald-50 p-3 rounded-lg flex justify-between items-center border border-emerald-100 w-full">
                       <span className="font-bold text-emerald-800">SFC (Liter/kWh):</span>
-                      <span className="text-xl font-black text-emerald-600">{sfcEditCalc}</span>
+                      <span className="text-xl font-black text-emerald-600 break-all">{sfcEditCalc}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="p-6 bg-slate-50 rounded-b-2xl border-t border-slate-100 flex justify-end gap-3">
-                  <button onClick={() => setEditingProduksiId(null)} className="px-5 py-2.5 text-slate-500 font-bold hover:bg-slate-200 rounded-lg text-sm transition-colors">Batal</button>
-                  <button onClick={handleSaveEditProduksiLog} className="px-6 py-2.5 bg-orange-600 text-white rounded-lg text-sm font-bold shadow-md hover:bg-orange-700 flex items-center gap-2 transition-colors">
+                <div className="p-4 md:p-6 bg-slate-50 rounded-b-2xl border-t border-slate-100 flex flex-col sm:flex-row justify-end gap-3 w-full">
+                  <button onClick={() => setEditingProduksiId(null)} className="w-full sm:w-auto px-5 py-2.5 text-slate-500 font-bold hover:bg-slate-200 rounded-lg text-sm transition-colors">Batal</button>
+                  <button onClick={handleSaveEditProduksiLog} className="w-full sm:w-auto px-6 py-2.5 bg-orange-600 text-white rounded-lg text-sm font-bold shadow-md hover:bg-orange-700 flex items-center justify-center gap-2 transition-colors">
                     <Save className="w-4 h-4" /> Simpan Perubahan
                   </button>
                 </div>
@@ -2253,9 +2271,9 @@ export default function App() {
               <div className="bg-white rounded-2xl shadow-xl p-6 text-center w-full max-w-sm">
                 <h3 className="font-bold text-lg mb-2">Hapus Log Produksi?</h3>
                 <p className="text-sm text-slate-500 mb-6">Tindakan ini tidak bisa dibatalkan dan akan memengaruhi riwayat SFC.</p>
-                <div className="flex justify-center gap-3">
-                  <button onClick={() => setDeletingProduksiId(null)} className="px-4 py-2 border rounded-lg font-bold">Batal</button>
-                  <button onClick={confirmDeleteProduksiLog} className="px-4 py-2 bg-rose-600 text-white rounded-lg font-bold">Hapus Permanen</button>
+                <div className="flex flex-col sm:flex-row justify-center gap-3 w-full">
+                  <button onClick={() => setDeletingProduksiId(null)} className="w-full sm:w-auto px-4 py-2 border rounded-lg font-bold">Batal</button>
+                  <button onClick={confirmDeleteProduksiLog} className="w-full sm:w-auto px-4 py-2 bg-rose-600 text-white rounded-lg font-bold">Hapus Permanen</button>
                 </div>
               </div>
             </div>
@@ -2265,40 +2283,40 @@ export default function App() {
           {editingBbmLog && (
             <div className="fixed inset-0 bg-slate-900/50 z-[70] flex items-center justify-center p-4">
               <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col animate-in fade-in zoom-in duration-200">
-                <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50 rounded-t-2xl">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-teal-100 text-teal-600 rounded-lg"><Droplet className="w-5 h-5" /></div>
-                    <div>
-                      <h3 className="text-lg font-bold text-slate-800">Edit Log BBM</h3>
-                      <p className="text-xs text-slate-500 font-medium">Ubah catatan teks riwayat</p>
+                <div className="p-4 md:p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50 rounded-t-2xl w-full">
+                  <div className="flex items-center gap-3 overflow-hidden">
+                    <div className="p-2 bg-teal-100 text-teal-600 rounded-lg shrink-0"><Droplet className="w-5 h-5" /></div>
+                    <div className="overflow-hidden">
+                      <h3 className="text-lg font-bold text-slate-800 truncate">Edit Log BBM</h3>
+                      <p className="text-xs text-slate-500 font-medium truncate">Ubah catatan teks riwayat</p>
                     </div>
                   </div>
-                  <button onClick={() => setEditingBbmLog(null)} className="text-slate-400 hover:text-rose-500"><X className="w-5 h-5" /></button>
+                  <button onClick={() => setEditingBbmLog(null)} className="text-slate-400 hover:text-rose-500 shrink-0"><X className="w-5 h-5" /></button>
                 </div>
 
-                <div className="p-6 overflow-y-auto space-y-4">
-                  <div className="grid grid-cols-2 gap-4 mb-4">
-                    <div><label className="block text-xs font-bold text-slate-600 mb-1">Tanggal</label><input type="date" className="w-full px-3 py-2 border rounded-lg text-sm" value={editingBbmLog.tanggal} onChange={e => setEditingBbmLog({ ...editingBbmLog, tanggal: e.target.value })} /></div>
-                    <div><label className="block text-xs font-bold text-slate-600 mb-1">Jam</label><input type="time" className="w-full px-3 py-2 border rounded-lg text-sm" value={editingBbmLog.jam} onChange={e => setEditingBbmLog({ ...editingBbmLog, jam: e.target.value })} /></div>
-                    <div><label className="block text-xs font-bold text-slate-600 mb-1">Jenis Input</label><select className="w-full px-3 py-2 border rounded-lg text-sm bg-slate-50 font-bold" value={editingBbmLog.jenis_input} onChange={e => setEditingBbmLog({ ...editingBbmLog, jenis_input: e.target.value })}><option value="Penerimaan">Penerimaan</option><option value="Stok Opname">Stok Opname</option></select></div>
-                    <div><label className="block text-xs font-bold text-slate-600 mb-1">Referensi</label><input type="text" className="w-full px-3 py-2 border rounded-lg text-sm" value={editingBbmLog.referensi} onChange={e => setEditingBbmLog({ ...editingBbmLog, referensi: e.target.value })} /></div>
+                <div className="p-4 md:p-6 overflow-y-auto space-y-4 w-full">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                    <div className="w-full"><label className="block text-xs font-bold text-slate-600 mb-1">Tanggal</label><input type="date" className="w-full px-3 py-2 border rounded-lg text-sm" value={editingBbmLog.tanggal} onChange={e => setEditingBbmLog({ ...editingBbmLog, tanggal: e.target.value })} /></div>
+                    <div className="w-full"><label className="block text-xs font-bold text-slate-600 mb-1">Jam</label><input type="time" className="w-full px-3 py-2 border rounded-lg text-sm" value={editingBbmLog.jam} onChange={e => setEditingBbmLog({ ...editingBbmLog, jam: e.target.value })} /></div>
+                    <div className="w-full"><label className="block text-xs font-bold text-slate-600 mb-1">Jenis Input</label><select className="w-full px-3 py-2 border rounded-lg text-sm bg-slate-50 font-bold" value={editingBbmLog.jenis_input} onChange={e => setEditingBbmLog({ ...editingBbmLog, jenis_input: e.target.value })}><option value="Penerimaan">Penerimaan</option><option value="Stok Opname">Stok Opname</option></select></div>
+                    <div className="w-full"><label className="block text-xs font-bold text-slate-600 mb-1">Referensi</label><input type="text" className="w-full px-3 py-2 border rounded-lg text-sm" value={editingBbmLog.referensi} onChange={e => setEditingBbmLog({ ...editingBbmLog, referensi: e.target.value })} /></div>
                   </div>
 
-                  <div className="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                  <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 w-full">
                     <h4 className="font-bold text-slate-700 text-sm mb-3">Rincian Volume Tangki</h4>
                     {editingBbmLog.tangki_data.map((t: any) => (
-                      <div key={t._id} className="flex justify-between items-center bg-white p-2 rounded border border-slate-100 mb-2">
-                        <span className="text-xs font-bold text-slate-600">{t.id_tangki}</span>
-                        <input type="number" className="w-32 px-2 py-1 border rounded text-sm text-right font-bold focus:ring-2 focus:ring-teal-500" value={t.input_volume} onChange={e => handleUpdateBbmEditData(t._id, e.target.value)} />
+                      <div key={t._id} className="flex justify-between items-center bg-white p-2 rounded border border-slate-100 mb-2 w-full">
+                        <span className="text-xs font-bold text-slate-600 truncate">{t.id_tangki}</span>
+                        <input type="number" className="w-24 sm:w-32 px-2 py-1 border rounded text-sm text-right font-bold focus:ring-2 focus:ring-teal-500 shrink-0" value={t.input_volume} onChange={e => handleUpdateBbmEditData(t._id, e.target.value)} />
                       </div>
                     ))}
                   </div>
                   <p className="text-[10px] text-orange-500 italic mt-2">*Catatan: Mengedit log ini hanya mengubah riwayat tampilan, tidak mengubah volume Master Data Tangki untuk mencegah error kalkulasi ganda.</p>
                 </div>
 
-                <div className="p-6 bg-slate-50 rounded-b-2xl border-t border-slate-100 flex justify-end gap-3">
-                  <button onClick={() => setEditingBbmLog(null)} className="px-5 py-2.5 text-slate-500 font-bold hover:bg-slate-200 rounded-lg text-sm transition-colors">Batal</button>
-                  <button onClick={handleSaveEditBbmLog} className="px-6 py-2.5 bg-teal-600 text-white rounded-lg text-sm font-bold shadow-md hover:bg-teal-700 flex items-center gap-2"><Save className="w-4 h-4" /> Simpan Perubahan</button>
+                <div className="p-4 md:p-6 bg-slate-50 rounded-b-2xl border-t border-slate-100 flex flex-col sm:flex-row justify-end gap-3 w-full">
+                  <button onClick={() => setEditingBbmLog(null)} className="w-full sm:w-auto px-5 py-2.5 text-slate-500 font-bold hover:bg-slate-200 rounded-lg text-sm transition-colors">Batal</button>
+                  <button onClick={handleSaveEditBbmLog} className="w-full sm:w-auto px-6 py-2.5 bg-teal-600 text-white rounded-lg text-sm font-bold shadow-md hover:bg-teal-700 flex items-center justify-center gap-2"><Save className="w-4 h-4" /> Simpan Perubahan</button>
                 </div>
               </div>
             </div>
@@ -2310,16 +2328,16 @@ export default function App() {
               <div className="bg-white rounded-2xl shadow-xl p-6 text-center w-full max-w-sm">
                 <h3 className="font-bold text-lg mb-2">Hapus Riwayat Input?</h3>
                 <p className="text-sm text-slate-500 mb-6">Tindakan ini menghapus catatan laporan secara permanen.</p>
-                <div className="flex justify-center gap-3">
-                  <button onClick={() => setDeletingBbmLogId(null)} className="px-4 py-2 border rounded-lg font-bold">Batal</button>
-                  <button onClick={confirmDeleteBbmLog} className="px-4 py-2 bg-rose-600 text-white rounded-lg font-bold">Hapus Permanen</button>
+                <div className="flex flex-col sm:flex-row justify-center gap-3 w-full">
+                  <button onClick={() => setDeletingBbmLogId(null)} className="w-full sm:w-auto px-4 py-2 border rounded-lg font-bold">Batal</button>
+                  <button onClick={confirmDeleteBbmLog} className="w-full sm:w-auto px-4 py-2 bg-rose-600 text-white rounded-lg font-bold">Hapus Permanen</button>
                 </div>
               </div>
             </div>
           )}
 
           {notification && (
-            <div className="fixed bottom-6 right-6 z-[100] bg-emerald-600 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3"><Check className="w-4 h-4" /> <span className="text-sm font-bold">{notification}</span> <button onClick={() => setNotification(null)}><X className="w-4 h-4" /></button></div>
+            <div className="fixed bottom-6 right-6 z-[100] bg-emerald-600 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 max-w-[90vw]"><Check className="w-4 h-4 shrink-0" /> <span className="text-sm font-bold truncate">{notification}</span> <button onClick={() => setNotification(null)} className="shrink-0"><X className="w-4 h-4" /></button></div>
           )}
 
         </div>
