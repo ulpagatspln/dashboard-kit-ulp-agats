@@ -1505,10 +1505,32 @@ export default function App() {
                               <td className="p-4"><div className="font-bold text-indigo-700">{Array.isArray(log.petugas) && log.petugas.length > 0 ? log.petugas.map(p => String(p).split(' - ')[0]).join(', ') : '-'}</div></td>
                               <td className="p-4 font-medium">{log.mesin_data.length} Unit Mesin Terdata</td>
                               <td className="p-4 text-center flex justify-center gap-1">
-                                {/* Mengganti tombol Search menjadi tombol Edit */}
+                                {/* TOMBOL COPY WAG */}
+                                <button onClick={() => {
+                                  const pltdName = pltdAssets.find(p => p.site_id === log.site_id)?.nama_pltd || log.site_id;
+                                  let text = `*LAPORAN STATUS MESIN PLTD*\nLokasi: ${pltdName}\nTanggal: ${log.tanggal}\nJam: ${log.jam}\nPetugas: ${Array.isArray(log.petugas) && log.petugas.length > 0 ? log.petugas.map(p => String(p).split(' - ')[0]).join(', ') : '-'}\n\n*Rincian Mesin:*\n`;
+
+                                  log.mesin_data.forEach((m, idx) => {
+                                    text += `${idx + 1}. ${m.id_mesin} (${m.merk_type}): Mampu ${m.daya_mampu}kW | Supply ${m.beban_supply}kW | *${m.status_operasi}*\n`;
+                                  });
+
+                                  const ta = document.createElement("textarea");
+                                  ta.value = text;
+                                  document.body.appendChild(ta);
+                                  ta.select();
+                                  document.execCommand('copy');
+                                  document.body.removeChild(ta);
+                                  setNotification('Format WAG Status Mesin disalin!');
+                                }} className="p-1.5 bg-emerald-50 text-emerald-600 rounded hover:bg-emerald-100 opacity-0 group-hover:opacity-100 transition-opacity" title="Salin ke WAG">
+                                  <Copy className="w-4 h-4" />
+                                </button>
+
+                                {/* TOMBOL EDIT */}
                                 <button onClick={() => setEditingMesinLog(log)} className="p-1.5 bg-blue-50 text-blue-600 rounded hover:bg-blue-100 opacity-0 group-hover:opacity-100 transition-opacity" title="Edit Log">
                                   <Edit className="w-4 h-4" />
                                 </button>
+
+                                {/* TOMBOL HAPUS */}
                                 <button onClick={() => setDeletingMesinLog(log)} className="p-1.5 bg-rose-50 text-rose-600 rounded hover:bg-rose-100 opacity-0 group-hover:opacity-100 transition-opacity" title="Hapus Log">
                                   <Trash2 className="w-4 h-4" />
                                 </button>
