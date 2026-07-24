@@ -1648,13 +1648,13 @@ export default function App() {
                         <thead className="bg-slate-50 text-xs font-bold text-slate-500 uppercase border-b"><tr><th className="p-4">Tanggal & Petugas</th><th className="p-4 text-center">Produksi (kWh)</th><th className="p-4 text-center">BBM (L)</th><th className="p-4 text-center">SFC</th><th className="p-4 text-center">Aksi</th></tr></thead>
                         <tbody className="divide-y divide-slate-100">
                           {currentProduksiLogs.map(log => (
-                            <tr key={log._id} className="hover:bg-slate-50">
+                            <tr key={log._id} className="hover:bg-slate-50 group">
                               <td className="p-4"><div className="font-bold text-slate-800">{log.tanggal}</div><div className="text-[10px] text-orange-600 font-bold mt-1">👷 {Array.isArray(log.petugas) && log.petugas.length > 0 ? log.petugas.map(p => String(p).split(' - ')[0]).join(', ') : '-'}</div></td>
                               <td className="p-4 text-center"><div className="font-bold text-sky-600 text-base">{Number(log.kwh_produksi).toLocaleString('id-ID')}</div><div className="text-[10px] text-slate-400">{log.stand_kwh_kemarin} → {log.stand_kwh_hari_ini}</div></td>
                               <td className="p-4 text-center"><div className="font-bold text-rose-600 text-base">{Number(log.pemakaian_bbm).toLocaleString('id-ID')}</div><div className="text-[10px] text-slate-400">{log.stand_bbm_kemarin} → {log.stand_bbm_hari_ini}</div></td>
                               <td className="p-4 text-center"><span className="bg-emerald-100 text-emerald-700 font-bold px-3 py-1 rounded-md">{log.sfc}</span></td>
                               <td className="p-4 text-center">
-                                <div className="flex justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <div className="flex justify-center gap-1">
                                   <button onClick={() => { let text = `*PRODUKSI & BBM*\nTanggal: ${log.tanggal}\nProduksi: ${Number(log.kwh_produksi).toLocaleString('id-ID')} kWh\nBBM: ${Number(log.pemakaian_bbm).toLocaleString('id-ID')} L\nSFC: ${log.sfc}\nPetugas: ${Array.isArray(log.petugas) ? log.petugas.map(p => String(p).split(' - ')[0]).join(', ') : '-'}`; const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); setNotification('Salin WAG berhasil!'); }} className="p-1.5 bg-emerald-50 text-emerald-600 rounded hover:bg-emerald-100" title="Salin ke WAG">
                                     <Copy className="w-4 h-4" />
                                   </button>
