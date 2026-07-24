@@ -800,6 +800,34 @@ export default function App() {
     try { await deleteDoc(doc(db, 'log_mesin', deletingMesinLog._id)); setDeletingMesinLog(null); setNotification('Log dihapus!'); } catch (e) { }
   };
 
+  // --- STATE DAN FUNGSI EDIT LOG PRODUKSI ---
+  const [editingProduksiId, setEditingProduksiId] = useState<any>(null);
+  const [editProduksiFormData, setEditProduksiFormData] = useState<any>({});
+  const [deletingProduksiId, setDeletingProduksiId] = useState<any>(null);
+
+  const kwhProduksiEditCalc = (Number(editProduksiFormData.stand_kwh_hari_ini) || 0) - (Number(editProduksiFormData.stand_kwh_kemarin) || 0);
+  const bbmPemakaianEditCalc = (Number(editProduksiFormData.stand_bbm_hari_ini) || 0) - (Number(editProduksiFormData.stand_bbm_kemarin) || 0);
+  const sfcEditCalc = kwhProduksiEditCalc > 0 ? (bbmPemakaianEditCalc / kwhProduksiEditCalc).toFixed(4) : '0.0000';
+
+  const handleSaveEditProduksiLog = async () => {
+    try {
+      const { _id, ...dataToUpdate } = editProduksiFormData;
+      await updateDoc(doc(db, 'log_produksi', editingProduksiId), {
+        ...dataToUpdate,
+        kwh_produksi: kwhProduksiEditCalc,
+        pemakaian_bbm: bbmPemakaianEditCalc,
+        sfc: sfcEditCalc
+      });
+      setEditingProduksiId(null);
+      setNotification('Log Produksi & BBM berhasil diperbarui!');
+    } catch (error) { setNotification('Gagal perbarui data produksi!'); }
+  };
+
+  const confirmDeleteProduksiLog = async () => {
+    try { await deleteDoc(doc(db, 'log_produksi', deletingProduksiId)); setDeletingProduksiId(null); setNotification('Log Produksi dihapus!'); } catch (e) { }
+  };
+
+  // --- PERHITUNGAN FORMULIR UTAMA (JANGAN DIHAPUS) ---
   const kwhProduksiCalc = (Number(produksiFormData.stand_kwh_hari_ini) || 0) - (Number(produksiFormData.stand_kwh_kemarin) || 0);
   const bbmPemakaianCalc = (Number(produksiFormData.stand_bbm_hari_ini) || 0) - (Number(produksiFormData.stand_bbm_kemarin) || 0);
   const sfcCalc = kwhProduksiCalc > 0 ? (bbmPemakaianCalc / kwhProduksiCalc).toFixed(4) : '0.0000';
@@ -1625,7 +1653,19 @@ export default function App() {
                               <td className="p-4 text-center"><div className="font-bold text-sky-600 text-base">{Number(log.kwh_produksi).toLocaleString('id-ID')}</div><div className="text-[10px] text-slate-400">{log.stand_kwh_kemarin} → {log.stand_kwh_hari_ini}</div></td>
                               <td className="p-4 text-center"><div className="font-bold text-rose-600 text-base">{Number(log.pemakaian_bbm).toLocaleString('id-ID')}</div><div className="text-[10px] text-slate-400">{log.stand_bbm_kemarin} → {log.stand_bbm_hari_ini}</div></td>
                               <td className="p-4 text-center"><span className="bg-emerald-100 text-emerald-700 font-bold px-3 py-1 rounded-md">{log.sfc}</span></td>
-                              <td className="p-4 text-center"><button onClick={() => { let text = `*PRODUKSI & BBM*\nTanggal: ${log.tanggal}\nProduksi: ${log.kwh_produksi} kWh\nBBM: ${log.pemakaian_bbm} L\nSFC: ${log.sfc}\nPetugas: ${Array.isArray(log.petugas) ? log.petugas.map(p => String(p).split(' - ')[0]).join(', ') : '-'}`; const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); setNotification('Salin WAG berhasil!'); }} className="p-2 bg-orange-50 text-orange-600 rounded-lg"><Copy className="w-4 h-4" /></button></td>
+                              <td className="p-4 text-center">
+                                <div className="flex justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                  <button onClick={() => { let text = `*PRODUKSI & BBM*\nTanggal: ${log.tanggal}\nProduksi: ${Number(log.kwh_produksi).toLocaleString('id-ID')} kWh\nBBM: ${Number(log.pemakaian_bbm).toLocaleString('id-ID')} L\nSFC: ${log.sfc}\nPetugas: ${Array.isArray(log.petugas) ? log.petugas.map(p => String(p).split(' - ')[0]).join(', ') : '-'}`; const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); setNotification('Salin WAG berhasil!'); }} className="p-1.5 bg-emerald-50 text-emerald-600 rounded hover:bg-emerald-100" title="Salin ke WAG">
+                                    <Copy className="w-4 h-4" />
+                                  </button>
+                                  <button onClick={() => { setEditingProduksiId(log._id); setEditProduksiFormData(log); }} className="p-1.5 bg-blue-50 text-blue-600 rounded hover:bg-blue-100" title="Edit Log">
+                                    <Edit className="w-4 h-4" />
+                                  </button>
+                                  <button onClick={() => setDeletingProduksiId(log._id)} className="p-1.5 bg-rose-50 text-rose-600 rounded hover:bg-rose-100" title="Hapus Log">
+                                    <Trash2 className="w-4 h-4" />
+                                  </button>
+                                </div>
+                              </td>
                             </tr>
                           ))}
                         </tbody>
@@ -2047,6 +2087,90 @@ export default function App() {
               <div className="bg-white rounded-2xl shadow-xl p-6 text-center w-full max-w-sm">
                 <h3 className="font-bold text-lg mb-2">Hapus Data?</h3><p className="text-sm text-slate-500 mb-6">Tindakan ini tidak bisa dibatalkan.</p>
                 <div className="flex justify-center gap-3"><button onClick={() => { setDeletingAsset(null); setDeletingLogId(null); setDeletingLogPltdId(null); setDeletingMesinLog(null); }} className="px-4 py-2 border rounded-lg font-bold">Batal</button><button onClick={deletingAsset ? confirmDelete : (deletingLogId ? confirmDeleteLog : (deletingLogPltdId ? confirmDeleteLogPltd : confirmDeleteMesinLog))} className="px-4 py-2 bg-rose-600 text-white rounded-lg font-bold">Hapus Permanen</button></div>
+              </div>
+            </div>
+          )}
+
+          {/* MODAL EDIT LOG PRODUKSI & BBM */}
+          {editingProduksiId && (
+            <div className="fixed inset-0 bg-slate-900/50 z-[70] flex items-center justify-center p-4">
+              <div className="bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col animate-in fade-in zoom-in duration-200">
+                <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50 rounded-t-2xl">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-orange-100 text-orange-600 rounded-lg"><Gauge className="w-5 h-5" /></div>
+                    <div>
+                      <h3 className="text-lg font-bold text-slate-800">Edit Log Produksi & BBM</h3>
+                      <p className="text-xs text-slate-500 font-medium">Ubah data stand kWh dan BBM</p>
+                    </div>
+                  </div>
+                  <button onClick={() => setEditingProduksiId(null)} className="text-slate-400 hover:text-rose-500"><X className="w-5 h-5" /></button>
+                </div>
+
+                <div className="p-6 overflow-y-auto space-y-6">
+                  <div className="grid grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-xs font-bold text-slate-600 mb-1">Tanggal</label>
+                      <input type="date" className="w-full px-3 py-2 border rounded-lg text-sm" value={editProduksiFormData.tanggal || ''} onChange={e => setEditProduksiFormData({ ...editProduksiFormData, tanggal: e.target.value })} />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-slate-600 mb-1">Petugas</label>
+                      <div className="flex flex-wrap gap-2">
+                        {getOperatorsForSite(selectedPltdForProduksi, true).map(op => (
+                          <label key={op} className="flex items-center gap-1.5 bg-slate-50 border border-slate-200 px-2 py-1 rounded cursor-pointer hover:bg-orange-50">
+                            <input type="checkbox" checked={(editProduksiFormData.petugas || []).includes(op)} onChange={() => handleTogglePetugas(op, editProduksiFormData, setEditProduksiFormData)} className="rounded text-orange-600 focus:ring-orange-500" />
+                            <span className="text-[10px] font-bold text-slate-700">{String(op).split(' - ')[0]}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="col-span-2 grid grid-cols-2 gap-4">
+                      <div className="bg-sky-50 p-4 rounded-xl border border-sky-100">
+                        <h5 className="font-bold text-sky-800 mb-3 text-sm">Stand kWh Produksi</h5>
+                        <div className="space-y-3">
+                          <div><label className="text-xs font-medium text-slate-600 block mb-1">Stand Kemarin</label><input type="number" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" value={editProduksiFormData.stand_kwh_kemarin || ''} onChange={e => setEditProduksiFormData({ ...editProduksiFormData, stand_kwh_kemarin: e.target.value })} /></div>
+                          <div><label className="text-xs font-medium text-slate-600 block mb-1">Stand Hari Ini</label><input type="number" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" value={editProduksiFormData.stand_kwh_hari_ini || ''} onChange={e => setEditProduksiFormData({ ...editProduksiFormData, stand_kwh_hari_ini: e.target.value })} /></div>
+                          <div className="pt-2 border-t border-sky-200 flex justify-between"><span className="text-xs font-bold">Total Produksi:</span><span className="font-bold text-sky-700">{kwhProduksiEditCalc} kWh</span></div>
+                        </div>
+                      </div>
+
+                      <div className="bg-rose-50 p-4 rounded-xl border border-rose-100">
+                        <h5 className="font-bold text-rose-800 mb-3 text-sm">Stand Flow BBM</h5>
+                        <div className="space-y-3">
+                          <div><label className="text-xs font-medium text-slate-600 block mb-1">Stand Kemarin</label><input type="number" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" value={editProduksiFormData.stand_bbm_kemarin || ''} onChange={e => setEditProduksiFormData({ ...editProduksiFormData, stand_bbm_kemarin: e.target.value })} /></div>
+                          <div><label className="text-xs font-medium text-slate-600 block mb-1">Stand Hari Ini</label><input type="number" className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm" value={editProduksiFormData.stand_bbm_hari_ini || ''} onChange={e => setEditProduksiFormData({ ...editProduksiFormData, stand_bbm_hari_ini: e.target.value })} /></div>
+                          <div className="pt-2 border-t border-rose-200 flex justify-between"><span className="text-xs font-bold">Total Pemakaian:</span><span className="font-bold text-rose-700">{bbmPemakaianEditCalc} L</span></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="col-span-2 bg-emerald-50 p-3 rounded-lg flex justify-between items-center border border-emerald-100">
+                      <span className="font-bold text-emerald-800">SFC (Liter/kWh):</span>
+                      <span className="text-xl font-black text-emerald-600">{sfcEditCalc}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-6 bg-slate-50 rounded-b-2xl border-t border-slate-100 flex justify-end gap-3">
+                  <button onClick={() => setEditingProduksiId(null)} className="px-5 py-2.5 text-slate-500 font-bold hover:bg-slate-200 rounded-lg text-sm transition-colors">Batal</button>
+                  <button onClick={handleSaveEditProduksiLog} className="px-6 py-2.5 bg-orange-600 text-white rounded-lg text-sm font-bold shadow-md hover:bg-orange-700 flex items-center gap-2 transition-colors">
+                    <Save className="w-4 h-4" /> Simpan Perubahan
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* MODAL HAPUS LOG PRODUKSI */}
+          {deletingProduksiId && (
+            <div className="fixed inset-0 bg-slate-900/50 z-[70] flex items-center justify-center p-4">
+              <div className="bg-white rounded-2xl shadow-xl p-6 text-center w-full max-w-sm">
+                <h3 className="font-bold text-lg mb-2">Hapus Log Produksi?</h3>
+                <p className="text-sm text-slate-500 mb-6">Tindakan ini tidak bisa dibatalkan dan akan memengaruhi riwayat SFC.</p>
+                <div className="flex justify-center gap-3">
+                  <button onClick={() => setDeletingProduksiId(null)} className="px-4 py-2 border rounded-lg font-bold">Batal</button>
+                  <button onClick={confirmDeleteProduksiLog} className="px-4 py-2 bg-rose-600 text-white rounded-lg font-bold">Hapus Permanen</button>
+                </div>
               </div>
             </div>
           )}
