@@ -1411,21 +1411,21 @@ export default function App() {
                       )}
                     </div>
 
-                    {/* --- TOMBOL EXPORT PLTS --- */}
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-6 mb-3 gap-3 w-full">
-                      <h4 className="font-bold text-slate-800 text-sm">Riwayat Pencatatan PLTS</h4>
-                      <div className="flex gap-2 w-full sm:w-auto">
+                    {/* --- BAGIAN TOMBOL EXPORT PLTS --- */}
+                    <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4 w-full">
+                      <h3 className="font-bold text-lg text-slate-800">Riwayat Pencatatan PLTS</h3>
+                      <div className="flex gap-2 print:hidden w-full sm:w-auto">
                         <button onClick={() => {
                           const headers = ['Tanggal', 'Jam', 'Beban Puncak (kW)', 'Status', 'Petugas', 'Keterangan'];
                           const rows = currentPltsLogs.map(log => [log.tanggal, log.jam, log.beban_puncak, log.status, Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-', log.keterangan || '-']);
                           handleExportCSV(`Log_PLTS_${logFilterMode}_${new Date().getTime()}.csv`, headers, rows);
-                        }} className="px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-emerald-100 flex-1 sm:flex-none"><FileSpreadsheet className="w-4 h-4" /> Excel (CSV)</button>
+                        }} className="flex-1 sm:flex-none px-4 py-2 bg-emerald-50 text-emerald-600 rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-emerald-100"><FileSpreadsheet className="w-4 h-4" /> Export Excel</button>
 
                         <button onClick={() => {
                           const headers = ['Tanggal', 'Jam', 'Beban Puncak (kW)', 'Status', 'Petugas', 'Keterangan'];
                           const rows = currentPltsLogs.map(log => [log.tanggal, log.jam, log.beban_puncak, log.status, Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-', log.keterangan || '-']);
                           handleExportFilteredPDF(`Log_PLTS_${logFilterMode}_${new Date().getTime()}.pdf`, 'Log Beban PLTS - ' + (logFilterMode === 'all' ? 'Semua Waktu' : (logFilterMode === 'monthly' ? logFilterMonth : logFilterDate)), headers, rows);
-                        }} className="px-3 py-1.5 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-rose-100 flex-1 sm:flex-none"><Download className="w-4 h-4" /> PDF</button>
+                        }} className="flex-1 sm:flex-none px-4 py-2 bg-rose-50 text-rose-600 rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-rose-100"><Download className="w-4 h-4" /> Export PDF</button>
                       </div>
                     </div>
 
@@ -1567,10 +1567,10 @@ export default function App() {
                       )}
                     </div>
 
-                    {/* --- TOMBOL EXPORT PLTD --- */}
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-6 mb-3 gap-3 w-full">
-                      <h4 className="font-bold text-slate-800 text-sm">Riwayat Pencatatan PLTD</h4>
-                      <div className="flex gap-2 w-full sm:w-auto">
+                    {/* --- BAGIAN TOMBOL EXPORT PLTD --- */}
+                    <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4 w-full">
+                      <h3 className="font-bold text-lg text-slate-800">Riwayat Pencatatan PLTD</h3>
+                      <div className="flex gap-2 print:hidden w-full sm:w-auto">
                         <button onClick={() => {
                           const headers = ['Tanggal', 'Jam', 'Aktif (kW)', 'Reaktif (kVAR)', 'Arus R', 'Arus S', 'Arus T', 'Teg RS', 'Teg ST', 'Teg TR', 'Frek (Hz)', 'Petugas'];
                           const rows = currentPltdLogs.map(log => [
@@ -1581,7 +1581,7 @@ export default function App() {
                             Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-'
                           ]);
                           handleExportCSV(`Log_PLTD_${logFilterModePltd}_${new Date().getTime()}.csv`, headers, rows);
-                        }} className="px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-emerald-100 flex-1 sm:flex-none"><FileSpreadsheet className="w-4 h-4" /> Excel (CSV)</button>
+                        }} className="flex-1 sm:flex-none px-4 py-2 bg-emerald-50 text-emerald-600 rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-emerald-100"><FileSpreadsheet className="w-4 h-4" /> Export Excel</button>
 
                         <button onClick={() => {
                           const headers = ['Tanggal', 'Jam', 'B.Aktif', 'B.Reaktif', 'Arus(R/S/T)', 'Teg(RS/ST/TR)', 'Frek', 'Petugas'];
@@ -1593,7 +1593,7 @@ export default function App() {
                             Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-'
                           ]);
                           handleExportFilteredPDF(`Log_PLTD_${logFilterModePltd}_${new Date().getTime()}.pdf`, 'Log Beban PLTD - ' + (logFilterModePltd === 'all' ? 'Semua Waktu' : (logFilterModePltd === 'monthly' ? logFilterMonthPltd : logFilterDatePltd)), headers, rows);
-                        }} className="px-3 py-1.5 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-rose-100 flex-1 sm:flex-none"><Download className="w-4 h-4" /> PDF</button>
+                        }} className="flex-1 sm:flex-none px-4 py-2 bg-rose-50 text-rose-600 rounded-lg text-sm font-bold flex items-center justify-center gap-2 hover:bg-rose-100"><Download className="w-4 h-4" /> Export PDF</button>
                       </div>
                     </div>
 
