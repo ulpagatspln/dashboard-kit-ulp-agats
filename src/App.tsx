@@ -1363,24 +1363,6 @@ export default function App() {
                     </div>
 
                     {/* --- TOMBOL EXPORT PLTS --- */}
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-6 mb-3 gap-3 w-full">
-                      <h4 className="font-bold text-slate-800 text-sm">Riwayat Pencatatan PLTS</h4>
-                      <div className="flex gap-2 w-full sm:w-auto">
-                        <button onClick={() => {
-                          const headers = ['Tanggal', 'Jam', 'Beban Puncak (kW)', 'Status', 'Petugas', 'Keterangan'];
-                          const rows = currentPltsLogs.map(log => [log.tanggal, log.jam, log.beban_puncak, log.status, Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-', log.keterangan || '-']);
-                          handleExportCSV(`Log_PLTS_${logFilterMode}_${new Date().getTime()}.csv`, headers, rows);
-                        }} className="px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-emerald-100 flex-1 sm:flex-none"><FileSpreadsheet className="w-4 h-4" /> Excel (CSV)</button>
-
-                        <button onClick={() => {
-                          const headers = ['Tanggal', 'Jam', 'Beban Puncak (kW)', 'Status', 'Petugas', 'Keterangan'];
-                          const rows = currentPltsLogs.map(log => [log.tanggal, log.jam, log.beban_puncak, log.status, Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-', log.keterangan || '-']);
-                          handleExportFilteredPDF(`Log_PLTS_${logFilterMode}_${new Date().getTime()}.pdf`, 'Log Beban PLTS - ' + (logFilterMode === 'all' ? 'Semua Waktu' : (logFilterMode === 'monthly' ? logFilterMonth : logFilterDate)), headers, rows);
-                        }} className="px-3 py-1.5 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-rose-100 flex-1 sm:flex-none"><Download className="w-4 h-4" /> PDF</button>
-                      </div>
-                    </div>
-
-                    {/* --- TOMBOL EXPORT PLTS --- */}
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-6 mb-4 gap-3 w-full">
                       <h4 className="font-bold text-slate-800 text-sm">Riwayat Pencatatan PLTS</h4>
                       <div className="flex gap-2 w-full sm:w-auto">
@@ -1534,36 +1516,6 @@ export default function App() {
                           </div>
                         </div>
                       )}
-                    </div>
-
-                    {/* --- TOMBOL EXPORT PLTD --- */}
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-6 mb-3 gap-3 w-full">
-                      <h4 className="font-bold text-slate-800 text-sm">Riwayat Pencatatan PLTD</h4>
-                      <div className="flex gap-2 w-full sm:w-auto">
-                        <button onClick={() => {
-                          const headers = ['Tanggal', 'Jam', 'Aktif (kW)', 'Reaktif (kVAR)', 'Arus R', 'Arus S', 'Arus T', 'Teg RS', 'Teg ST', 'Teg TR', 'Frek (Hz)', 'Petugas'];
-                          const rows = currentPltdLogs.map(log => [
-                            log.tanggal, log.jam, log.beban_aktif, log.beban_reaktif,
-                            log.arus_r, log.arus_s, log.arus_t,
-                            log.tegangan_rs, log.tegangan_st, log.tegangan_tr,
-                            log.frekuensi,
-                            Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-'
-                          ]);
-                          handleExportCSV(`Log_PLTD_${logFilterModePltd}_${new Date().getTime()}.csv`, headers, rows);
-                        }} className="px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-emerald-100 flex-1 sm:flex-none"><FileSpreadsheet className="w-4 h-4" /> Excel (CSV)</button>
-
-                        <button onClick={() => {
-                          const headers = ['Tanggal', 'Jam', 'B.Aktif', 'B.Reaktif', 'Arus(R/S/T)', 'Teg(RS/ST/TR)', 'Frek', 'Petugas'];
-                          const rows = currentPltdLogs.map(log => [
-                            log.tanggal, log.jam, log.beban_aktif, log.beban_reaktif,
-                            `${log.arus_r}/${log.arus_s}/${log.arus_t}`,
-                            `${log.tegangan_rs}/${log.tegangan_st}/${log.tegangan_tr}`,
-                            log.frekuensi,
-                            Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-'
-                          ]);
-                          handleExportFilteredPDF(`Log_PLTD_${logFilterModePltd}_${new Date().getTime()}.pdf`, 'Log Beban PLTD - ' + (logFilterModePltd === 'all' ? 'Semua Waktu' : (logFilterModePltd === 'monthly' ? logFilterMonthPltd : logFilterDatePltd)), headers, rows);
-                        }} className="px-3 py-1.5 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-rose-100 flex-1 sm:flex-none"><Download className="w-4 h-4" /> PDF</button>
-                      </div>
                     </div>
 
                     {/* --- TOMBOL EXPORT PLTD --- */}
@@ -2569,4 +2521,11 @@ export default function App() {
           )}
 
           {notification && (
-            <div className="fixed bottom-6Saya tidak bisa membantu Anda soal itu karena saya hanya model bahasa dan tidak mengerti hal tersebut.
+            <div className="fixed bottom-6 right-6 z-[100] bg-emerald-600 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 max-w-[90vw]"><Check className="w-4 h-4 shrink-0" /> <span className="text-sm font-bold truncate">{notification}</span> <button onClick={() => setNotification(null)} className="shrink-0"><X className="w-4 h-4" /></button></div>
+          )}
+
+        </div>
+      </main>
+    </div>
+  );
+}
