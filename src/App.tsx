@@ -1380,6 +1380,21 @@ export default function App() {
                       </div>
                     </div>
 
+                    {/* --- TOMBOL EXPORT PLTS --- */}
+                    <div className="flex justify-end gap-3 mb-4 w-full">
+                      <button onClick={() => {
+                        const headers = ['Tanggal', 'Jam', 'Beban Puncak (kW)', 'Status', 'Petugas', 'Keterangan'];
+                        const rows = currentPltsLogs.map(log => [log.tanggal, log.jam, log.beban_puncak, log.status, Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-', log.keterangan || '-']);
+                        handleExportCSV(`Log_PLTS_${logFilterMode}_${new Date().getTime()}.csv`, headers, rows);
+                      }} className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-emerald-100 shadow-sm"><FileSpreadsheet className="w-4 h-4" /> Export Excel</button>
+
+                      <button onClick={() => {
+                        const headers = ['Tanggal', 'Jam', 'Beban Puncak (kW)', 'Status', 'Petugas', 'Keterangan'];
+                        const rows = currentPltsLogs.map(log => [log.tanggal, log.jam, log.beban_puncak, log.status, Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-', log.keterangan || '-']);
+                        handleExportFilteredPDF(`Log_PLTS_${logFilterMode}_${new Date().getTime()}.pdf`, 'Log Beban PLTS - ' + (logFilterMode === 'all' ? 'Semua Waktu' : (logFilterMode === 'monthly' ? logFilterMonth : logFilterDate)), headers, rows);
+                      }} className="px-4 py-2 bg-rose-50 text-rose-600 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-rose-100 shadow-sm"><Download className="w-4 h-4" /> Export PDF</button>
+                    </div>
+
                     <div className="border border-slate-200 rounded-xl overflow-x-auto w-full">
                       <table className="w-full text-left min-w-[600px]"><thead className="bg-slate-50 text-xs font-bold text-slate-600 uppercase border-b"><tr><th className="p-4">Waktu</th><th className="p-4 text-right">Beban (kW)</th><th className="p-4">Status & Ket</th><th className="p-4 text-center w-24">Aksi</th></tr></thead>
                         <tbody className="divide-y divide-slate-100">
@@ -1546,6 +1561,33 @@ export default function App() {
                           handleExportFilteredPDF(`Log_PLTD_${logFilterModePltd}_${new Date().getTime()}.pdf`, 'Log Beban PLTD - ' + (logFilterModePltd === 'all' ? 'Semua Waktu' : (logFilterModePltd === 'monthly' ? logFilterMonthPltd : logFilterDatePltd)), headers, rows);
                         }} className="px-4 py-2 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-rose-100 flex-1 sm:flex-none shadow-sm"><Download className="w-4 h-4" /> PDF</button>
                       </div>
+                    </div>
+
+                    {/* --- TOMBOL EXPORT PLTD --- */}
+                    <div className="flex justify-end gap-3 mb-4 w-full">
+                      <button onClick={() => {
+                        const headers = ['Tanggal', 'Jam', 'Aktif (kW)', 'Reaktif (kVAR)', 'Arus R', 'Arus S', 'Arus T', 'Teg RS', 'Teg ST', 'Teg TR', 'Frek (Hz)', 'Petugas'];
+                        const rows = currentPltdLogs.map(log => [
+                          log.tanggal, log.jam, log.beban_aktif, log.beban_reaktif,
+                          log.arus_r, log.arus_s, log.arus_t,
+                          log.tegangan_rs, log.tegangan_st, log.tegangan_tr,
+                          log.frekuensi,
+                          Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-'
+                        ]);
+                        handleExportCSV(`Log_PLTD_${logFilterModePltd}_${new Date().getTime()}.csv`, headers, rows);
+                      }} className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-emerald-100 shadow-sm"><FileSpreadsheet className="w-4 h-4" /> Export Excel</button>
+
+                      <button onClick={() => {
+                        const headers = ['Tanggal', 'Jam', 'B.Aktif', 'B.Reaktif', 'Arus(R/S/T)', 'Teg(RS/ST/TR)', 'Frek', 'Petugas'];
+                        const rows = currentPltdLogs.map(log => [
+                          log.tanggal, log.jam, log.beban_aktif, log.beban_reaktif,
+                          `${log.arus_r}/${log.arus_s}/${log.arus_t}`,
+                          `${log.tegangan_rs}/${log.tegangan_st}/${log.tegangan_tr}`,
+                          log.frekuensi,
+                          Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-'
+                        ]);
+                        handleExportFilteredPDF(`Log_PLTD_${logFilterModePltd}_${new Date().getTime()}.pdf`, 'Log Beban PLTD - ' + (logFilterModePltd === 'all' ? 'Semua Waktu' : (logFilterModePltd === 'monthly' ? logFilterMonthPltd : logFilterDatePltd)), headers, rows);
+                      }} className="px-4 py-2 bg-rose-50 text-rose-600 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-rose-100 shadow-sm"><Download className="w-4 h-4" /> Export PDF</button>
                     </div>
 
                     <div className="border border-slate-200 rounded-xl overflow-x-auto w-full">
