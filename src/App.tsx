@@ -1433,7 +1433,19 @@ export default function App() {
                               <td className="p-4"><div className="font-bold text-slate-700">{log.status}</div><div className="text-xs text-slate-500 italic max-w-[150px] truncate" title={log.keterangan}>{log.keterangan || '-'}</div></td>
                               <td className="p-4 text-center">
                                 <div className="flex justify-center gap-1">
-                                  <button onClick={() => { let text = `*LAPORAN PLTS*\nTanggal: ${log.tanggal}\nJam: ${log.jam}\nBeban: ${log.beban_puncak} kW\nStatus: ${log.status}\nKet: ${log.keterangan || '-'}\nPetugas: ${Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-'}`; const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); setNotification('Salin WAG berhasil!'); }} className="p-1.5 bg-sky-50 text-sky-600 rounded hover:bg-sky-100" title="Salin ke WAG"><Copy className="w-4 h-4" /></button>
+                                  <button onClick={() => {
+                                    const pltsName = pltsAssets.find(p => p.site_id === log.site_id)?.nama_plts || log.site_id;
+                                    let text = `*LAPORAN PLTS*\nLokasi: ${pltsName}\nTanggal: ${log.tanggal}\nJam: ${log.jam}\nBeban: ${log.beban_puncak} kW\nStatus: ${log.status}\nKet: ${log.keterangan || '-'}\nPetugas: ${Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-'}`;
+                                    const ta = document.createElement("textarea");
+                                    ta.value = text;
+                                    document.body.appendChild(ta);
+                                    ta.select();
+                                    document.execCommand('copy');
+                                    document.body.removeChild(ta);
+                                    setNotification('Salin WAG berhasil!');
+                                  }} className="p-1.5 bg-sky-50 text-sky-600 rounded hover:bg-sky-100" title="Salin ke WAG">
+                                    <Copy className="w-4 h-4" />
+                                  </button>
                                   <button onClick={() => { setEditingLogId(log._id); setLogFormData(log); setIsAddingLog(true); }} className="p-1.5 bg-blue-50 text-blue-600 rounded hover:bg-blue-100" title="Edit Log"><Edit className="w-4 h-4" /></button>
                                   <button onClick={() => setDeletingLogId(log._id)} className="p-1.5 bg-rose-50 text-rose-600 rounded hover:bg-rose-100" title="Hapus Log"><Trash2 className="w-4 h-4" /></button>
                                 </div>
