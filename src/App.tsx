@@ -1342,6 +1342,60 @@ return (
                     </div>
                   </div>
 
+                  {/* --- TOMBOL EXPORT PLTS --- */}
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-6 mb-3 gap-3 w-full">
+                    <h4 className="font-bold text-slate-800 text-sm">Riwayat Pencatatan PLTS</h4>
+                    <div className="flex gap-2 w-full sm:w-auto">
+                      <button onClick={() => {
+                        const headers = ['Tanggal', 'Jam', 'Beban Puncak (kW)', 'Status', 'Petugas', 'Keterangan'];
+                        const rows = currentPltsLogs.map(log => [log.tanggal, log.jam, log.beban_puncak, log.status, Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-', log.keterangan || '-']);
+                        handleExportCSV(`Log_PLTS_${logFilterMode}_${new Date().getTime()}.csv`, headers, rows);
+                      }} className="px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-emerald-100 flex-1 sm:flex-none"><FileSpreadsheet className="w-4 h-4" /> Excel (CSV)</button>
+
+                      <button onClick={() => {
+                        const headers = ['Tanggal', 'Jam', 'Beban Puncak (kW)', 'Status', 'Petugas', 'Keterangan'];
+                        const rows = currentPltsLogs.map(log => [log.tanggal, log.jam, log.beban_puncak, log.status, Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-', log.keterangan || '-']);
+                        handleExportFilteredPDF(`Log_PLTS_${logFilterMode}_${new Date().getTime()}.pdf`, 'Log Beban PLTS - ' + (logFilterMode === 'all' ? 'Semua Waktu' : (logFilterMode === 'monthly' ? logFilterMonth : logFilterDate)), headers, rows);
+                      }} className="px-3 py-1.5 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-rose-100 flex-1 sm:flex-none"><Download className="w-4 h-4" /> PDF</button>
+                    </div>
+                  </div>
+
+                  {/* --- TOMBOL EXPORT PLTS --- */}
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-6 mb-3 gap-3 w-full">
+                    <h4 className="font-bold text-slate-800 text-sm">Riwayat Pencatatan PLTS</h4>
+                    <div className="flex gap-2 w-full sm:w-auto">
+                      <button onClick={() => {
+                        const headers = ['Tanggal', 'Jam', 'Beban Puncak (kW)', 'Status', 'Petugas', 'Keterangan'];
+                        const rows = currentPltsLogs.map(log => [log.tanggal, log.jam, log.beban_puncak, log.status, Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-', log.keterangan || '-']);
+                        handleExportCSV(`Log_PLTS_${logFilterMode}_${new Date().getTime()}.csv`, headers, rows);
+                      }} className="px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-emerald-100 flex-1 sm:flex-none"><FileSpreadsheet className="w-4 h-4" /> Excel (CSV)</button>
+
+                      <button onClick={() => {
+                        const headers = ['Tanggal', 'Jam', 'Beban Puncak (kW)', 'Status', 'Petugas', 'Keterangan'];
+                        const rows = currentPltsLogs.map(log => [log.tanggal, log.jam, log.beban_puncak, log.status, Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-', log.keterangan || '-']);
+                        handleExportFilteredPDF(`Log_PLTS_${logFilterMode}_${new Date().getTime()}.pdf`, 'Log Beban PLTS - ' + (logFilterMode === 'all' ? 'Semua Waktu' : (logFilterMode === 'monthly' ? logFilterMonth : logFilterDate)), headers, rows);
+                      }} className="px-3 py-1.5 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-rose-100 flex-1 sm:flex-none"><Download className="w-4 h-4" /> PDF</button>
+                    </div>
+                  </div>
+
+                  {/* --- TOMBOL EXPORT PLTS --- */}
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-6 mb-3 gap-3 w-full">
+                    <h4 className="font-bold text-slate-800 text-sm">Riwayat Pencatatan PLTS</h4>
+                    <div className="flex gap-2 w-full sm:w-auto">
+                      <button onClick={() => {
+                        const headers = ['Tanggal', 'Jam', 'Beban Puncak (kW)', 'Status', 'Petugas', 'Keterangan'];
+                        const rows = currentPltsLogs.map(log => [log.tanggal, log.jam, log.beban_puncak, log.status, Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-', log.keterangan || '-']);
+                        handleExportCSV(`Log_PLTS_${logFilterMode}_${new Date().getTime()}.csv`, headers, rows);
+                      }} className="px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-emerald-100 flex-1 sm:flex-none"><FileSpreadsheet className="w-4 h-4" /> Excel (CSV)</button>
+
+                      <button onClick={() => {
+                        const headers = ['Tanggal', 'Jam', 'Beban Puncak (kW)', 'Status', 'Petugas', 'Keterangan'];
+                        const rows = currentPltsLogs.map(log => [log.tanggal, log.jam, log.beban_puncak, log.status, Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-', log.keterangan || '-']);
+                        handleExportFilteredPDF(`Log_PLTS_${logFilterMode}_${new Date().getTime()}.pdf`, 'Log Beban PLTS - ' + (logFilterMode === 'all' ? 'Semua Waktu' : (logFilterMode === 'monthly' ? logFilterMonth : logFilterDate)), headers, rows);
+                      }} className="px-3 py-1.5 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-rose-100 flex-1 sm:flex-none"><Download className="w-4 h-4" /> PDF</button>
+                    </div>
+                  </div>
+
                   <div className="border border-slate-200 rounded-xl overflow-x-auto w-full">
                     <table className="w-full text-left min-w-[600px]"><thead className="bg-slate-50 text-xs font-bold text-slate-600 uppercase border-b"><tr><th className="p-4">Waktu</th><th className="p-4 text-right">Beban (kW)</th><th className="p-4">Status & Ket</th><th className="p-4 text-center w-24">Aksi</th></tr></thead>
                       <tbody className="divide-y divide-slate-100">
