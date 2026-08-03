@@ -1675,7 +1675,7 @@ export default function App() {
                       )}
                     </div>
 
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-6 gap-3 w-full">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-6 mb-4 gap-3 w-full">
                       <h4 className="font-bold text-slate-800 text-sm">Riwayat Pencatatan Mesin</h4>
                       <div className="flex gap-2 w-full sm:w-auto">
                         <button onClick={() => {
@@ -1686,7 +1686,7 @@ export default function App() {
                             log.mesin_data.forEach((m: any) => { rows.push([log.tanggal, log.jam, petugas, m.id_mesin, m.merk_type, m.daya_terpasang, m.daya_mampu, m.beban_supply, m.status_operasi]); });
                           });
                           handleExportCSV(`Log_Mesin_${mesinLogFilterMode}_${new Date().getTime()}.csv`, headers, rows);
-                        }} className="px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-emerald-100 flex-1 sm:flex-none"><FileSpreadsheet className="w-4 h-4" /> Excel (CSV)</button>
+                        }} className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-emerald-100 flex-1 sm:flex-none shadow-sm"><FileSpreadsheet className="w-4 h-4" /> Excel (CSV)</button>
 
                         <button onClick={() => {
                           const headers = ['Tanggal', 'Jam', 'Petugas', 'ID Mesin', 'Merk Type', 'Mampu', 'B. Supply', 'Status'];
@@ -1696,7 +1696,7 @@ export default function App() {
                             log.mesin_data.forEach((m: any) => { rows.push([log.tanggal, log.jam, petugas, m.id_mesin, m.merk_type, m.daya_mampu, m.beban_supply, m.status_operasi]); });
                           });
                           handleExportFilteredPDF(`Log_Mesin_${mesinLogFilterMode}_${new Date().getTime()}.pdf`, 'Log Status Mesin - ' + (mesinLogFilterMode === 'all' ? 'Semua Waktu' : (mesinLogFilterMode === 'monthly' ? mesinLogFilterMonth : mesinLogFilterDate)), headers, rows);
-                        }} className="px-3 py-1.5 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-rose-100 flex-1 sm:flex-none"><Download className="w-4 h-4" /> PDF</button>
+                        }} className="px-4 py-2 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-rose-100 flex-1 sm:flex-none shadow-sm"><Download className="w-4 h-4" /> PDF</button>
                       </div>
                     </div>
 
@@ -1835,7 +1835,7 @@ export default function App() {
                       </div>
                     </div>
 
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-6 gap-3 w-full">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-6 mb-4 gap-3 w-full">
                       <h4 className="font-bold text-slate-800 text-sm">Riwayat Produksi & SFC</h4>
                       <div className="flex gap-2 w-full sm:w-auto">
                         <button onClick={() => {
@@ -1846,7 +1846,7 @@ export default function App() {
                             log.stand_bbm_kemarin, log.stand_bbm_hari_ini, log.pemakaian_bbm, log.sfc
                           ]);
                           handleExportCSV(`Log_Produksi_${produksiLogFilterMode}_${new Date().getTime()}.csv`, headers, rows);
-                        }} className="px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-emerald-100 flex-1 sm:flex-none"><FileSpreadsheet className="w-4 h-4" /> Excel (CSV)</button>
+                        }} className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-emerald-100 flex-1 sm:flex-none shadow-sm"><FileSpreadsheet className="w-4 h-4" /> Excel (CSV)</button>
 
                         <button onClick={() => {
                           const headers = ['Tanggal', 'Petugas', 'Produksi kWh', 'Pemakaian L', 'SFC'];
@@ -1855,7 +1855,7 @@ export default function App() {
                             log.kwh_produksi, log.pemakaian_bbm, log.sfc
                           ]);
                           handleExportFilteredPDF(`Log_Produksi_${produksiLogFilterMode}_${new Date().getTime()}.pdf`, 'Log Produksi & SFC PLTD - ' + (produksiLogFilterMode === 'all' ? 'Semua Waktu' : produksiLogFilterMonth), headers, rows);
-                        }} className="px-3 py-1.5 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-rose-100 flex-1 sm:flex-none"><Download className="w-4 h-4" /> PDF</button>
+                        }} className="px-4 py-2 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-rose-100 flex-1 sm:flex-none shadow-sm"><Download className="w-4 h-4" /> PDF</button>
                       </div>
                     </div>
 
@@ -1972,7 +1972,7 @@ export default function App() {
                       )}
                     </div>
 
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-6 gap-3 w-full">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-6 mb-4 gap-3 w-full">
                       <h4 className="font-bold text-slate-800 text-sm">Riwayat Catatan BBM</h4>
                       <div className="flex gap-2 w-full sm:w-auto">
                         <button onClick={() => {
@@ -1983,7 +1983,7 @@ export default function App() {
                             log.tangki_data.forEach((t: any) => { rows.push([log.tanggal, log.jam, petugas, log.jenis_input, log.referensi || '-', t.id_tangki, t.input_volume]); });
                           });
                           handleExportCSV(`Log_BBM_${new Date().getTime()}.csv`, headers, rows);
-                        }} className="px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-emerald-100 flex-1 sm:flex-none"><FileSpreadsheet className="w-4 h-4" /> Excel (CSV)</button>
+                        }} className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-emerald-100 flex-1 sm:flex-none shadow-sm"><FileSpreadsheet className="w-4 h-4" /> Excel (CSV)</button>
 
                         <button onClick={() => {
                           const headers = ['Tanggal', 'Jam', 'Petugas', 'Jenis Input', 'Referensi', 'ID Tangki', 'Volume (L)'];
@@ -1993,7 +1993,7 @@ export default function App() {
                             log.tangki_data.forEach((t: any) => { rows.push([log.tanggal, log.jam, petugas, log.jenis_input, log.referensi || '-', t.id_tangki, t.input_volume]); });
                           });
                           handleExportFilteredPDF(`Log_BBM_${new Date().getTime()}.pdf`, 'Log Input Stok BBM PLTD', headers, rows);
-                        }} className="px-3 py-1.5 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-rose-100 flex-1 sm:flex-none"><Download className="w-4 h-4" /> PDF</button>
+                        }} className="px-4 py-2 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-rose-100 flex-1 sm:flex-none shadow-sm"><Download className="w-4 h-4" /> PDF</button>
                       </div>
                     </div>
 
