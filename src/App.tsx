@@ -3,12 +3,16 @@ import {
   Menu, Activity, Battery, Server, AlertCircle, Download, Search, Check,
   Clock, Sun, Zap, Edit, Trash2, X, Save, ArrowUp, ArrowDown,
   ArrowUpDown, Plus, FileSpreadsheet, Cpu, ClipboardList, Calendar,
-  Copy, Database, Gauge, Droplet, UserCheck, MapPin
+  Copy, Database, Gauge, Droplet, UserCheck
 } from 'lucide-react';
 import {
   ResponsiveContainer, PieChart, Pie, Cell, Legend, Tooltip,
   LineChart, Line, XAxis, YAxis, CartesianGrid
 } from 'recharts';
+
+// IMPORT PLUGIN PDF YANG BARU DIINSTAL
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 import { db } from './firebase';
 import { collection, onSnapshot, addDoc, updateDoc, deleteDoc, doc } from 'firebase/firestore';
@@ -124,7 +128,6 @@ export default function App() {
   const [mesinLogFilterDate, setMesinLogFilterDate] = useState(todayStr);
   const [mesinLogFilterMonth, setMesinLogFilterMonth] = useState(new Date().toISOString().substring(0, 7));
   const [mesinLogFormData, setMesinLogFormData] = useState<any>({ tanggal: todayStr, jam: '10:00', petugas: [], mesin_data: [] });
-  const [viewingMesinLogDetail, setViewingMesinLogDetail] = useState(null);
   const [editingMesinLog, setEditingMesinLog] = useState<any>(null);
   const [deletingMesinLog, setDeletingMesinLog] = useState<any>(null);
 
@@ -141,14 +144,12 @@ export default function App() {
   const [absensiDatePltd, setAbsensiDatePltd] = useState(todayStr);
   const [notification, setNotification] = useState<any>(null);
 
-  // STATE MENU HP
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const currentAssets = activeTab === 'assets_pltd' ? pltdAssets : pltsAssets;
   const currentHeaders = currentAssets.length > 0 ? Object.keys(currentAssets[0]).filter(k => k !== '_id') : [];
   const pltsTechKeys = ['kapasitas_battery_kwh', 'kapasitas_batt_inverter_kw', 'kapasitas_grid_inverter_kw', 'kapasitas_panel_pv', 'jumlah_panel', 'jumlah_battery', 'jumlah_batt_inverter', 'jumlah_grid_inverter'];
 
-  // LOGIKA PENGURUTAN KOLOM TABEL INVENTARIS
   let displayHeaders = currentHeaders.filter(h => !(activeTab === 'assets_plts' && pltsTechKeys.includes(h)));
   const prioritasKolom = activeTab === 'assets_pltd'
     ? ['site_id', 'nama_pltd', 'desa', 'kecamatan', 'kabupaten', 'Status', 'daya_terpasang_kw', 'daya_mampu_kw']
@@ -163,7 +164,6 @@ export default function App() {
     return a.localeCompare(b);
   });
 
-  // ANTI-CRASH FILTERING LOGS
   const currentPltsLogs = useMemo(() => {
     if (!selectedPltsForLog) return [];
     let logs = pltsLogs.filter(log => log.site_id === selectedPltsForLog);
@@ -220,7 +220,6 @@ export default function App() {
     });
   }, [bbmLogs, selectedPltdForBBM]);
 
-  // PENCEGAH INFINITE LOOP
   useEffect(() => {
     if (previousProduksiLog) {
       setProduksiFormData((prev: any) => {
@@ -480,6 +479,72 @@ export default function App() {
     return data;
   }, [pltdAssets, pltdLogs, mesinPltd, tangkiPltd, dashboardPltdSortConfig]);
 
+  const absensiData = useMemo(() => {
+    const result: any[] = [];
+    const logsOnDate = pltsLogs.filter(log => log.tanggal === absensiDate);
+
+    pltsAssets.forEach(plts => {
+      const rawOperators: any[] = [];
+      for (let i = 1; i <= 10; i++) {
+        if (plts[`operator_${i}_-_nip`]) rawOperators.push(plts[`operator_${i}_-_nip`]);
+      }
+      if (rawOperators.length === 0) return;
+
+      const siteLogs = logsOnDate.filter(log => log.site_id === plts.site_id);
+      const hasReported = siteLogs.length > 0;
+
+      let presentSet = new Set();
+      siteLogs.forEach(log => {
+        if (Array.isArray(log.petugas)) log.petugas.forEach((p: any) => presentSet.add(p));
+      });
+
+      const operatorsData = rawOperators.map(op => ({ nama: op, hadir: presentSet.has(op) }));
+      result.push({ site_id: plts.site_id, nama_plts: plts.nama_plts, sudah_lapor: hasReported, operators: operatorsData });
+    });
+    return result.sort((a, b) => (a.sudah_lapor === b.sudah_lapor ? 0 : a.sudah_lapor ? -1 : 1));
+  }, [pltsAssets, pltsLogs, absensiDate]);
+
+  const absensiDataPltd = useMemo(() => {
+    const result: any[] = [];
+    const logsOnDate = pltdLogs.filter(log => log.tanggal === absensiDatePltd);
+
+    pltdAssets.forEach(pltd => {
+      const rawOperators: any[] = [];
+      for (let i = 1; i <= 15; i++) {
+        if (pltd[`operator_${i}_-_nip`]) rawOperators.push(pltd[`operator_${i}_-_nip`]);
+      }
+      if (rawOperators.length === 0) return;
+
+      const siteLogs = logsOnDate.filter(log => log.site_id === pltd.site_id);
+      const hasReported = siteLogs.length > 0;
+
+      let presentSet = new Set();
+      siteLogs.forEach(log => {
+        if (Array.isArray(log.petugas)) log.petugas.forEach((p: any) => presentSet.add(p));
+      });
+
+      const operatorsData = rawOperators.map(op => ({ nama: op, hadir: presentSet.has(op) }));
+      result.push({ site_id: pltd.site_id, nama_pltd: pltd.nama_pltd, sudah_lapor: hasReported, operators: operatorsData });
+    });
+    return result.sort((a, b) => (a.sudah_lapor === b.sudah_lapor ? 0 : a.sudah_lapor ? -1 : 1));
+  }, [pltdAssets, pltdLogs, absensiDatePltd]);
+
+  const handleSort = (key: any) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') direction = 'desc';
+    setSortConfig({ key, direction });
+  };
+  const handleDashboardSort = (key: any) => {
+    let direction = 'asc';
+    if (dashboardSortConfig.key === key && dashboardSortConfig.direction === 'asc') direction = 'desc';
+    setDashboardSortConfig({ key, direction });
+  };
+  const handleDashboardPltdSort = (key: any) => {
+    let direction = 'asc';
+    if (dashboardPltdSortConfig.key === key && dashboardPltdSortConfig.direction === 'asc') direction = 'desc';
+    setDashboardPltdSortConfig({ key, direction });
+  };
+
   // FUNGSI GLOBAL EXPORT CSV
   const handleExportCSV = (filename: string, headers: string[], rows: any[][]) => {
     const csvContent = [
@@ -496,53 +561,45 @@ export default function App() {
     setNotification('CSV/Excel berhasil diunduh!');
   };
 
-  // FUNGSI GLOBAL EXPORT PDF (TABEL)
+  // FUNGSI GLOBAL EXPORT PDF (TABEL) MENGGUNAKAN PLUGIN TERINSTAL
   const handleExportFilteredPDF = (filename: string, title: string, headers: string[], rows: any[][]) => {
-    const windowJsPdf = window as any;
-    const doGenerate = () => {
-      try {
-        const { jsPDF } = windowJsPdf.jspdf;
-        const doc = new jsPDF('landscape');
-        doc.setFontSize(14); doc.text(title, 14, 15);
-        doc.setFontSize(10); doc.text(`Tanggal Cetak: ${new Date().toLocaleString('id-ID')}`, 14, 22);
-        doc.autoTable({ head: [headers], body: rows, startY: 28, theme: 'grid', styles: { fontSize: 8 } });
-        doc.save(filename);
-        setNotification('PDF berhasil diunduh!');
-      } catch (error) { setNotification('Gagal membuat PDF.'); }
-    };
+    try {
+      const doc = new jsPDF('landscape');
+      doc.setFontSize(14);
+      doc.text(title, 14, 15);
+      doc.setFontSize(10);
+      doc.text(`Tanggal Cetak: ${new Date().toLocaleString('id-ID')}`, 14, 22);
 
-    if (!windowJsPdf.jspdf) {
-      const script1 = document.createElement('script'); script1.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
-      script1.onload = () => {
-        const script2 = document.createElement('script'); script2.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js';
-        script2.onload = doGenerate; document.head.appendChild(script2);
-      };
-      document.head.appendChild(script1); setNotification('Mempersiapkan library PDF...');
-    } else { doGenerate(); }
+      autoTable(doc, {
+        head: [headers],
+        body: rows,
+        startY: 28,
+        theme: 'grid',
+        styles: { fontSize: 8 }
+      });
+
+      doc.save(filename);
+      setNotification('PDF berhasil diunduh!');
+    } catch (error) {
+      setNotification('Gagal membuat PDF.');
+      console.error(error);
+    }
   };
 
   const handleExportPDF = () => {
-    const windowJsPdf = window as any;
-    if (!windowJsPdf.jspdf) {
-      const script1 = document.createElement('script'); script1.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
-      script1.onload = () => {
-        const script2 = document.createElement('script'); script2.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js';
-        script2.onload = generatePDF; document.head.appendChild(script2);
-      };
-      document.head.appendChild(script1); setNotification('Mempersiapkan library PDF...');
-    } else { generatePDF(); }
-  };
-
-  const generatePDF = () => {
-    const windowJsPdf = window as any;
     try {
-      const { jsPDF } = windowJsPdf.jspdf; const doc = new jsPDF();
+      const doc = new jsPDF();
       doc.setFontSize(16); doc.text("Ringkasan Operasional PLTS", 14, 15);
       doc.setFontSize(10); doc.text(`Tanggal Cetak: ${new Date().toLocaleString()}`, 14, 22);
-      doc.autoTable({ html: '#plts-summary-table', startY: 28, theme: 'grid', headStyles: { fillColor: [14, 165, 233] }, styles: { fontSize: 8 } });
-      doc.save(`Ringkasan_PLTS_${new Date().toISOString().split('T')[0]}.pdf`); setNotification('PDF diunduh!');
-    } catch (error) { setNotification('Gagal membuat PDF.'); }
+      autoTable(doc, { html: '#plts-summary-table', startY: 28, theme: 'grid', headStyles: { fillColor: [14, 165, 233] }, styles: { fontSize: 8 } });
+      doc.save(`Ringkasan_PLTS_${new Date().toISOString().split('T')[0]}.pdf`);
+      setNotification('PDF diunduh!');
+    } catch (error) {
+      setNotification('Gagal membuat PDF.');
+    }
   };
+
+  const generatePDF = handleExportPDF; // for fallback if needed
 
   const handleExportWAGSummary = () => {
     let text = `*RINGKASAN OPERASIONAL PLTS*\n📅 *Update:* ${new Date().toLocaleString('id-ID')}\n\n`;
@@ -563,27 +620,19 @@ export default function App() {
   };
 
   const handleExportPDFPltd = () => {
-    const windowJsPdf = window as any;
-    if (!windowJsPdf.jspdf) {
-      const script1 = document.createElement('script'); script1.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
-      script1.onload = () => {
-        const script2 = document.createElement('script'); script2.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js';
-        script2.onload = generatePDFPltd; document.head.appendChild(script2);
-      };
-      document.head.appendChild(script1); setNotification('Mempersiapkan library PDF...');
-    } else { generatePDFPltd(); }
-  };
-
-  const generatePDFPltd = () => {
-    const windowJsPdf = window as any;
     try {
-      const { jsPDF } = windowJsPdf.jspdf; const doc = new jsPDF();
+      const doc = new jsPDF();
       doc.setFontSize(16); doc.text("Ringkasan Operasional PLTD", 14, 15);
       doc.setFontSize(10); doc.text(`Tanggal Cetak: ${new Date().toLocaleString()}`, 14, 22);
-      doc.autoTable({ html: '#pltd-summary-table', startY: 28, theme: 'grid', headStyles: { fillColor: [147, 51, 234] }, styles: { fontSize: 8 } });
-      doc.save(`Ringkasan_PLTD_${new Date().toISOString().split('T')[0]}.pdf`); setNotification('PDF diunduh!');
-    } catch (error) { setNotification('Gagal membuat PDF.'); }
+      autoTable(doc, { html: '#pltd-summary-table', startY: 28, theme: 'grid', headStyles: { fillColor: [147, 51, 234] }, styles: { fontSize: 8 } });
+      doc.save(`Ringkasan_PLTD_${new Date().toISOString().split('T')[0]}.pdf`);
+      setNotification('PDF diunduh!');
+    } catch (error) {
+      setNotification('Gagal membuat PDF.');
+    }
   };
+
+  const generatePDFPltd = handleExportPDFPltd; // fallback
 
   const handleExportWAGSummaryPltd = () => {
     let text = `*RINGKASAN OPERASIONAL PLTD*\n📅 *Update:* ${new Date().toLocaleString('id-ID')}\n\n`;
@@ -1363,36 +1412,21 @@ export default function App() {
                     </div>
 
                     {/* --- TOMBOL EXPORT PLTS --- */}
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-6 mb-4 gap-3 w-full">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-6 mb-3 gap-3 w-full">
                       <h4 className="font-bold text-slate-800 text-sm">Riwayat Pencatatan PLTS</h4>
                       <div className="flex gap-2 w-full sm:w-auto">
                         <button onClick={() => {
                           const headers = ['Tanggal', 'Jam', 'Beban Puncak (kW)', 'Status', 'Petugas', 'Keterangan'];
                           const rows = currentPltsLogs.map(log => [log.tanggal, log.jam, log.beban_puncak, log.status, Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-', log.keterangan || '-']);
                           handleExportCSV(`Log_PLTS_${logFilterMode}_${new Date().getTime()}.csv`, headers, rows);
-                        }} className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-emerald-100 flex-1 sm:flex-none shadow-sm"><FileSpreadsheet className="w-4 h-4" /> Excel (CSV)</button>
+                        }} className="px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-emerald-100 flex-1 sm:flex-none"><FileSpreadsheet className="w-4 h-4" /> Excel (CSV)</button>
 
                         <button onClick={() => {
                           const headers = ['Tanggal', 'Jam', 'Beban Puncak (kW)', 'Status', 'Petugas', 'Keterangan'];
                           const rows = currentPltsLogs.map(log => [log.tanggal, log.jam, log.beban_puncak, log.status, Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-', log.keterangan || '-']);
                           handleExportFilteredPDF(`Log_PLTS_${logFilterMode}_${new Date().getTime()}.pdf`, 'Log Beban PLTS - ' + (logFilterMode === 'all' ? 'Semua Waktu' : (logFilterMode === 'monthly' ? logFilterMonth : logFilterDate)), headers, rows);
-                        }} className="px-4 py-2 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-rose-100 flex-1 sm:flex-none shadow-sm"><Download className="w-4 h-4" /> PDF</button>
+                        }} className="px-3 py-1.5 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-rose-100 flex-1 sm:flex-none"><Download className="w-4 h-4" /> PDF</button>
                       </div>
-                    </div>
-
-                    {/* --- TOMBOL EXPORT PLTS --- */}
-                    <div className="flex justify-end gap-3 mb-4 w-full">
-                      <button onClick={() => {
-                        const headers = ['Tanggal', 'Jam', 'Beban Puncak (kW)', 'Status', 'Petugas', 'Keterangan'];
-                        const rows = currentPltsLogs.map(log => [log.tanggal, log.jam, log.beban_puncak, log.status, Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-', log.keterangan || '-']);
-                        handleExportCSV(`Log_PLTS_${logFilterMode}_${new Date().getTime()}.csv`, headers, rows);
-                      }} className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-emerald-100 shadow-sm"><FileSpreadsheet className="w-4 h-4" /> Export Excel</button>
-
-                      <button onClick={() => {
-                        const headers = ['Tanggal', 'Jam', 'Beban Puncak (kW)', 'Status', 'Petugas', 'Keterangan'];
-                        const rows = currentPltsLogs.map(log => [log.tanggal, log.jam, log.beban_puncak, log.status, Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-', log.keterangan || '-']);
-                        handleExportFilteredPDF(`Log_PLTS_${logFilterMode}_${new Date().getTime()}.pdf`, 'Log Beban PLTS - ' + (logFilterMode === 'all' ? 'Semua Waktu' : (logFilterMode === 'monthly' ? logFilterMonth : logFilterDate)), headers, rows);
-                      }} className="px-4 py-2 bg-rose-50 text-rose-600 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-rose-100 shadow-sm"><Download className="w-4 h-4" /> Export PDF</button>
                     </div>
 
                     <div className="border border-slate-200 rounded-xl overflow-x-auto w-full">
@@ -1534,7 +1568,7 @@ export default function App() {
                     </div>
 
                     {/* --- TOMBOL EXPORT PLTD --- */}
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-6 mb-4 gap-3 w-full">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-6 mb-3 gap-3 w-full">
                       <h4 className="font-bold text-slate-800 text-sm">Riwayat Pencatatan PLTD</h4>
                       <div className="flex gap-2 w-full sm:w-auto">
                         <button onClick={() => {
@@ -1547,7 +1581,7 @@ export default function App() {
                             Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-'
                           ]);
                           handleExportCSV(`Log_PLTD_${logFilterModePltd}_${new Date().getTime()}.csv`, headers, rows);
-                        }} className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-emerald-100 flex-1 sm:flex-none shadow-sm"><FileSpreadsheet className="w-4 h-4" /> Excel (CSV)</button>
+                        }} className="px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-emerald-100 flex-1 sm:flex-none"><FileSpreadsheet className="w-4 h-4" /> Excel (CSV)</button>
 
                         <button onClick={() => {
                           const headers = ['Tanggal', 'Jam', 'B.Aktif', 'B.Reaktif', 'Arus(R/S/T)', 'Teg(RS/ST/TR)', 'Frek', 'Petugas'];
@@ -1559,35 +1593,8 @@ export default function App() {
                             Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-'
                           ]);
                           handleExportFilteredPDF(`Log_PLTD_${logFilterModePltd}_${new Date().getTime()}.pdf`, 'Log Beban PLTD - ' + (logFilterModePltd === 'all' ? 'Semua Waktu' : (logFilterModePltd === 'monthly' ? logFilterMonthPltd : logFilterDatePltd)), headers, rows);
-                        }} className="px-4 py-2 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-rose-100 flex-1 sm:flex-none shadow-sm"><Download className="w-4 h-4" /> PDF</button>
+                        }} className="px-3 py-1.5 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-rose-100 flex-1 sm:flex-none"><Download className="w-4 h-4" /> PDF</button>
                       </div>
-                    </div>
-
-                    {/* --- TOMBOL EXPORT PLTD --- */}
-                    <div className="flex justify-end gap-3 mb-4 w-full">
-                      <button onClick={() => {
-                        const headers = ['Tanggal', 'Jam', 'Aktif (kW)', 'Reaktif (kVAR)', 'Arus R', 'Arus S', 'Arus T', 'Teg RS', 'Teg ST', 'Teg TR', 'Frek (Hz)', 'Petugas'];
-                        const rows = currentPltdLogs.map(log => [
-                          log.tanggal, log.jam, log.beban_aktif, log.beban_reaktif,
-                          log.arus_r, log.arus_s, log.arus_t,
-                          log.tegangan_rs, log.tegangan_st, log.tegangan_tr,
-                          log.frekuensi,
-                          Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-'
-                        ]);
-                        handleExportCSV(`Log_PLTD_${logFilterModePltd}_${new Date().getTime()}.csv`, headers, rows);
-                      }} className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-emerald-100 shadow-sm"><FileSpreadsheet className="w-4 h-4" /> Export Excel</button>
-
-                      <button onClick={() => {
-                        const headers = ['Tanggal', 'Jam', 'B.Aktif', 'B.Reaktif', 'Arus(R/S/T)', 'Teg(RS/ST/TR)', 'Frek', 'Petugas'];
-                        const rows = currentPltdLogs.map(log => [
-                          log.tanggal, log.jam, log.beban_aktif, log.beban_reaktif,
-                          `${log.arus_r}/${log.arus_s}/${log.arus_t}`,
-                          `${log.tegangan_rs}/${log.tegangan_st}/${log.tegangan_tr}`,
-                          log.frekuensi,
-                          Array.isArray(log.petugas) ? log.petugas.map((p: any) => String(p).split(' - ')[0]).join(', ') : '-'
-                        ]);
-                        handleExportFilteredPDF(`Log_PLTD_${logFilterModePltd}_${new Date().getTime()}.pdf`, 'Log Beban PLTD - ' + (logFilterModePltd === 'all' ? 'Semua Waktu' : (logFilterModePltd === 'monthly' ? logFilterMonthPltd : logFilterDatePltd)), headers, rows);
-                      }} className="px-4 py-2 bg-rose-50 text-rose-600 rounded-lg text-sm font-bold flex items-center gap-2 hover:bg-rose-100 shadow-sm"><Download className="w-4 h-4" /> Export PDF</button>
                     </div>
 
                     <div className="border border-slate-200 rounded-xl overflow-x-auto w-full">
@@ -1728,7 +1735,7 @@ export default function App() {
                             log.mesin_data.forEach((m: any) => { rows.push([log.tanggal, log.jam, petugas, m.id_mesin, m.merk_type, m.daya_terpasang, m.daya_mampu, m.beban_supply, m.status_operasi]); });
                           });
                           handleExportCSV(`Log_Mesin_${mesinLogFilterMode}_${new Date().getTime()}.csv`, headers, rows);
-                        }} className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-emerald-100 flex-1 sm:flex-none shadow-sm"><FileSpreadsheet className="w-4 h-4" /> Excel (CSV)</button>
+                        }} className="px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-emerald-100 flex-1 sm:flex-none shadow-sm"><FileSpreadsheet className="w-4 h-4" /> Excel (CSV)</button>
 
                         <button onClick={() => {
                           const headers = ['Tanggal', 'Jam', 'Petugas', 'ID Mesin', 'Merk Type', 'Mampu', 'B. Supply', 'Status'];
@@ -1738,7 +1745,7 @@ export default function App() {
                             log.mesin_data.forEach((m: any) => { rows.push([log.tanggal, log.jam, petugas, m.id_mesin, m.merk_type, m.daya_mampu, m.beban_supply, m.status_operasi]); });
                           });
                           handleExportFilteredPDF(`Log_Mesin_${mesinLogFilterMode}_${new Date().getTime()}.pdf`, 'Log Status Mesin - ' + (mesinLogFilterMode === 'all' ? 'Semua Waktu' : (mesinLogFilterMode === 'monthly' ? mesinLogFilterMonth : mesinLogFilterDate)), headers, rows);
-                        }} className="px-4 py-2 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-rose-100 flex-1 sm:flex-none shadow-sm"><Download className="w-4 h-4" /> PDF</button>
+                        }} className="px-3 py-1.5 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-rose-100 flex-1 sm:flex-none shadow-sm"><Download className="w-4 h-4" /> PDF</button>
                       </div>
                     </div>
 
@@ -1888,7 +1895,7 @@ export default function App() {
                             log.stand_bbm_kemarin, log.stand_bbm_hari_ini, log.pemakaian_bbm, log.sfc
                           ]);
                           handleExportCSV(`Log_Produksi_${produksiLogFilterMode}_${new Date().getTime()}.csv`, headers, rows);
-                        }} className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-emerald-100 flex-1 sm:flex-none shadow-sm"><FileSpreadsheet className="w-4 h-4" /> Excel (CSV)</button>
+                        }} className="px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-emerald-100 flex-1 sm:flex-none shadow-sm"><FileSpreadsheet className="w-4 h-4" /> Excel (CSV)</button>
 
                         <button onClick={() => {
                           const headers = ['Tanggal', 'Petugas', 'Produksi kWh', 'Pemakaian L', 'SFC'];
@@ -1897,7 +1904,7 @@ export default function App() {
                             log.kwh_produksi, log.pemakaian_bbm, log.sfc
                           ]);
                           handleExportFilteredPDF(`Log_Produksi_${produksiLogFilterMode}_${new Date().getTime()}.pdf`, 'Log Produksi & SFC PLTD - ' + (produksiLogFilterMode === 'all' ? 'Semua Waktu' : produksiLogFilterMonth), headers, rows);
-                        }} className="px-4 py-2 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-rose-100 flex-1 sm:flex-none shadow-sm"><Download className="w-4 h-4" /> PDF</button>
+                        }} className="px-3 py-1.5 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-rose-100 flex-1 sm:flex-none shadow-sm"><Download className="w-4 h-4" /> PDF</button>
                       </div>
                     </div>
 
@@ -2025,7 +2032,7 @@ export default function App() {
                             log.tangki_data.forEach((t: any) => { rows.push([log.tanggal, log.jam, petugas, log.jenis_input, log.referensi || '-', t.id_tangki, t.input_volume]); });
                           });
                           handleExportCSV(`Log_BBM_${new Date().getTime()}.csv`, headers, rows);
-                        }} className="px-4 py-2 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-emerald-100 flex-1 sm:flex-none shadow-sm"><FileSpreadsheet className="w-4 h-4" /> Excel (CSV)</button>
+                        }} className="px-3 py-1.5 bg-emerald-50 text-emerald-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-emerald-100 flex-1 sm:flex-none shadow-sm"><FileSpreadsheet className="w-4 h-4" /> Excel (CSV)</button>
 
                         <button onClick={() => {
                           const headers = ['Tanggal', 'Jam', 'Petugas', 'Jenis Input', 'Referensi', 'ID Tangki', 'Volume (L)'];
@@ -2035,7 +2042,7 @@ export default function App() {
                             log.tangki_data.forEach((t: any) => { rows.push([log.tanggal, log.jam, petugas, log.jenis_input, log.referensi || '-', t.id_tangki, t.input_volume]); });
                           });
                           handleExportFilteredPDF(`Log_BBM_${new Date().getTime()}.pdf`, 'Log Input Stok BBM PLTD', headers, rows);
-                        }} className="px-4 py-2 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-rose-100 flex-1 sm:flex-none shadow-sm"><Download className="w-4 h-4" /> PDF</button>
+                        }} className="px-3 py-1.5 bg-rose-50 text-rose-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-rose-100 flex-1 sm:flex-none shadow-sm"><Download className="w-4 h-4" /> PDF</button>
                       </div>
                     </div>
 
@@ -2542,7 +2549,7 @@ export default function App() {
 
                 <div className="p-4 md:p-6 bg-slate-50 rounded-b-2xl border-t border-slate-100 flex flex-col sm:flex-row justify-end gap-3 w-full">
                   <button onClick={() => setEditingBbmLog(null)} className="w-full sm:w-auto px-5 py-2.5 text-slate-500 font-bold hover:bg-slate-200 rounded-lg text-sm transition-colors">Batal</button>
-                  <button onClick={handleSaveEditBbmLog} className="w-full sm:w-auto px-6 py-2.5 bg-teal-600 text-white rounded-lg text-sm font-bold shadow-md hover:bg-teal-700 flex items-center justify-center gap-2"><Save className="w-4 h-4" /> Simpan Perubahan</button>
+                  <button onClick={handleSaveEditBbmLog} className="w-full sm:w-auto px-6 py-2.5 bg-teal-600 text-white text-sm font-bold rounded-lg hover:bg-teal-700 shadow-md flex items-center justify-center gap-2"><Save className="w-4 h-4" /> Simpan Perubahan</button>
                 </div>
               </div>
             </div>
