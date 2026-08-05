@@ -22,6 +22,15 @@ export default function App() {
   const [loginUsername, setLoginUsername] = useState('');
   const [loginError, setLoginError] = useState('');
 
+  // --- FITUR AUTO LOGIN (LOCAL STORAGE) ---
+  useEffect(() => {
+    const savedUser = localStorage.getItem('sistem_monitoring_user');
+    if (savedUser) {
+      setCurrentUser(JSON.parse(savedUser));
+    }
+  }, []);
+  // ----------------------------------------
+
   // STATE MEMBACA FIREBASE
   const [pltsAssets, setPltsAssets] = useState<any[]>([]);
   const [pltdAssets, setPltdAssets] = useState<any[]>([]);
@@ -274,28 +283,36 @@ export default function App() {
     e.preventDefault();
     const uname = loginUsername.trim().toLowerCase();
 
+    // 1. Cek Admin
     if (uname === 'admin') {
-      setCurrentUser({ role: 'admin', name: 'Administrator', site_id: 'ALL' });
+      const adminData = { role: 'admin', name: 'Administrator', site_id: 'ALL' };
+      setCurrentUser(adminData);
+      localStorage.setItem('sistem_monitoring_user', JSON.stringify(adminData)); // Simpan Sesi
       setActiveTab('dashboard');
       setLoginError('');
       return;
     }
 
     const formattedUname = uname.replace(/_/g, ' ');
-    const matchPlts = pltsAssets.find(p => p.nama_plts?.toLowerCase() === formattedUname || p.nama_plts?.toLowerCase().replace(/ /g, '_') === uname);
 
+    // 2. Cek PLTS
+    const matchPlts = pltsAssets.find(p => p.nama_plts?.toLowerCase() === formattedUname || p.nama_plts?.toLowerCase().replace(/ /g, '_') === uname);
     if (matchPlts) {
-      setCurrentUser({ role: 'plts', name: matchPlts.nama_plts, site_id: matchPlts.site_id });
+      const pltsData = { role: 'plts', name: matchPlts.nama_plts, site_id: matchPlts.site_id };
+      setCurrentUser(pltsData);
+      localStorage.setItem('sistem_monitoring_user', JSON.stringify(pltsData)); // Simpan Sesi
       setSelectedPltsForLog(matchPlts.site_id);
       setActiveTab('log_plts');
       setLoginError('');
       return;
     }
 
+    // 3. Cek PLTD
     const matchPltd = pltdAssets.find(p => p.nama_pltd?.toLowerCase() === formattedUname || p.nama_pltd?.toLowerCase().replace(/ /g, '_') === uname);
-
     if (matchPltd) {
-      setCurrentUser({ role: 'pltd', name: matchPltd.nama_pltd, site_id: matchPltd.site_id });
+      const pltdData = { role: 'pltd', name: matchPltd.nama_pltd, site_id: matchPltd.site_id };
+      setCurrentUser(pltdData);
+      localStorage.setItem('sistem_monitoring_user', JSON.stringify(pltdData)); // Simpan Sesi
       setSelectedPltdForLog(matchPltd.site_id);
       setSelectedPltdForMesinLog(matchPltd.site_id);
       setSelectedPltdForProduksi(matchPltd.site_id);
@@ -310,6 +327,7 @@ export default function App() {
 
   const handleLogout = () => {
     setCurrentUser(null);
+    localStorage.removeItem('sistem_monitoring_user'); // Hapus Sesi
     setLoginUsername('');
     setActiveTab('dashboard');
     setSelectedPltsForLog('');
